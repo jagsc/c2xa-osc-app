@@ -1,4 +1,4 @@
-#include "AppDelegate.h"
+#include <app_delegate.hpp>
 #include "cocos2d.h"
 #include "platform/android/jni/JniHelper.h"
 #include <jni.h>
@@ -11,5 +11,5 @@ using namespace cocos2d;
 
 void cocos_android_app_init (JNIEnv* env) {
     LOGD("cocos_android_app_init");
-    AppDelegate *pAppDelegate = new AppDelegate();
+    ::app_delegete *pAppDelegate = new ::app_delegete();
 }
