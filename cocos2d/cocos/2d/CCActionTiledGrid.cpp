@@ -93,10 +93,10 @@ void ShakyTiles3D::update(float time)
             Quad3 coords = getOriginalTile(Vec2(i, j));
 
             // X
-            coords.bl.x += ( rand() % (_randrange*2) ) - _randrange;
-            coords.br.x += ( rand() % (_randrange*2) ) - _randrange;
-            coords.tl.x += ( rand() % (_randrange*2) ) - _randrange;
-            coords.tr.x += ( rand() % (_randrange*2) ) - _randrange;
+            coords.bl.x += ( std::rand() % (_randrange*2) ) - _randrange;
+            coords.br.x += ( std::rand() % (_randrange*2) ) - _randrange;
+            coords.tl.x += ( std::rand() % (_randrange*2) ) - _randrange;
+            coords.tr.x += ( std::rand() % (_randrange*2) ) - _randrange;
 
             // Y
             coords.bl.y += ( rand() % (_randrange*2) ) - _randrange;
@@ -301,7 +301,7 @@ void ShuffleTiles::startWithTarget(Node *target)
 
     if (_seed != (unsigned int)-1)
     {
-        srand(_seed);
+        std::srand(_seed);
     }
 
     _tilesCount = _gridSize.width * _gridSize.height;
@@ -672,7 +672,7 @@ void TurnOffTiles::startWithTarget(Node *target)
 
     if (_seed != (unsigned int)-1)
     {
-        srand(_seed);
+        std::srand(_seed);
     }
 
     _tilesCount = _gridSize.width * _gridSize.height;

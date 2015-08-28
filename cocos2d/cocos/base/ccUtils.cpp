@@ -150,7 +150,7 @@ double atof(const char* str)
         dot[8] = '\0';
     }
     
-    return ::atof(buf);
+    return atof(buf);
 }
 
 double gettime()
