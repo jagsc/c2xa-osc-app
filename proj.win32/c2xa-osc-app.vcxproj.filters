@@ -19,14 +19,14 @@
     <Filter Include="src\c2xa\scene">
       <UniqueIdentifier>{326f1015-052d-4f60-8391-de899cf05f2c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\c2xa\scene\main_scene">
-      <UniqueIdentifier>{b85ba7da-f4d7-4d12-8f60-cbd23d6e1c61}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\c2xa\scene\main_scene\layer">
-      <UniqueIdentifier>{514cf61d-1ae7-4c4b-88be-9d3005c3da3c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\c2xa\object">
       <UniqueIdentifier>{c8eb15a9-544c-40b3-971e-34cc7b6be7bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\c2xa\scene\main">
+      <UniqueIdentifier>{b85ba7da-f4d7-4d12-8f60-cbd23d6e1c61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\c2xa\scene\main\layer">
+      <UniqueIdentifier>{223282f9-66c4-4601-a72a-05dbd2826c91}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -35,9 +35,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\app_delegate.cpp">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\c2xa\main_scene.cpp">
-      <Filter>src\c2xa</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\c2xa\scene\main_scene.cpp">
       <Filter>src\c2xa\scene</Filter>
@@ -50,9 +47,6 @@
     <ClInclude Include="..\Classes\app_delegate.hpp">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\c2xa\main_scene.hpp">
-      <Filter>src\c2xa</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\c2xa\bullet\test_player_bullet.hpp">
       <Filter>src\c2xa\bullet</Filter>
     </ClInclude>
@@ -62,11 +56,11 @@
     <ClInclude Include="..\Classes\c2xa\scene\main_scene.hpp">
       <Filter>src\c2xa\scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\c2xa\scene\main_scene\layer\object_layer.hpp">
-      <Filter>src\c2xa\scene\main_scene\layer</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\c2xa\object\player.hpp">
       <Filter>src\c2xa\object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\scene\main\layer\object_layer.hpp">
+      <Filter>src\c2xa\scene\main\layer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

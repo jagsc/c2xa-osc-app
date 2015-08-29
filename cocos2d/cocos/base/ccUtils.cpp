@@ -141,16 +141,16 @@ double atof(const char* str)
     }
     
     char buf[MAX_ITOA_BUFFER_SIZE];
-    strncpy(buf, str, MAX_ITOA_BUFFER_SIZE);
+    std::strncpy(buf, str, MAX_ITOA_BUFFER_SIZE);
     
     // strip string, only remain 7 numbers after '.'
-    char* dot = strchr(buf, '.');
+    char* dot = std::strchr(buf, '.');
     if (dot != nullptr && dot - buf + 8 <  MAX_ITOA_BUFFER_SIZE)
     {
         dot[8] = '\0';
     }
     
-    return atof(buf);
+    return std::atof(buf);
 }
 
 double gettime()

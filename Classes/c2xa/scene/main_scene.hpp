@@ -12,7 +12,7 @@
 
 #include <cocos2d.h>
 
-#include <c2xa/scene/main_scene/layer/object_layer.hpp>
+#include <c2xa/scene/main/layer/object_layer.hpp>
 
 namespace c2xa
 {
