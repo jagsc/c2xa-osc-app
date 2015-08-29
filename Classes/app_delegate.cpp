@@ -1,5 +1,5 @@
 #include <app_delegate.hpp>
-#include <c2xa/main_scene.hpp>
+#include <c2xa/scene/main_scene.hpp>
 
 using namespace cocos2d;
 
@@ -53,7 +53,7 @@ bool app_delegete::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    auto scene = c2xa::main_scene::create();
+    auto scene = c2xa::scene::main_scene::create();
 
     // run
     director->runWithScene(scene);

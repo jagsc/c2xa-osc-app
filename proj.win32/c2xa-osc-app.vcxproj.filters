@@ -13,6 +13,21 @@
     <Filter Include="src\c2xa">
       <UniqueIdentifier>{e0626f61-8b7a-4235-834b-49a6a8aa5026}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\c2xa\bullet">
+      <UniqueIdentifier>{fb129801-5ad9-4ff2-b5c6-6b6042a088d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\c2xa\scene">
+      <UniqueIdentifier>{326f1015-052d-4f60-8391-de899cf05f2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\c2xa\scene\main_scene">
+      <UniqueIdentifier>{b85ba7da-f4d7-4d12-8f60-cbd23d6e1c61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\c2xa\scene\main_scene\layer">
+      <UniqueIdentifier>{514cf61d-1ae7-4c4b-88be-9d3005c3da3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\c2xa\object">
+      <UniqueIdentifier>{c8eb15a9-544c-40b3-971e-34cc7b6be7bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -24,6 +39,9 @@
     <ClCompile Include="..\Classes\c2xa\main_scene.cpp">
       <Filter>src\c2xa</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\c2xa\scene\main_scene.cpp">
+      <Filter>src\c2xa\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -34,6 +52,21 @@
     </ClInclude>
     <ClInclude Include="..\Classes\c2xa\main_scene.hpp">
       <Filter>src\c2xa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\bullet\test_player_bullet.hpp">
+      <Filter>src\c2xa\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\create_template.hpp">
+      <Filter>src\c2xa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\scene\main_scene.hpp">
+      <Filter>src\c2xa\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\scene\main_scene\layer\object_layer.hpp">
+      <Filter>src\c2xa\scene\main_scene\layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\object\player.hpp">
+      <Filter>src\c2xa\object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
