@@ -11,6 +11,8 @@
 #include <cocos2d.h>
 
 #include <c2xa/create_template.hpp>
+#include <c2xa/c2xa_config.hpp>
+#include <c2xa/c2xa_config.hpp>
 
 namespace c2xa
 {
@@ -45,8 +47,8 @@ namespace c2xa
                 }
                 this->scheduleUpdate();
 
-                target_position_ ={ player_x_, 800 }; // ‚Æ‚è‚ ‚¦‚¸‰æ–ÊŠO
-                first_position_  ={ player_x_, 100 };
+                target_position_ = { player_x_, app_height }; // ‚Æ‚è‚ ‚¦‚¸‰æ–ÊŠO
+                first_position_  = { player_x_, 100 };
 
                 bullet_ = cocos2d::Sprite::create( "CloseSelected.png" );
                 bullet_->setPosition( first_position_ );

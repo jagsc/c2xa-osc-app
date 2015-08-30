@@ -10,8 +10,6 @@
 
 #include <cocos2d.h>
 
-#include <c2xa/bullet/test_player_bullet.hpp>
-
 namespace c2xa
 {
     namespace object
@@ -31,13 +29,14 @@ namespace c2xa
                 LEFT,
                 RIGHT
             } move_state_;
-            bool touch_;
-            bool tap_;
             float touch_count_;
+            bool  is_touch_;
             cocos2d::Point touch_position_;
 
         public:
             CREATE_FUNC( player );
+            
+        public:
             virtual bool init() override
             {
                 using namespace cocos2d;
@@ -54,10 +53,10 @@ namespace c2xa
                 i_->setPosition( Vec2( position_, y_position ) );
                 this->addChild( i_ );
 
-                auto dispatcher = Director::getInstance()->getEventDispatcher();
-                auto listener = EventListenerKeyboard::create();
+                auto keyboard_listener = EventListenerKeyboard::create();
+                auto touch_listener_   = EventListenerTouchOneByOne::create();
 
-                listener->onKeyPressed = [ & ]( EventKeyboard::KeyCode key_, Event* event_ )
+                keyboard_listener->onKeyPressed = [ & ]( EventKeyboard::KeyCode key_, Event* event_ )
                 {
                     switch( key_ )
                     {
@@ -66,13 +65,13 @@ namespace c2xa
                     case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
                         move_state_ = move_state::RIGHT; break;
                     case EventKeyboard::KeyCode::KEY_UP_ARROW:
-                        getParent()->addChild( bullet::test_player_bullet::create( position_ ) ); break;
+                        fire(); break;
                     case EventKeyboard::KeyCode::KEY_ESCAPE:
                         this->removeFromParent(); break; // Ž©•ª‚ðÁ‚·(ƒAƒNƒVƒ‡ƒ“‚àíœ‚³‚ê‚é‚Ì‚Å’ˆÓ)
                     }
                 };
 
-                listener->onKeyReleased = [ & ]( EventKeyboard::KeyCode key_, Event* event_ )
+                keyboard_listener->onKeyReleased = [ & ]( EventKeyboard::KeyCode key_, Event* event_ )
                 {
                     if( ( key_ == EventKeyboard::KeyCode::KEY_LEFT_ARROW && move_state_ == move_state::LEFT )
                      || ( key_ == EventKeyboard::KeyCode::KEY_RIGHT_ARROW && move_state_ == move_state::RIGHT ) )
@@ -81,15 +80,10 @@ namespace c2xa
                     }
                 };
 
-                dispatcher->addEventListenerWithSceneGraphPriority( listener, this );
-
-                auto touch_listener_ = EventListenerTouchOneByOne::create();
-
                 touch_listener_->onTouchBegan = [ & ]( Touch* t_, Event* )
                 {
+                    is_touch_ = true;
                     touch_count_ = 0.f;
-                    touch_ = true;
-                    tap_ = true;
                     touch_position_ = t_->getLocation();
                     move_state_ = position_ > touch_position_.x ? move_state::LEFT : move_state::RIGHT;
                     return true;
@@ -97,75 +91,94 @@ namespace c2xa
 
                 touch_listener_->onTouchMoved = [ & ]( Touch* t_, Event* )
                 {
+                    is_touch_ = true;
                     touch_position_ = t_->getLocation();
                     move_state_ = position_ > touch_position_.x ? move_state::LEFT : move_state::RIGHT;
                 };
 
                 touch_listener_->onTouchCancelled = [ & ]( Touch* t_, Event* )
                 {
-                    touch_count_ = 0.f;
-                    touch_ = false;
-                    tap_ = false;
-                    move_state_ = move_state::NONE;
+                    reset();
                 };
 
                 touch_listener_->onTouchEnded = [ & ]( Touch* t_, Event* )
                 {
-                    if( tap_ )
+                    if( touch_count_ <= 10.f )
                     {
-                        getParent()->addChild( bullet::test_player_bullet::create( position_ ) );
+                        fire();
                     }
-                    touch_count_ = 0.f;
-                    touch_ = false;
-                    tap_ = false;
-                    move_state_ = move_state::NONE;
+                    reset();
                 };
 
-                this->getEventDispatcher()->addEventListenerWithSceneGraphPriority( touch_listener_, this );
-
+                auto dispatcher = Director::getInstance()->getEventDispatcher();
+                dispatcher->addEventListenerWithSceneGraphPriority( keyboard_listener, this );
+                dispatcher->addEventListenerWithSceneGraphPriority( touch_listener_, this );
 
                 return true;
             }
             virtual void update( float delta_ ) override
             {
-                if( touch_ )
+                if( move_state_ != move_state::NONE )
                 {
                     touch_count_ += delta_ * 100;
-                    if( touch_count_ > 10.f )
+                    switch( move_state_ )
                     {
-                        tap_ = false;
-                    }
-                    if( touch_count_ > 5.f )
+                    case move_state::LEFT:
                     {
-                        switch( move_state_ )
+                        if( touch_count_ > 5.f )
                         {
-                        case move_state::LEFT:
-                            {
-                                position_ -= delta_ * 100; i_->setPositionX( position_ );
-                                if( touch_position_.x <= position_ )
-                                {
-                                    i_->setPositionX( touch_position_.x );
-                                    touch_count_ = 0;
-                                    touch_ = false;
-                                    tap_ = false;
-                                }
-                            }
-                            break;
-                        case move_state::RIGHT:
-                            {
-                                position_ += delta_ * 100; i_->setPositionX( position_ );
-                                if( touch_position_.x >= position_ )
-                                {
-                                    i_->setPositionX( touch_position_.x );
-                                    touch_count_ = 0;
-                                    touch_ = false;
-                                    tap_ = false;
-                                }
-                            }
-                            break;
+                            position_ -= delta_ * 100; i_->setPositionX( position_ );
+                        }
+                        if( is_touch_ && touch_position_.x >= position_ )
+                        {
+                            i_->setPositionX( touch_position_.x );
+                            reset();
                         }
                     }
+                    break;
+                    case move_state::RIGHT:
+                    {
+                        if( touch_count_ > 5.f )
+                        {
+                            position_ += delta_ * 100; i_->setPositionX( position_ );
+                        }
+                        if( is_touch_ && touch_position_.x <= position_ )
+                        {
+                            i_->setPositionX( touch_position_.x );
+                            reset();
+                        }
+                    }
+                    break;
+                    }
                 }
+            }
+
+        private:
+            void reset()
+            {
+                is_touch_ = false;
+                touch_count_ = 0.f;
+                move_state_ = move_state::NONE;
+            };
+            void fire();
+
+            void on_key_pressed( cocos2d::Touch* t_, cocos2d::Event* )
+            {
+            }
+            void on_key_released( cocos2d::Touch* t_, cocos2d::Event* )
+            {
+            }
+            void on_touch_began( cocos2d::Touch* t_, cocos2d::Event* )
+            {
+            }
+            void on_touch_moved( cocos2d::Touch* t_, cocos2d::Event* )
+            {
+            }
+            void on_touch_cancelled( cocos2d::Touch* t_, cocos2d::Event* )
+            {
+            }
+            void on_touch_ended( cocos2d::Touch* t_, cocos2d::Event* )
+            {
             }
         };
     }

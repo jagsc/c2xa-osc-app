@@ -39,6 +39,9 @@
     <ClCompile Include="..\Classes\c2xa\scene\main_scene.cpp">
       <Filter>src\c2xa\scene</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\c2xa\object\player.cpp">
+      <Filter>src\c2xa\object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
