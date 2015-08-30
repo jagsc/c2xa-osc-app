@@ -64,10 +64,12 @@ namespace c2xa
                         move_state_ = move_state::LEFT; break;
                     case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
                         move_state_ = move_state::RIGHT; break;
-                    case EventKeyboard::KeyCode::KEY_UP_ARROW:
-                        fire(); break;
                     case EventKeyboard::KeyCode::KEY_ESCAPE:
                         this->removeFromParent(); break; // ©•ª‚ğÁ‚·(ƒAƒNƒVƒ‡ƒ“‚àíœ‚³‚ê‚é‚Ì‚Å’ˆÓ)
+                    }
+                    if( key_ == EventKeyboard::KeyCode::KEY_UP_ARROW && touch_count_ < 5.f )
+                    {
+                        fire();
                     }
                 };
 
@@ -76,12 +78,16 @@ namespace c2xa
                     if( ( key_ == EventKeyboard::KeyCode::KEY_LEFT_ARROW && move_state_ == move_state::LEFT )
                      || ( key_ == EventKeyboard::KeyCode::KEY_RIGHT_ARROW && move_state_ == move_state::RIGHT ) )
                     {
-                        move_state_ = move_state::NONE;
+                        reset();
                     }
                 };
 
                 touch_listener_->onTouchBegan = [ & ]( Touch* t_, Event* )
                 {
+                    if( move_state_ != move_state::NONE )
+                    {
+                        return false;
+                    }
                     is_touch_ = true;
                     touch_count_ = 0.f;
                     touch_position_ = t_->getLocation();
