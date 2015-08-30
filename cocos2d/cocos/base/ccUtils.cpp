@@ -26,6 +26,7 @@ THE SOFTWARE.
 #include "base/ccUtils.h"
 
 #include <stdlib.h>
+#include <cstring>
 
 #include "base/CCDirector.h"
 #include "renderer/CCCustomCommand.h"
