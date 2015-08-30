@@ -2,7 +2,7 @@
     @file	c2xa/create_template.hpp
     @brief	Create Template
 
-    @author    êVÅTåé(NewNotMoon)
+    @author    Êñ∞„ÇùÊúà(NewNotMoon)
     @date      2015/08/29
 ****************************************************************************************/
 #ifndef C2XA_CREATE_TEMPLATE_HPP

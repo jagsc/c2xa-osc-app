@@ -2,7 +2,7 @@
     @file	c2xa/object/player.hpp
     @brief	player
 
-    @author    �V�T��(NewNotMoon)
+    @author    新ゝ月(NewNotMoon)
     @date      2015/08/29
 ****************************************************************************************/
 #ifndef C2XA_OBJECT_PLAYER_HPP
@@ -14,6 +14,14 @@ namespace c2xa
 {
     namespace object
     {
+        /*!
+            @class player
+            @author 新ゝ月(NewNotMoon)
+            
+            自機オブジェクトです。
+            オブジェクトは全てCocos2d-xのNodeとして実装します。
+            Nodeとしてのオーバーライド以外に外部インターフェイスは持っていません。
+        */
         class player
             : public cocos2d::Node
         {
@@ -29,7 +37,7 @@ namespace c2xa
                 LEFT,
                 RIGHT
             } move_state_;
-            float touch_count_;
+            float input_count_;
             bool  is_touch_;
             cocos2d::Point touch_position_;
 
@@ -37,6 +45,11 @@ namespace c2xa
             CREATE_FUNC( player );
             
         public:
+            /*!
+                @fn init
+
+                Nodeからのオーバーライドです。
+            */
             virtual bool init() override
             {
                 using namespace cocos2d;
@@ -65,9 +78,9 @@ namespace c2xa
                     case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
                         move_state_ = move_state::RIGHT; break;
                     case EventKeyboard::KeyCode::KEY_ESCAPE:
-                        this->removeFromParent(); break; // ����������(�A�N�V�������폜�����̂Œ���)
+                        this->removeFromParent(); break; // 自分を消す(アクションも削除されるので注意)
                     }
-                    if( key_ == EventKeyboard::KeyCode::KEY_UP_ARROW && touch_count_ < 5.f )
+                    if( key_ == EventKeyboard::KeyCode::KEY_UP_ARROW && input_count_ < 5.f )
                     {
                         fire();
                     }
@@ -89,7 +102,7 @@ namespace c2xa
                         return false;
                     }
                     is_touch_ = true;
-                    touch_count_ = 0.f;
+                    input_count_ = 0.f;
                     touch_position_ = t_->getLocation();
                     move_state_ = position_ > touch_position_.x ? move_state::LEFT : move_state::RIGHT;
                     return true;
@@ -109,7 +122,7 @@ namespace c2xa
 
                 touch_listener_->onTouchEnded = [ & ]( Touch* t_, Event* )
                 {
-                    if( touch_count_ <= 10.f )
+                    if( input_count_ <= 10.f )
                     {
                         fire();
                     }
@@ -122,16 +135,22 @@ namespace c2xa
 
                 return true;
             }
+            /*!
+                @fn update
+                @param[in] delta_ 各呼び出し時におけるフレームの遅れ
+
+                Nodeからのオーバーライドです。直接呼び出しません。
+            */
             virtual void update( float delta_ ) override
             {
                 if( move_state_ != move_state::NONE )
                 {
-                    touch_count_ += delta_ * 100;
+                    input_count_ += delta_ * 100;
                     switch( move_state_ )
                     {
                     case move_state::LEFT:
                     {
-                        if( touch_count_ > 5.f )
+                        if( input_count_ > 5.f )
                         {
                             position_ -= delta_ * 100; i_->setPositionX( position_ );
                         }
@@ -144,7 +163,7 @@ namespace c2xa
                     break;
                     case move_state::RIGHT:
                     {
-                        if( touch_count_ > 5.f )
+                        if( input_count_ > 5.f )
                         {
                             position_ += delta_ * 100; i_->setPositionX( position_ );
                         }
@@ -160,32 +179,23 @@ namespace c2xa
             }
 
         private:
+            /*!
+                @fn reset
+
+                入力関係のメンバをリセットします。
+            */
             void reset()
             {
                 is_touch_ = false;
-                touch_count_ = 0.f;
+                input_count_ = 0.f;
                 move_state_ = move_state::NONE;
             };
-            void fire();
+            /*!
+                @fn fire
 
-            void on_key_pressed( cocos2d::Touch* t_, cocos2d::Event* )
-            {
-            }
-            void on_key_released( cocos2d::Touch* t_, cocos2d::Event* )
-            {
-            }
-            void on_touch_began( cocos2d::Touch* t_, cocos2d::Event* )
-            {
-            }
-            void on_touch_moved( cocos2d::Touch* t_, cocos2d::Event* )
-            {
-            }
-            void on_touch_cancelled( cocos2d::Touch* t_, cocos2d::Event* )
-            {
-            }
-            void on_touch_ended( cocos2d::Touch* t_, cocos2d::Event* )
-            {
-            }
+                自機から弾を発射します。
+            */
+            void fire();
         };
     }
 }
