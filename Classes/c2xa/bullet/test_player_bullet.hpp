@@ -2,7 +2,7 @@
     @file	c2xa/bullet/test_player_bullet.hpp
     @brief	Test Bullet
 
-    @author    VTŒ(NewNotMoon)
+    @author    æ–°ã‚æœˆ(NewNotMoon)
     @date      2015/08/29
 ****************************************************************************************/
 #ifndef C2XA_BULLET_TEST_PLAYER_BULLET_HPP
@@ -29,9 +29,9 @@ namespace c2xa
             cocos2d::Sprite* bullet_;
 
             /*
-            Action‚ÍŠ„‚è‚İ‚Éã‚¢(‚Å‚«‚È‚­‚Í‚È‚¢‚ªAƒR[ƒ‹ƒoƒbƒN’n–‚É‚È‚é‚Ì‚ÅŠëŒ¯)
-            ’e‚ÍˆÚ“®’†‚ÉÚG‚ÉÁ‚¦‚é‚Æ‚¢‚¤Š„‚è‚İ‚Ì‰Â”\«‚ª‚ ‚é‚½‚ßA‘f’¼‚ÉÀ•W‚Á‚Ä©•ª‚Å“®‚©‚·
-            ‚Ü‚½‚ÍAŠ„‚è‚İ‰Â”\‚ÈAction‚ğì‚é‚©(ì‹Æ—Ê‘AŠg’£«‘AŒ©’Ê‚µŒ¸)
+            Actionã¯å‰²ã‚Šè¾¼ã¿ã«å¼±ã„(ã§ããªãã¯ãªã„ãŒã€ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯åœ°ç„ã«ãªã‚‹ã®ã§å±é™º)
+            å¼¾ã¯ç§»å‹•ä¸­ã«æ¥è§¦æ™‚ã«æ¶ˆãˆã‚‹ã¨ã„ã†å‰²ã‚Šè¾¼ã¿ã®å¯èƒ½æ€§ãŒã‚ã‚‹ãŸã‚ã€ç´ ç›´ã«åº§æ¨™æŒã£ã¦è‡ªåˆ†ã§å‹•ã‹ã™
+            ã¾ãŸã¯ã€å‰²ã‚Šè¾¼ã¿å¯èƒ½ãªActionã‚’ä½œã‚‹ã‹(ä½œæ¥­é‡å¢—ã€æ‹¡å¼µæ€§å¢—ã€è¦‹é€šã—æ¸›)
             */
 
         public:
@@ -47,7 +47,7 @@ namespace c2xa
                 }
                 this->scheduleUpdate();
 
-                target_position_ = { player_x_, app_height }; // ‚Æ‚è‚ ‚¦‚¸‰æ–ÊŠO
+                target_position_ = { player_x_, app_height }; // ã¨ã‚Šã‚ãˆãšç”»é¢å¤–
                 first_position_  = { player_x_, 100 };
 
                 bullet_ = cocos2d::Sprite::create( "CloseSelected.png" );
