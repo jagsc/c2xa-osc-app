@@ -59,3 +59,6 @@ Cocos2d-xのREADMEから引用
 - よくわかんなければSlackに投げる
 
 GitHubのwikiやissueも上手く活用していきたいところ。
+
+現在はわたしが直接developにpushしちゃってますが、9月入ったらtやんとブランチ切ります。
+
