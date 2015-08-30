@@ -1,5 +1,6 @@
-#include <app_delegate.hpp>
+﻿#include <app_delegate.hpp>
 #include <c2xa/scene/main_scene.hpp>
+#include <c2xa/c2xa_config.hpp>
 
 using namespace cocos2d;
 
@@ -30,7 +31,7 @@ bool app_delegete::applicationDidFinishLaunching() {
     if(!glview) {
         //glview = GLViewImpl::create("My Game");
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-        glview = GLViewImpl::createWithRect( "My Game", Rect( 0, 0, 540, 960 ), 1 );
+        glview = GLViewImpl::createWithRect( "My Game", c2xa::app_rectangle, 1 );
 #else
         glview = GLViewImpl::create( "My Game" );
 #endif
@@ -43,11 +44,8 @@ bool app_delegete::applicationDidFinishLaunching() {
     // 60FPSでまずは進めます
     director->setAnimationInterval(1.0 / 60);
 
-
-    static const cocos2d::Size designResolutionSize = cocos2d::Size( 540, 960 );
-
     // Set the design resolution
-    glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::SHOW_ALL);
+    glview->setDesignResolutionSize( c2xa::app_size.width, c2xa::app_size.height, ResolutionPolicy::SHOW_ALL);
     //director->setContentScaleFactor( 0.5 );
 
     register_all_packages();

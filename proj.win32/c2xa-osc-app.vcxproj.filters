@@ -62,6 +62,9 @@
     <ClInclude Include="..\Classes\c2xa\scene\main\layer\object_layer.hpp">
       <Filter>src\c2xa\scene\main\layer</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\c2xa_config.hpp">
+      <Filter>src\c2xa</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

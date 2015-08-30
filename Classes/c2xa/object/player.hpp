@@ -33,8 +33,7 @@ namespace c2xa
             } move_state_;
             bool touch_;
             bool tap_;
-            bool direction_;
-            int touch_count_;
+            float touch_count_;
             cocos2d::Point touch_position_;
 
         public:
@@ -76,7 +75,7 @@ namespace c2xa
                 listener->onKeyReleased = [ & ]( EventKeyboard::KeyCode key_, Event* event_ )
                 {
                     if( ( key_ == EventKeyboard::KeyCode::KEY_LEFT_ARROW && move_state_ == move_state::LEFT )
-                        || ( key_ == EventKeyboard::KeyCode::KEY_RIGHT_ARROW && move_state_ == move_state::RIGHT ) )
+                     || ( key_ == EventKeyboard::KeyCode::KEY_RIGHT_ARROW && move_state_ == move_state::RIGHT ) )
                     {
                         move_state_ = move_state::NONE;
                     }
@@ -88,39 +87,26 @@ namespace c2xa
 
                 touch_listener_->onTouchBegan = [ & ]( Touch* t_, Event* )
                 {
-                    touch_count_ = 1;
+                    touch_count_ = 0.f;
                     touch_ = true;
                     tap_ = true;
                     touch_position_ = t_->getLocation();
-                    if( position_ < touch_position_.x )
-                    {
-                        direction_ = true;
-                    }
-                    else
-                    {
-                        direction_ = false;
-                    }
+                    move_state_ = position_ > touch_position_.x ? move_state::LEFT : move_state::RIGHT;
                     return true;
                 };
 
                 touch_listener_->onTouchMoved = [ & ]( Touch* t_, Event* )
                 {
                     touch_position_ = t_->getLocation();
-                    if( position_ < touch_position_.x )
-                    {
-                        direction_ = true;
-                    }
-                    else
-                    {
-                        direction_ = false;
-                    }
+                    move_state_ = position_ > touch_position_.x ? move_state::LEFT : move_state::RIGHT;
                 };
 
                 touch_listener_->onTouchCancelled = [ & ]( Touch* t_, Event* )
                 {
-                    touch_count_ = 0;
+                    touch_count_ = 0.f;
                     touch_ = false;
                     tap_ = false;
+                    move_state_ = move_state::NONE;
                 };
 
                 touch_listener_->onTouchEnded = [ & ]( Touch* t_, Event* )
@@ -129,9 +115,10 @@ namespace c2xa
                     {
                         getParent()->addChild( bullet::test_player_bullet::create( position_ ) );
                     }
-                    touch_count_ = 0;
+                    touch_count_ = 0.f;
                     touch_ = false;
                     tap_ = false;
+                    move_state_ = move_state::NONE;
                 };
 
                 this->getEventDispatcher()->addEventListenerWithSceneGraphPriority( touch_listener_, this );
@@ -141,43 +128,41 @@ namespace c2xa
             }
             virtual void update( float delta_ ) override
             {
-                switch( move_state_ )
-                {
-                case move_state::LEFT:
-                    position_ -= 1.f * ( delta_ * 100 ); i_->setPositionX( position_ ); break;
-                case move_state::RIGHT:
-                    position_ += 1.f * ( delta_ * 100 ); i_->setPositionX( position_ ); break;
-                }
                 if( touch_ )
                 {
-                    ++touch_count_;
-                    if( touch_count_ > 10 )
+                    touch_count_ += delta_ * 100;
+                    if( touch_count_ > 10.f )
                     {
                         tap_ = false;
                     }
-                    if( !tap_ )
+                    if( touch_count_ > 5.f )
                     {
-                        if( direction_ )
+                        switch( move_state_ )
                         {
-                            position_ += 1.f * ( delta_ * 100 ); i_->setPositionX( position_ );
-                            if( touch_position_.x <= position_ )
+                        case move_state::LEFT:
                             {
-                                i_->setPositionX( touch_position_.x );
-                                touch_count_ = 0;
-                                touch_ = false;
-                                tap_ = false;
+                                position_ -= delta_ * 100; i_->setPositionX( position_ );
+                                if( touch_position_.x <= position_ )
+                                {
+                                    i_->setPositionX( touch_position_.x );
+                                    touch_count_ = 0;
+                                    touch_ = false;
+                                    tap_ = false;
+                                }
                             }
-                        }
-                        else
-                        {
-                            position_ -= 1.f * ( delta_ * 100 ); i_->setPositionX( position_ );
-                            if( touch_position_.x >= position_ )
+                            break;
+                        case move_state::RIGHT:
                             {
-                                i_->setPositionX( touch_position_.x );
-                                touch_count_ = 0;
-                                touch_ = false;
-                                tap_ = false;
+                                position_ += delta_ * 100; i_->setPositionX( position_ );
+                                if( touch_position_.x >= position_ )
+                                {
+                                    i_->setPositionX( touch_position_.x );
+                                    touch_count_ = 0;
+                                    touch_ = false;
+                                    tap_ = false;
+                                }
                             }
+                            break;
                         }
                     }
                 }

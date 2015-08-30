@@ -156,6 +156,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\c2xa_config.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="..\Classes\c2xa\create_template.hpp">
       <SubType>
       </SubType>
