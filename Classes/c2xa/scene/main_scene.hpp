@@ -14,6 +14,8 @@
 
 #include <c2xa/scene/main/layer/object_layer.hpp>
 
+#include <c2xa/bullet/lua.hpp>
+
 namespace c2xa
 {
     namespace scene
@@ -22,24 +24,31 @@ namespace c2xa
             : public cocos2d::Scene
         {
         public:
-            static cocos2d::Scene* create()
+            CREATE_FUNC( main_scene );
+            virtual bool init() override
             {
                 using namespace cocos2d;
 
-                auto a = Scene::create();
-                //a->addChild( background_layer::create() );
-                Size winSize = Director::getInstance()->getVisibleSize();
-                auto _bg = LayerColor::create( Color4B::RED, winSize.width, winSize.height );
-                a->addChild( _bg );
-                a->addChild( main::layer::object_layer::create() );
-                return a;
-            }
-            virtual bool init() override
-            {
                 if( !Scene::init() )
                 {
                     return false;
                 }
+                //a->addChild( background_layer::create() );
+                //Size winSize = Director::getInstance()->getVisibleSize();
+                //auto _bg = LayerColor::create( Color4B::RED, winSize.width, winSize.height );
+                //addChild( _bg );
+                addChild( main::layer::object_layer::create() );
+
+                auto keyboard_listener_ = EventListenerKeyboard::create();
+                keyboard_listener_->onKeyPressed = [ & ]( EventKeyboard::KeyCode key_, Event* event_ )
+                {
+                    if( key_ == EventKeyboard::KeyCode::KEY_ESCAPE )
+                    {
+                        Director::getInstance()->end();
+                    }
+                };
+                auto dispatcher = Director::getInstance()->getEventDispatcher();
+                dispatcher->addEventListenerWithSceneGraphPriority( keyboard_listener_, this );
                 return true;
             }
         };

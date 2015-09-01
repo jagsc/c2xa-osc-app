@@ -68,6 +68,9 @@
     <ClInclude Include="..\Classes\c2xa\c2xa_config.hpp">
       <Filter>src\c2xa</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\bullet\lua.hpp">
+      <Filter>src\c2xa\bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">
