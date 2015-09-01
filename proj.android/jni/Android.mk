@@ -21,7 +21,7 @@ LOCAL_SRC_FILES += $(CPP_FILES:$(LOCAL_PATH)/%=%)
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
 
 LOCAL_STATIC_LIBRARIES := cocos2dx_static
-LOCAL_STATIC_LIBRARIES := cocos2d_lua_static
+LOCAL_STATIC_LIBRARIES += cocos2d_lua_static
 
 include $(BUILD_SHARED_LIBRARY)
 

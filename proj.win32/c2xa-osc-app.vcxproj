@@ -153,10 +153,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\app_delegate.hpp" />
-    <ClInclude Include="..\Classes\c2xa\bullet\lua.hpp">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="..\Classes\c2xa\bullet\test_player_bullet.hpp">
       <SubType>
       </SubType>
@@ -191,6 +187,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resources\test.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -14,7 +14,7 @@
 
 #include <c2xa/scene/main/layer/object_layer.hpp>
 
-#include <c2xa/bullet/lua.hpp>
+//#include <scripting/lua-bindings/manual/CCLuaEngine.h>
 
 namespace c2xa
 {
@@ -23,6 +23,9 @@ namespace c2xa
         class main_scene
             : public cocos2d::Scene
         {
+        private:
+            bool end_ = false;
+
         public:
             CREATE_FUNC( main_scene );
             virtual bool init() override
@@ -33,10 +36,20 @@ namespace c2xa
                 {
                     return false;
                 }
-                //a->addChild( background_layer::create() );
-                //Size winSize = Director::getInstance()->getVisibleSize();
-                //auto _bg = LayerColor::create( Color4B::RED, winSize.width, winSize.height );
-                //addChild( _bg );
+                scheduleUpdate();
+
+                //auto lua_engine_ = LuaEngine::getInstance();
+                //ScriptEngineManager::getInstance()->setScriptEngine( lua_engine_ );
+                //lua_engine_->executeScriptFile( "test.lua" );
+
+                //lua_State* l = lua_engine_->getLuaStack()->getLuaState();
+                //
+                //lua_getglobal( l, "helloLua" );
+                //tolua_pushusertype( l, this, "cc.Scene" );
+                //if( lua_pcall( l, 1, 0, 0 ) )
+                //    CCLOG( "error=%s", lua_tostring( l, lua_gettop( l ) ) );
+                //}
+
                 addChild( main::layer::object_layer::create() );
 
                 auto keyboard_listener_ = EventListenerKeyboard::create();
@@ -44,12 +57,19 @@ namespace c2xa
                 {
                     if( key_ == EventKeyboard::KeyCode::KEY_ESCAPE )
                     {
-                        Director::getInstance()->end();
+                        end_ = true;
                     }
                 };
                 auto dispatcher = Director::getInstance()->getEventDispatcher();
                 dispatcher->addEventListenerWithSceneGraphPriority( keyboard_listener_, this );
                 return true;
+            }
+            virtual void update( float ) override
+            {
+                if( end_ )
+                {
+                    Director::getInstance()->end();
+                }
             }
         };
     }
