@@ -1,4 +1,4 @@
-/************************************************************************************//**
+﻿/************************************************************************************//**
     @file	c2xa/scene/main_scene.hpp
     @brief	main scene
 
@@ -68,10 +68,9 @@ namespace c2xa
             }
             virtual void update( float ) override
             {
-                using namespace cocos2d;
                 if( end_ )
                 {
-                    Director::getInstance()->end();
+                    cocos2d::Director::getInstance()->end();
                 }
             }
         };
