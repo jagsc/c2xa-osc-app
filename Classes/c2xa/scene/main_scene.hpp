@@ -38,6 +38,8 @@ namespace c2xa
                 }
                 scheduleUpdate();
 
+                setName( "main_scene" );
+
                 //auto lua_engine_ = LuaEngine::getInstance();
                 //ScriptEngineManager::getInstance()->setScriptEngine( lua_engine_ );
                 //lua_engine_->executeScriptFile( "test.lua" );

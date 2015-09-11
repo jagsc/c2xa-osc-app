@@ -36,6 +36,8 @@ namespace c2xa
                         {
                             return false;
                         }
+                        
+                        setName( "object_layer" );
 
                         enemies_        = Node::create();
                         enemy_bullets_  = Node::create();
