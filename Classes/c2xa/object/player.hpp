@@ -29,7 +29,6 @@ namespace c2xa
             static const int y_position = 100;
 
         private:
-            cocos2d::Sprite* i_;
             float   position_;
             enum class move_state
             {
@@ -61,10 +60,11 @@ namespace c2xa
                 this->scheduleUpdate();
 
 
-                i_ = Sprite::create( "CloseNormal.png" );
                 position_ = y_position;
-                i_->setPosition( Vec2( position_, y_position ) );
-                this->addChild( i_ );
+                auto player_sprite_ = Sprite::create( "bugdroid-player.png" );
+                player_sprite_->setName( "player_sprite" );
+                player_sprite_->setPosition( Vec2( position_, y_position ) );
+                addChild( player_sprite_ );
 
                 auto keyboard_listener = EventListenerKeyboard::create();
                 auto touch_listener_   = EventListenerTouchOneByOne::create();
@@ -146,17 +146,18 @@ namespace c2xa
                 if( move_state_ != move_state::NONE )
                 {
                     input_count_ += delta_ * 100;
+                    auto player_sprite_ = getChildByName( "player_sprite" );
                     switch( move_state_ )
                     {
                     case move_state::LEFT:
                     {
                         if( input_count_ > 5.f )
                         {
-                            position_ -= delta_ * 100; i_->setPositionX( position_ );
+                            position_ -= delta_ * 100; player_sprite_->setPositionX( position_ );
                         }
                         if( is_touch_ && touch_position_.x >= position_ )
                         {
-                            i_->setPositionX( touch_position_.x );
+                            player_sprite_->setPositionX( touch_position_.x );
                             reset();
                         }
                     }
@@ -165,11 +166,11 @@ namespace c2xa
                     {
                         if( input_count_ > 5.f )
                         {
-                            position_ += delta_ * 100; i_->setPositionX( position_ );
+                            position_ += delta_ * 100; player_sprite_->setPositionX( position_ );
                         }
                         if( is_touch_ && touch_position_.x <= position_ )
                         {
-                            i_->setPositionX( touch_position_.x );
+                            player_sprite_->setPositionX( touch_position_.x );
                             reset();
                         }
                     }
