@@ -1,4 +1,4 @@
-﻿/************************************************************************************//**
+/************************************************************************************//**
     @file	c2xa/scene/main_scene.hpp
     @brief	main scene
 
@@ -12,7 +12,9 @@
 
 #include <cocos2d.h>
 
+#include <c2xa/scene/main/layer/ui_layer.hpp>
 #include <c2xa/scene/main/layer/object_layer.hpp>
+#include <c2xa/scene/main/layer/background_layer.hpp>
 
 //#include <scripting/lua-bindings/manual/CCLuaEngine.h>
 
@@ -38,7 +40,6 @@ namespace c2xa
                 }
                 scheduleUpdate();
 
-                setName( "main_scene" );
 
                 //auto lua_engine_ = LuaEngine::getInstance();
                 //ScriptEngineManager::getInstance()->setScriptEngine( lua_engine_ );
@@ -52,7 +53,10 @@ namespace c2xa
                 //    CCLOG( "error=%s", lua_tostring( l, lua_gettop( l ) ) );
                 //}
 
-                addChild( main::layer::object_layer::create() );
+                setName( "main_scene" );
+                addChild( main::layer::ui_layer::create(),         3 );
+                addChild( main::layer::object_layer::create(),     2 );
+                addChild( main::layer::background_layer::create(), 1 );
 
                 auto keyboard_listener_ = EventListenerKeyboard::create();
                 keyboard_listener_->onKeyPressed = [ & ]( EventKeyboard::KeyCode key_, Event* event_ )

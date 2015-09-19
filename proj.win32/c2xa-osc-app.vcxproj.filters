@@ -53,9 +53,6 @@
     <ClInclude Include="..\Classes\c2xa\bullet\test_player_bullet.hpp">
       <Filter>src\c2xa\bullet</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\c2xa\create_template.hpp">
-      <Filter>src\c2xa</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\c2xa\scene\main_scene.hpp">
       <Filter>src\c2xa\scene</Filter>
     </ClInclude>
@@ -67,6 +64,15 @@
     </ClInclude>
     <ClInclude Include="..\Classes\c2xa\c2xa_config.hpp">
       <Filter>src\c2xa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\utility.hpp">
+      <Filter>src\c2xa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\scene\main\layer\ui_layer.hpp">
+      <Filter>src\c2xa\scene\main\layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\scene\main\layer\background_layer.hpp">
+      <Filter>src\c2xa\scene\main\layer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -10,9 +10,8 @@
 
 #include <cocos2d.h>
 
-#include <c2xa/create_template.hpp>
 #include <c2xa/c2xa_config.hpp>
-#include <c2xa/c2xa_config.hpp>
+#include <c2xa/utility.hpp>
 
 namespace c2xa
 {
@@ -28,15 +27,16 @@ namespace c2xa
             cocos2d::Vec2    first_position_;
             cocos2d::Sprite* bullet_;
 
-            /*
-            Actionは割り込みに弱い(できなくはないが、コールバック地獄になるので危険)
-            弾は移動中に接触時に消えるという割り込みの可能性があるため、素直に座標持って自分で動かす
-            または、割り込み可能なActionを作るか(作業量増、拡張性増、見通し減)
-            */
-
         public:
             static test_player_bullet* create( float player_x_ )
             {
+                struct once_init
+                {
+                    once_init()
+                    {
+                        add_sprite_batch( get_current_scene(), "bomb.png", "player_bomb" );
+                    }
+                } static once_;
                 return create_template<test_player_bullet>( player_x_ );
             }
             virtual bool init( float player_x_ ) // !!! no-override !!!
@@ -50,7 +50,7 @@ namespace c2xa
                 target_position_ = { player_x_, app_height }; // とりあえず画面外
                 first_position_  = { player_x_, 100 };
 
-                bullet_ = cocos2d::Sprite::create( "CloseSelected.png" );
+                bullet_ = create_sprite_from_batch( get_current_scene(), "player_bomb" );
                 bullet_->setPosition( first_position_ );
                 addChild( bullet_ );
 
@@ -62,7 +62,8 @@ namespace c2xa
 
                 if( count_ > duration_ )
                 {
-                    removeFromParent();
+                    bullet_->removeFromParent(); // attention
+                    this->removeFromParent();
                 }
                 else
                 {

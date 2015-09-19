@@ -1,4 +1,5 @@
 
+
 #include "main.h"
 #include <app_delegate.hpp>
 #include "cocos2d.h"
@@ -10,6 +11,9 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
                        LPTSTR    lpCmdLine,
                        int       nCmdShow)
 {
+#if	defined( _MSC_VER ) && defined( _DEBUG )
+	::_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+#endif
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 

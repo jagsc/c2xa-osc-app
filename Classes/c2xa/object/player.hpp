@@ -57,7 +57,7 @@ namespace c2xa
                 {
                     return false;
                 }
-                this->scheduleUpdate();
+                scheduleUpdate();
 
 
                 position_ = y_position;

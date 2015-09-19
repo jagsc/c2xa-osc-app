@@ -1,4 +1,4 @@
-﻿#include <app_delegate.hpp>
+#include <app_delegate.hpp>
 #include <c2xa/scene/main_scene.hpp>
 #include <c2xa/c2xa_config.hpp>
 

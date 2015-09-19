@@ -23,11 +23,6 @@ namespace c2xa
                 class object_layer
                     : public cocos2d::Layer
                 {
-                private:
-                    cocos2d::Node* enemies_;
-                    cocos2d::Node* enemy_bullets_;
-                    cocos2d::Node* player_bullets_;
-
                 public:
                     CREATE_FUNC( object_layer );
                     virtual bool init() override
@@ -39,9 +34,9 @@ namespace c2xa
                         
                         setName( "object_layer" );
 
-                        enemies_        = Node::create();
-                        enemy_bullets_  = Node::create();
-                        player_bullets_ = Node::create();
+                        auto enemies_        = Node::create();
+                        auto enemy_bullets_  = Node::create();
+                        auto player_bullets_ = Node::create();
                         enemies_        ->setName( "enemies" );
                         enemy_bullets_  ->setName( "enemy_bullets" );
                         player_bullets_ ->setName( "player_bullets" );
