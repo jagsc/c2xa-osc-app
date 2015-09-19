@@ -74,4 +74,9 @@
       <Filter>resource</Filter>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resources\test.lua">
+      <Filter>resource</Filter>
+    </None>
+  </ItemGroup>
 </Project>

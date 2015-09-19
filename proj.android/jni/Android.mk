@@ -7,30 +7,23 @@ $(call import-add-path,$(LOCAL_PATH)/../../cocos2d/external)
 $(call import-add-path,$(LOCAL_PATH)/../../cocos2d/cocos)
 
 LOCAL_MODULE := cocos2dcpp_shared
-
 LOCAL_MODULE_FILENAME := libcocos2dcpp
 
-FILE_LIST := $(wildcard $(LOCAL_PATH)/../../Classes/*.cpp)
+ifeq ($(HOST_OS),windows)
+  CPP_FILES := $(shell dir $(LOCAL_PATH)\..\..\Classes\*.cpp /s /b /a-d)                   
+else
+  CPP_FILES := $(shell find $(LOCAL_PATH)/../../Classes -name *.cpp)                   
+endif
 
 LOCAL_SRC_FILES := hellocpp/main.cpp
-LOCAL_SRC_FILES += $(FILE_LIST:$(LOCAL_PATH)/%=%)
+LOCAL_SRC_FILES += $(CPP_FILES:$(LOCAL_PATH)/%=%)
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
 
-#LOCAL_C_INCLUDES := $(shell find $(LOCAL_PATH)/../../Classes -type d)
-
-# _COCOS_HEADER_ANDROID_BEGIN
-# _COCOS_HEADER_ANDROID_END
-
-
 LOCAL_STATIC_LIBRARIES := cocos2dx_static
-
-# _COCOS_LIB_ANDROID_BEGIN
-# _COCOS_LIB_ANDROID_END
+LOCAL_STATIC_LIBRARIES += cocos2d_lua_static
 
 include $(BUILD_SHARED_LIBRARY)
 
+$(call import-module,scripting/lua-bindings/proj.android)
 $(call import-module,.)
-
-# _COCOS_LIB_IMPORT_ANDROID_BEGIN
-# _COCOS_LIB_IMPORT_ANDROID_END

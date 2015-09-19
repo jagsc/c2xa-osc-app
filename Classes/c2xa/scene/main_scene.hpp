@@ -1,4 +1,4 @@
-/************************************************************************************//**
+﻿/************************************************************************************//**
     @file	c2xa/scene/main_scene.hpp
     @brief	main scene
 
@@ -14,6 +14,8 @@
 
 #include <c2xa/scene/main/layer/object_layer.hpp>
 
+//#include <scripting/lua-bindings/manual/CCLuaEngine.h>
+
 namespace c2xa
 {
     namespace scene
@@ -21,26 +23,55 @@ namespace c2xa
         class main_scene
             : public cocos2d::Scene
         {
+        private:
+            bool end_ = false;
+
         public:
-            static cocos2d::Scene* create()
+            CREATE_FUNC( main_scene );
+            virtual bool init() override
             {
                 using namespace cocos2d;
 
-                auto a = Scene::create();
-                //a->addChild( background_layer::create() );
-                Size winSize = Director::getInstance()->getVisibleSize();
-                auto _bg = LayerColor::create( Color4B::RED, winSize.width, winSize.height );
-                a->addChild( _bg );
-                a->addChild( main::layer::object_layer::create() );
-                return a;
-            }
-            virtual bool init() override
-            {
                 if( !Scene::init() )
                 {
                     return false;
                 }
+                scheduleUpdate();
+
+                setName( "main_scene" );
+
+                //auto lua_engine_ = LuaEngine::getInstance();
+                //ScriptEngineManager::getInstance()->setScriptEngine( lua_engine_ );
+                //lua_engine_->executeScriptFile( "test.lua" );
+
+                //lua_State* l = lua_engine_->getLuaStack()->getLuaState();
+                //
+                //lua_getglobal( l, "helloLua" );
+                //tolua_pushusertype( l, this, "cc.Scene" );
+                //if( lua_pcall( l, 1, 0, 0 ) )
+                //    CCLOG( "error=%s", lua_tostring( l, lua_gettop( l ) ) );
+                //}
+
+                addChild( main::layer::object_layer::create() );
+
+                auto keyboard_listener_ = EventListenerKeyboard::create();
+                keyboard_listener_->onKeyPressed = [ & ]( EventKeyboard::KeyCode key_, Event* event_ )
+                {
+                    if( key_ == EventKeyboard::KeyCode::KEY_ESCAPE )
+                    {
+                        end_ = true;
+                    }
+                };
+                auto dispatcher = Director::getInstance()->getEventDispatcher();
+                dispatcher->addEventListenerWithSceneGraphPriority( keyboard_listener_, this );
                 return true;
+            }
+            virtual void update( float ) override
+            {
+                if( end_ )
+                {
+                    cocos2d::Director::getInstance()->end();
+                }
             }
         };
     }

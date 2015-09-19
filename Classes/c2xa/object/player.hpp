@@ -66,10 +66,10 @@ namespace c2xa
                 player_sprite_->setPosition( Vec2( position_, y_position ) );
                 addChild( player_sprite_ );
 
-                auto keyboard_listener = EventListenerKeyboard::create();
-                auto touch_listener_   = EventListenerTouchOneByOne::create();
+                auto keyboard_listener_ = EventListenerKeyboard::create();
+                auto touch_listener_    = EventListenerTouchOneByOne::create();
 
-                keyboard_listener->onKeyPressed = [ & ]( EventKeyboard::KeyCode key_, Event* event_ )
+                keyboard_listener_->onKeyPressed = [ & ]( EventKeyboard::KeyCode key_, Event* event_ )
                 {
                     switch( key_ )
                     {
@@ -77,8 +77,6 @@ namespace c2xa
                         move_state_ = move_state::LEFT; break;
                     case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
                         move_state_ = move_state::RIGHT; break;
-                    case EventKeyboard::KeyCode::KEY_ESCAPE:
-                        this->removeFromParent(); break; // 自分を消す(アクションも削除されるので注意)
                     }
                     if( key_ == EventKeyboard::KeyCode::KEY_UP_ARROW && input_count_ < 5.f )
                     {
@@ -86,7 +84,7 @@ namespace c2xa
                     }
                 };
 
-                keyboard_listener->onKeyReleased = [ & ]( EventKeyboard::KeyCode key_, Event* event_ )
+                keyboard_listener_->onKeyReleased = [ & ]( EventKeyboard::KeyCode key_, Event* event_ )
                 {
                     if( ( key_ == EventKeyboard::KeyCode::KEY_LEFT_ARROW && move_state_ == move_state::LEFT )
                      || ( key_ == EventKeyboard::KeyCode::KEY_RIGHT_ARROW && move_state_ == move_state::RIGHT ) )
@@ -130,7 +128,7 @@ namespace c2xa
                 };
 
                 auto dispatcher = Director::getInstance()->getEventDispatcher();
-                dispatcher->addEventListenerWithSceneGraphPriority( keyboard_listener, this );
+                dispatcher->addEventListenerWithSceneGraphPriority( keyboard_listener_, this );
                 dispatcher->addEventListenerWithSceneGraphPriority( touch_listener_, this );
 
                 return true;

@@ -5,5 +5,5 @@ using namespace c2xa::object;
 
 void player::fire()
 {
-    getParent()->addChild( bullet::test_player_bullet::create( position_ ) );
+    getParent()->getChildByName("player_bullets")->addChild( bullet::test_player_bullet::create( position_ ) );
 }
