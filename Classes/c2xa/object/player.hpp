@@ -141,17 +141,34 @@ namespace c2xa
             */
             virtual void update( float delta_ ) override
             {
+                auto player_sprite_ = getChildByName( "player_sprite" );
+                float target_rotation_ = 0.f;
                 if( move_state_ != move_state::NONE )
                 {
+                    {
+                        auto distance_ = position_ - touch_position_.x;
+                        if( distance_ > 100.f )
+                        {
+                            target_rotation_ = -45.f;
+                        }
+                        else if( distance_ < -100.f )
+                        {
+                            target_rotation_ = 45.f;
+                        }
+                        else
+                        {
+                            target_rotation_ = -( 45.f * distance_ / 100.f );
+                        }
+                    }
                     input_count_ += delta_ * 100;
-                    auto player_sprite_ = getChildByName( "player_sprite" );
                     switch( move_state_ )
                     {
                     case move_state::LEFT:
                     {
                         if( input_count_ > 5.f )
                         {
-                            position_ -= delta_ * 100; player_sprite_->setPositionX( position_ );
+                            position_ -= delta_ * 100;
+                            player_sprite_->setPositionX( position_ );
                         }
                         if( is_touch_ && touch_position_.x >= position_ )
                         {
@@ -164,7 +181,8 @@ namespace c2xa
                     {
                         if( input_count_ > 5.f )
                         {
-                            position_ += delta_ * 100; player_sprite_->setPositionX( position_ );
+                            position_ += delta_ * 100;
+                            player_sprite_->setPositionX( position_ );
                         }
                         if( is_touch_ && touch_position_.x <= position_ )
                         {
@@ -175,6 +193,11 @@ namespace c2xa
                     break;
                     }
                 }
+                else
+                {
+                    target_rotation_ = player_sprite_->getRotation() * ( 1.f + std::abs( player_sprite_->getRotation() ) ) / 47.f;
+                }
+                player_sprite_->setRotation( ( target_rotation_ + player_sprite_->getRotation() ) / 2.f );
             }
 
         private:
