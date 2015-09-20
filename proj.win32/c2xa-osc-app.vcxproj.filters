@@ -28,6 +28,9 @@
     <Filter Include="src\c2xa\scene\main\layer">
       <UniqueIdentifier>{223282f9-66c4-4601-a72a-05dbd2826c91}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\c2xa\scene\score">
+      <UniqueIdentifier>{e5c7c819-c755-4ee7-919e-10ee8d498c77}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -50,9 +53,6 @@
     <ClInclude Include="..\Classes\app_delegate.hpp">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\c2xa\bullet\test_player_bullet.hpp">
-      <Filter>src\c2xa\bullet</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\c2xa\scene\main_scene.hpp">
       <Filter>src\c2xa\scene</Filter>
     </ClInclude>
@@ -73,6 +73,15 @@
     </ClInclude>
     <ClInclude Include="..\Classes\c2xa\scene\main\layer\background_layer.hpp">
       <Filter>src\c2xa\scene\main\layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\bullet\player_bullet.hpp">
+      <Filter>src\c2xa\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\scene\score_scene.hpp">
+      <Filter>src\c2xa\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\to_string_from_score.hpp">
+      <Filter>src\c2xa</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

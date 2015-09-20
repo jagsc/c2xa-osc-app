@@ -1,6 +1,6 @@
 /************************************************************************************//**
     @file	c2xa/utility.hpp
-    @author    VTŒŽ(NewNotMoon)
+    @author    æ–°ã‚æœˆ(NewNotMoon)
     @date      2015/09/19
 ****************************************************************************************/
 #ifndef C2XA_C2XA_UTILITY_HPP
@@ -11,12 +11,12 @@
 namespace c2xa
 {
 #ifdef _DEBUG
-    static auto log( char const* mes_ )
+    static void log( char const* mes_ )
     {
         cocos2d::log( mes_ );
     }
 #else//_DEBUG
-    static auto log( char const* )
+    static void log( char const* )
     {
     }
 #endif//_DEBUG
@@ -36,11 +36,11 @@ namespace c2xa
             return nullptr;
         }
     };
-    static auto get_current_scene()
+    static cocos2d::Node* get_current_scene()
     {
         return cocos2d::Director::getInstance()->getRunningScene()->getChildren().at( 1 );
     }
-    static auto add_sprite_batch( cocos2d::Node* node_, std::string const& path_, std::string const& id_ )
+    static cocos2d::SpriteBatchNode* add_sprite_batch( cocos2d::Node* node_, std::string const& path_, std::string const& id_ )
     {
         auto images_ = node_->getChildByName( "images" );
         if( images_ == nullptr )
@@ -49,7 +49,7 @@ namespace c2xa
             images_->setName( "images" );
             node_->addChild( images_ );
         }
-        auto batch_ = images_->getChildByName( id_ );
+        auto batch_ = static_cast<cocos2d::SpriteBatchNode*>( images_->getChildByName( id_ ) );
         if( batch_ == nullptr )
         {
             batch_ = cocos2d::SpriteBatchNode::create( path_ );
@@ -64,7 +64,7 @@ namespace c2xa
 #endif//_DEBUG
         return batch_;
     }
-    static auto create_sprite_from_batch( cocos2d::Node* node_, std::string const& id_ )
+    static cocos2d::Sprite* create_sprite_from_batch( cocos2d::Node* node_, std::string const& id_ )
     {
         auto batch_ =
             static_cast<cocos2d::SpriteBatchNode*>( node_

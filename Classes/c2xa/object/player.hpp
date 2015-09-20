@@ -26,7 +26,13 @@ namespace c2xa
             : public cocos2d::Node
         {
         public:
-            static const int y_position = 100;
+            static constexpr int y_position = 100;
+
+        private:
+            static constexpr float move_speed = 3.f;
+            static constexpr float move_count = 10.f;
+            static constexpr float fire_count = 15.f;
+            static constexpr float max_rotation_degree = 45.f;
 
         private:
             float   position_;
@@ -120,7 +126,7 @@ namespace c2xa
 
                 touch_listener_->onTouchEnded = [ & ]( Touch* t_, Event* )
                 {
-                    if( input_count_ <= 10.f )
+                    if( input_count_ <= fire_count )
                     {
                         fire();
                     }
@@ -145,19 +151,16 @@ namespace c2xa
                 float target_rotation_ = 0.f;
                 if( move_state_ != move_state::NONE )
                 {
+                    if( input_count_ > 10.f )
                     {
                         auto distance_ = position_ - touch_position_.x;
-                        if( distance_ > 100.f )
+                        if( std::abs( distance_ ) > 100.f )
                         {
-                            target_rotation_ = -45.f;
-                        }
-                        else if( distance_ < -100.f )
-                        {
-                            target_rotation_ = 45.f;
+                            target_rotation_ = move_state_ == move_state::LEFT ? -max_rotation_degree : max_rotation_degree;
                         }
                         else
                         {
-                            target_rotation_ = -( 45.f * distance_ / 100.f );
+                            target_rotation_ = -( max_rotation_degree * distance_ / 100.f );
                         }
                     }
                     input_count_ += delta_ * 100;
@@ -165,9 +168,9 @@ namespace c2xa
                     {
                     case move_state::LEFT:
                     {
-                        if( input_count_ > 5.f )
+                        if( input_count_ > move_count )
                         {
-                            position_ -= delta_ * 100;
+                            position_ -= move_speed * delta_ * 100;
                             player_sprite_->setPositionX( position_ );
                         }
                         if( is_touch_ && touch_position_.x >= position_ )
@@ -179,9 +182,9 @@ namespace c2xa
                     break;
                     case move_state::RIGHT:
                     {
-                        if( input_count_ > 5.f )
+                        if( input_count_ > move_count )
                         {
-                            position_ += delta_ * 100;
+                            position_ += move_speed * delta_ * 100;
                             player_sprite_->setPositionX( position_ );
                         }
                         if( is_touch_ && touch_position_.x <= position_ )

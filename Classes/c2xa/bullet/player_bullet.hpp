@@ -1,12 +1,10 @@
 /************************************************************************************//**
-    @file	c2xa/bullet/test_player_bullet.hpp
-    @brief	Test Bullet
-
-    @author    新ゝ月(NewNotMoon)
-    @date      2015/08/29
+    @file	 c2xa/bullet/player_bullet.hpp
+    @author  新ゝ月(NewNotMoon)
+    @date    created on 2015/09/20
 ****************************************************************************************/
-#ifndef C2XA_BULLET_TEST_PLAYER_BULLET_HPP
-#define C2XA_BULLET_TEST_PLAYER_BULLET_HPP
+#ifndef C2XA_BULLET_PLAYER_BULLET_HPP
+#define C2XA_BULLET_PLAYER_BULLET_HPP
 
 #include <cocos2d.h>
 
@@ -17,18 +15,22 @@ namespace c2xa
 {
     namespace bullet
     {
-        class test_player_bullet
+        class player_bullet
             : public cocos2d::Node
         {
         private:
             float   duration_ = 320.f; // frame
-            float   count_ = 0.f;
+            float   count_    = 0.f;
             cocos2d::Vec2    target_position_;
             cocos2d::Vec2    first_position_;
             cocos2d::Sprite* bullet_;
 
         public:
-            static test_player_bullet* create( float player_x_ )
+            static player_bullet* create( float player_x_ )
+            {
+                return create_template<player_bullet>( player_x_ );
+            }
+            virtual bool init( float player_x_ ) // !!! no-override !!!
             {
                 struct once_init
                 {
@@ -37,10 +39,6 @@ namespace c2xa
                         add_sprite_batch( get_current_scene(), "bomb.png", "player_bomb" );
                     }
                 } static once_;
-                return create_template<test_player_bullet>( player_x_ );
-            }
-            virtual bool init( float player_x_ ) // !!! no-override !!!
-            {
                 if( !Node::init() )
                 {
                     return false;
@@ -51,6 +49,7 @@ namespace c2xa
                 first_position_  = { player_x_, 100 };
 
                 bullet_ = create_sprite_from_batch( get_current_scene(), "player_bomb" );
+                bullet_->retain();
                 bullet_->setPosition( first_position_ );
                 addChild( bullet_ );
 
@@ -63,6 +62,7 @@ namespace c2xa
                 if( count_ > duration_ )
                 {
                     bullet_->removeFromParent(); // attention
+                    bullet_->release();
                     this->removeFromParent();
                 }
                 else
@@ -74,4 +74,4 @@ namespace c2xa
     }
 }
 
-#endif//C2XA_BULLET_TEST_PLAYER_BULLET_HPP
+#endif//C2XA_BULLET_PLAYER_BULLET_HPP

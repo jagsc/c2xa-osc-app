@@ -16,6 +16,8 @@
 #include <c2xa/scene/main/layer/object_layer.hpp>
 #include <c2xa/scene/main/layer/background_layer.hpp>
 
+#include <c2xa/scene/score_scene.hpp>
+
 //#include <scripting/lua-bindings/manual/CCLuaEngine.h>
 
 namespace c2xa
@@ -27,6 +29,7 @@ namespace c2xa
         {
         private:
             bool end_ = false;
+            unsigned int score_ = 0;
 
         public:
             CREATE_FUNC( main_scene );
@@ -64,6 +67,18 @@ namespace c2xa
                     if( key_ == EventKeyboard::KeyCode::KEY_ESCAPE )
                     {
                         end_ = true;
+
+                        // メモ:
+                        //  update内でreplaseしてバグに悩んだ。
+                        //  トランジションの場合、replaceは即時に切り替わるわけではないので
+                        //  updateが呼ばれ続ける。そして大量にreplaceされて大変な事になる。
+                        //  ここみたいにコールバックのような状況か、トランジション中のフラグを用意
+                        //  するなど気をつける必要がある。後者が適切か。
+                        Director::getInstance()
+                            ->replaceScene(
+                                TransitionFade::create(
+                                    3.0f,
+                                    scene::score_scene::create( score_ ) ) );
                     }
                 };
                 auto dispatcher = Director::getInstance()->getEventDispatcher();
@@ -72,9 +87,9 @@ namespace c2xa
             }
             virtual void update( float ) override
             {
+                using namespace cocos2d;
                 if( end_ )
                 {
-                    cocos2d::Director::getInstance()->end();
                 }
             }
         };
