@@ -6,8 +6,8 @@
     @author  新ゝ月(NewNotMoon)
     @date    created on 2015/09/20
 ****************************************************************************************/
-#ifndef NOTMOON_SCENE_SCORE_SCENE_HPP
-#define NOTMOON_SCENE_SCORE_SCENE_HPP
+#ifndef C2XA_SCENE_SCORE_SCENE_HPP
+#define C2XA_SCENE_SCORE_SCENE_HPP
 
 #include <cocos2d.h>
 
@@ -61,4 +61,4 @@ namespace c2xa
     }
 }
 
-#endif//NOTMOON_SCENE_SCORE_SCENE_HPP
+#endif//C2XA_SCENE_SCORE_SCENE_HPP
