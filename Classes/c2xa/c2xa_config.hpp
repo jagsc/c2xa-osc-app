@@ -1,7 +1,7 @@
 /************************************************************************************//**
-    @file	c2xa/c2xa_config.hpp
-    @author    新ゝ月(NewNotMoon)
-    @date      2015/08/30
+    @file	 c2xa/c2xa_config.hpp
+    @author  新ゝ月(NewNotMoon)
+    @date    created on 2015/08/30
 ****************************************************************************************/
 #ifndef C2XA_C2XA_CONFIG_HPP
 #define C2XA_C2XA_CONFIG_HPP

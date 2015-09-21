@@ -1,9 +1,9 @@
 /************************************************************************************//**
-    @file	c2xa/object/player.hpp
+    @file   c2xa/object/player.hpp
     @brief	player
 
-    @author    新ゝ月(NewNotMoon)
-    @date      2015/08/29
+    @author 新ゝ月(NewNotMoon)
+    @date   2015/08/29
 ****************************************************************************************/
 #ifndef C2XA_OBJECT_PLAYER_HPP
 #define C2XA_OBJECT_PLAYER_HPP

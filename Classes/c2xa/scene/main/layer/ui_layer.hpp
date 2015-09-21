@@ -1,7 +1,7 @@
 /************************************************************************************//**
     @file	c2xa/scene/main_scene/layer/ui_layer.hpp
-    @author    新ゝ月(NewNotMoon)
-    @date      2015/09/19
+    @author 新ゝ月(NewNotMoon)
+    @date   created on 2015/09/19
 ****************************************************************************************/
 #ifndef C2XA_SCENE_MAIN_SCENE_LAYER_UI_LAYER_HPP
 #define C2XA_SCENE_MAIN_SCENE_LAYER_UI_LAYER_HPP

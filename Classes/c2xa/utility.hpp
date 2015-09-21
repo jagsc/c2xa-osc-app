@@ -11,12 +11,12 @@
 namespace c2xa
 {
 #ifdef COCOS2D_DEBUG
-    static void log( char const* mes_ )
+    static void log( const char* mes_ )
     {
-        cocos2d::log( mes_ );
+        cocos2d::log( mes_, 0 );
     }
 #else//COCOS2D_DEBUG
-    static void log( char const* )
+    static void log( const char* )
     {
     }
 #endif//COCOS2D_DEBUG
