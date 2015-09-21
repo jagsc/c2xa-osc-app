@@ -147,6 +147,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\app_delegate.cpp" />
+    <ClCompile Include="..\Classes\c2xa\judgement.cpp" />
     <ClCompile Include="..\Classes\c2xa\object\player.cpp" />
     <ClCompile Include="..\Classes\c2xa\scene\main_scene.cpp" />
     <ClCompile Include="main.cpp" />
@@ -158,6 +159,11 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
       </SubType>
     </ClInclude>
     <ClInclude Include="..\Classes\c2xa\c2xa_config.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\judgement.hpp" />
+    <ClInclude Include="..\Classes\c2xa\object\coin.hpp">
       <SubType>
       </SubType>
     </ClInclude>

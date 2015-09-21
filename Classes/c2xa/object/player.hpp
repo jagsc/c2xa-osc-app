@@ -9,6 +9,7 @@
 #define C2XA_OBJECT_PLAYER_HPP
 
 #include <cocos2d.h>
+#include <c2xa/utility.hpp>
 
 namespace c2xa
 {
@@ -64,7 +65,7 @@ namespace c2xa
                     return false;
                 }
                 scheduleUpdate();
-
+                setName( "player" );
 
                 position_ = y_position;
                 auto player_sprite_ = Sprite::create( "bugdroid-player.png" );
@@ -201,6 +202,10 @@ namespace c2xa
                     target_rotation_ = player_sprite_->getRotation() * ( 1.f + std::abs( player_sprite_->getRotation() ) ) / 47.f;
                 }
                 player_sprite_->setRotation( ( target_rotation_ + player_sprite_->getRotation() ) / 2.f );
+            }
+            cocos2d::Vec2 const& get_position() const
+            {
+                return get_child( this, "player_sprite" )->getPosition();
             }
 
         private:

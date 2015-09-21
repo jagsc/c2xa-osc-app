@@ -10,16 +10,16 @@
 
 namespace c2xa
 {
-#ifdef _DEBUG
+#ifdef COCOS2D_DEBUG
     static void log( char const* mes_ )
     {
         cocos2d::log( mes_ );
     }
-#else//_DEBUG
+#else//COCOS2D_DEBUG
     static void log( char const* )
     {
     }
-#endif//_DEBUG
+#endif//COCOS2D_DEBUG
     template< typename TYPE, typename... ARGS >
     inline TYPE* create_template( ARGS&&... a )
     {
@@ -56,12 +56,12 @@ namespace c2xa
             batch_->setName( id_ );
             images_->addChild( batch_, 1 );
         }
-#ifdef _DEBUG
+#ifdef COCOS2D_DEBUG
         else
         {
             log( "conflict sprite batch identity." );
         }
-#endif//_DEBUG
+#endif//COCOS2D_DEBUG
         return batch_;
     }
     static cocos2d::Sprite* create_sprite_from_batch( cocos2d::Node* node_, std::string const& id_ )
@@ -71,6 +71,22 @@ namespace c2xa
                 ->getChildByName( "images" )
                 ->getChildByName( id_ ) );
         return cocos2d::Sprite::createWithTexture( batch_->getTexture() );
+    }
+    template< typename TYPE = cocos2d::Node >
+    static TYPE* get_child( cocos2d::Node const* parent_, std::string const& id )
+    {
+#ifdef COCOS2D_DEBUG
+        auto n_ = parent_->getChildByName( id );
+        CCASSERT( n_ != nullptr, "child not found" );
+        return static_cast<TYPE*>( n_ );
+#else//COCOS2D_DEBUG
+        return static_cast<TYPE*>( parent_->getChildByName( id ) );
+#endif//COCOS2D_DEBUG
+    }
+    template< typename TYPE = cocos2d::Node >
+    static TYPE* get_parent( cocos2d::Node* child_ )
+    {
+        return static_cast<TYPE*>( child_->getParent() );
     }
 }
 

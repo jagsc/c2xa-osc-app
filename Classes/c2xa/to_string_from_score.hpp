@@ -15,7 +15,7 @@ namespace c2xa
 {
     static std::string to_string_from_score( unsigned int score_ )
     {
-        assert( score_ < 100000000 );
+        assert( score_ <= max_score );
         char buffer_[ score_digit + 1 ];
         sprintf( buffer_, "%08d", score_ );
         //auto str_ = std::to_string( score_ );

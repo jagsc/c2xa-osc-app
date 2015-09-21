@@ -77,7 +77,7 @@ namespace c2xa
                             bg2_->setPositionY( bg1_->getPositionY() + bg1_->getContentSize().height );
                         }
                     }
-                    float get_speed()
+                    float get_speed() const
                     {
                         return speed_;
                     }

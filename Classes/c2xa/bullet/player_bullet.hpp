@@ -26,6 +26,10 @@ namespace c2xa
             cocos2d::Sprite* bullet_;
 
         public:
+            ~player_bullet()
+            {
+                bullet_->release();
+            }
             static player_bullet* create( float player_x_ )
             {
                 return create_template<player_bullet>( player_x_ );
@@ -43,7 +47,7 @@ namespace c2xa
                 {
                     return false;
                 }
-                this->scheduleUpdate();
+                scheduleUpdate();
 
                 target_position_ = { player_x_, app_height }; // とりあえず画面外
                 first_position_  = { player_x_, 100 };
@@ -61,8 +65,6 @@ namespace c2xa
 
                 if( count_ > duration_ )
                 {
-                    bullet_->removeFromParent(); // attention
-                    bullet_->release();
                     this->removeFromParent();
                 }
                 else

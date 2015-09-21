@@ -11,6 +11,7 @@
 #include <cocos2d.h>
 
 #include <c2xa/object/player.hpp>
+#include <c2xa/object/coin.hpp>
 
 namespace c2xa
 {
@@ -32,21 +33,34 @@ namespace c2xa
                             return false;
                         }
                         
+                        scheduleUpdate();
                         setName( "object_layer" );
 
                         auto enemies_        = Node::create();
                         auto enemy_bullets_  = Node::create();
                         auto player_bullets_ = Node::create();
+                        auto coins_          = Node::create();
                         enemies_        ->setName( "enemies" );
                         enemy_bullets_  ->setName( "enemy_bullets" );
                         player_bullets_ ->setName( "player_bullets" );
+                        coins_          ->setName( "coins" );
 
                         addChild( enemies_ );
                         addChild( enemy_bullets_ );
                         addChild( player_bullets_ );
+                        addChild( coins_ );
                         addChild( object::player::create() );
                         
                         return true;
+                    }
+                    virtual void update( float ) override
+                    {
+                        static std::mt19937 engine_( random_seed );
+                        std::bernoulli_distribution dist_( 0.001 );
+                        if( dist_( engine_ ) )
+                        {
+                            get_child( this, "coins" )->addChild( object::coin::create() );
+                        }
                     }
                 };
             }
