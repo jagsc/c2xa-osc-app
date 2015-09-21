@@ -62,7 +62,6 @@ namespace c2xa
                 {
                     number_ = max_score;
                 }
-                get_child<scene::main::layer::ui_layer>( get_current_scene(), "ui_layer" )->set_score( number_ );
             }
             unsigned int get() const
             {

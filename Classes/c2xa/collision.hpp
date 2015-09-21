@@ -18,8 +18,8 @@ namespace c2xa
         class collision
         {
         public:
-            virtual bool dispatch( collision const* ) const = 0;
-            virtual bool judge( collision_circul const* ) const = 0;
+            virtual bool judge( collision const* ) const = 0;
+            virtual bool dispatch( collision_circul const* ) const = 0;
         };
         class collision_circul
             : public collision
@@ -55,11 +55,11 @@ namespace c2xa
             {
                 return square_radius_;
             }
-            virtual bool dispatch( collision const* s_ ) const override
+            virtual bool judge( collision const* s_ ) const override
             {
-                return s_->judge( this );
+                return s_->dispatch( this );
             }
-            virtual bool judge( collision_circul const* s_ ) const override
+            virtual bool dispatch( collision_circul const* s_ ) const override
             {
                 auto t_ = node_->getPosition() - s_->get_position();
                 auto f_ = t_.x * t_.x + t_.y * t_.y;

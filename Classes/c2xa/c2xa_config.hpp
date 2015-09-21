@@ -15,11 +15,15 @@ namespace c2xa
     static cocos2d::Rect const app_rectangle { 0, 0, app_width, app_height };
     static cocos2d::Size const app_size      { app_width, app_height };
     static constexpr unsigned int score_digit = 8;
+    static constexpr float        score_font_width       = 25.f;
+    static constexpr float        score_font_height      = 40.f;
+    static constexpr float        score_font_margin_top  = 10.f;
+    static constexpr float        score_font_margin_left = 2.f;
     static constexpr unsigned int max_score = 99999999;
     static constexpr unsigned int initial_player_remaining = 5;
     static constexpr unsigned int random_seed = 58378276;
-    static constexpr float coin_probability = 0.001f;
-    static constexpr unsigned int coin_point = 100;
+    static constexpr float        coin_probability = 0.001f;
+    static constexpr unsigned int coin_point       = 100;
 }
 
 #endif//C2XA_C2XA_CONFIG_HPP

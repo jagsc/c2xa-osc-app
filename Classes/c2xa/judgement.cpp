@@ -21,7 +21,7 @@ void judgement::update( float )
         
         for( auto i : coins_ )
         {
-            if( player_->get_collision()->dispatch( static_cast<object::coin*>( i )->get_collision().get() ) )
+            if( player_->get_collision()->judge( static_cast<object::coin*>( i )->get_collision().get() ) )
             {
                 score_.add( coin_point );
                 i->removeFromParent();
@@ -29,6 +29,8 @@ void judgement::update( float )
         }
 
         // スコアカウント
+        // コリジョンより後ろ
+        get_child<scene::main::layer::ui_layer>( get_current_scene(), "ui_layer" )->set_score( score_.get() );
         // 自機数カウント
         // ゲーム終了判断
         if( remaining_.is_dead() )
