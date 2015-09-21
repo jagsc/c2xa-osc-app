@@ -46,16 +46,16 @@ namespace c2xa
                         scheduleUpdate();
                         setName( "background_layer" );
 
-                        add_sprite_batch( this, "main_background.png", "main_background" );
+                        add_sprite_batch( this, "img/background_main.png", "background_main" );
 
-                        bg1_ = create_sprite_from_batch( this, "main_background" );
+                        bg1_ = create_sprite_from_batch( this, "background_main" );
                         bg1_->retain();
                         bg1_->setTag( 1 );
                         bg1_->setAnchorPoint( Vec2::ANCHOR_BOTTOM_LEFT );
                         bg1_->setPosition( Point( 0, 0 ) );
                         addChild( bg1_ );
 
-                        bg2_ = create_sprite_from_batch( this, "main_background" );
+                        bg2_ = create_sprite_from_batch( this, "background_main" );
                         bg2_->retain();
                         bg2_->setTag( 2 );
                         bg2_->setAnchorPoint( Vec2::ANCHOR_BOTTOM_LEFT );
