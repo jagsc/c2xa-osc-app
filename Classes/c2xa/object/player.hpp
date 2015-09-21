@@ -71,7 +71,7 @@ namespace c2xa
                 setName( "player" );
 
                 position_ = y_position;
-                auto player_sprite_ = Sprite::create( "bugdroid-player.png" );
+                auto player_sprite_ = Sprite::create( "img/player_bugdroid.png" );
                 player_sprite_->setName( "player_sprite" );
                 player_sprite_->setPosition( Vec2( position_, y_position ) );
                 addChild( player_sprite_ );

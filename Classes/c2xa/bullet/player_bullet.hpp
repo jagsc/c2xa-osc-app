@@ -40,7 +40,7 @@ namespace c2xa
                 {
                     once_init()
                     {
-                        add_sprite_batch( get_current_scene(), "bomb.png", "player_bomb" );
+                        add_sprite_batch( get_current_scene(), "img/player_bomb.png", "player_bomb" );
                     }
                 } static once_;
                 if( !Node::init() )

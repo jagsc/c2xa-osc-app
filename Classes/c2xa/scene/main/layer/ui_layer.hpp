@@ -35,10 +35,15 @@ namespace c2xa
                         setName( "ui_layer" );
 
                         // 暫定でarialフォント使用 いずれ画像に差し替え
-                        auto score_text_ = Label::createWithTTF( "SCORE", "fonts/arial.ttf", 48 );
-                        score_text_->setPosition( Point( 20, app_height - 20 ) );
-                        score_text_->setAnchorPoint( Vec2::ANCHOR_TOP_LEFT );
-                        addChild( score_text_ );
+                        //auto score_text_ = Label::createWithTTF( "SCORE", "fonts/arial.ttf", 48 );
+                        //score_text_->setPosition( Point( 20, app_height - 20 ) );
+                        //score_text_->setAnchorPoint( Vec2::ANCHOR_TOP_LEFT );
+                        //addChild( score_text_ );
+
+                        auto score_sprite_ = Sprite::create( "img/score_background.png" );
+                        score_sprite_->setPosition( Vec2( 0, app_height ) );
+                        score_sprite_->setAnchorPoint( Vec2::ANCHOR_TOP_LEFT );
+                        addChild( score_sprite_ );
 
                         auto score_number_ = Label::createWithTTF( "00000000", "fonts/arial.ttf", 48 );
                         score_number_->setName( "score" );
