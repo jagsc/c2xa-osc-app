@@ -24,6 +24,12 @@ void judgement::update( float )
             if( player_->get_collision()->judge( static_cast<object::coin*>( i )->get_collision().get() ) )
             {
                 score_.add( coin_point );
+                cocos2d::experimental::AudioProfile p;
+                p.maxInstances = 0; // 0は制限なしっぽい
+                p.minDelay = 0; // 不明
+                p.name = "get_coin"; // プロファイルに名前をつけられるっぽい？たぶんあとからプロファイルを取得したりする時に使う
+                // play2d( ファイルパス, ループフラグ, 音量, プロファイルへのポインタ(nullptrでデフォルト) )
+                cocos2d::experimental::AudioEngine::play2d( "sounds/get_coin.mp3", false, 0.3, &p );
                 i->removeFromParent();
             };
         }

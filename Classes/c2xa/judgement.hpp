@@ -7,6 +7,7 @@
 #define C2XA_JUDGEMENT_HPP
 
 #include <cocos2d.h>
+#include <AudioEngine.h>
 
 #include <c2xa/scene/main/layer/ui_layer.hpp>
 #include <c2xa/c2xa_config.hpp>
@@ -85,6 +86,10 @@ namespace c2xa
 
             scheduleUpdate();
             setName( "judgement" );
+
+            //CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect( "sounds/get_coin.mp3" );
+            //CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume( 0.3f );
+            //CocosDenshion::SimpleAudioEngine::getInstance()->playEffect( "sounds/get_coin.mp3" );
 
             return true;
         }
