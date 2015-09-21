@@ -31,6 +31,9 @@
     <Filter Include="src\c2xa\scene\score">
       <UniqueIdentifier>{e5c7c819-c755-4ee7-919e-10ee8d498c77}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\c2xa\collision">
+      <UniqueIdentifier>{d1a73184-2f22-4751-82d9-a2819bc418d2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -91,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\c2xa\object\coin.hpp">
       <Filter>src\c2xa\object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\collision.hpp">
+      <Filter>src\c2xa</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

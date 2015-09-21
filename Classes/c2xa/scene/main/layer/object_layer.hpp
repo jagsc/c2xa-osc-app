@@ -56,7 +56,7 @@ namespace c2xa
                     virtual void update( float ) override
                     {
                         static std::mt19937 engine_( random_seed );
-                        std::bernoulli_distribution dist_( 0.001 );
+                        std::bernoulli_distribution dist_( coin_probability );
                         if( dist_( engine_ ) )
                         {
                             get_child( this, "coins" )->addChild( object::coin::create() );

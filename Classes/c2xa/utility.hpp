@@ -38,7 +38,7 @@ namespace c2xa
     };
     static cocos2d::Node* get_current_scene()
     {
-        return cocos2d::Director::getInstance()->getRunningScene()->getChildren().at( 1 );
+        return cocos2d::Director::getInstance()->getRunningScene();
     }
     static cocos2d::SpriteBatchNode* add_sprite_batch( cocos2d::Node* node_, std::string const& path_, std::string const& id_ )
     {

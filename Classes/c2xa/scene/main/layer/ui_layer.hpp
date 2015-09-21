@@ -40,13 +40,11 @@ namespace c2xa
                         score_text_->setAnchorPoint( Vec2::ANCHOR_TOP_LEFT );
                         addChild( score_text_ );
 
-                        auto score_number_ = Label::createWithTTF( "000000", "fonts/arial.ttf", 48 );
+                        auto score_number_ = Label::createWithTTF( "00000000", "fonts/arial.ttf", 48 );
                         score_number_->setName( "score" );
                         score_number_->setPosition( Point( 220, app_height - 20 ) );
                         score_number_->setAnchorPoint( Vec2::ANCHOR_TOP_LEFT );
                         addChild( score_number_ );
-
-                        set_score( 293 ); //! 暫定
 
                         return true;
                     }

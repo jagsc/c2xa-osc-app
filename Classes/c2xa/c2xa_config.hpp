@@ -18,6 +18,8 @@ namespace c2xa
     static constexpr unsigned int max_score = 99999999;
     static constexpr unsigned int initial_player_remaining = 5;
     static constexpr unsigned int random_seed = 58378276;
+    static constexpr float coin_probability = 0.001f;
+    static constexpr unsigned int coin_point = 100;
 }
 
 #endif//C2XA_C2XA_CONFIG_HPP

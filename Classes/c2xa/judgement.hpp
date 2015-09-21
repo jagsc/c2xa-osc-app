@@ -8,6 +8,7 @@
 
 #include <cocos2d.h>
 
+#include <c2xa/scene/main/layer/ui_layer.hpp>
 #include <c2xa/c2xa_config.hpp>
 #include <c2xa/utility.hpp>
 
@@ -61,6 +62,7 @@ namespace c2xa
                 {
                     number_ = max_score;
                 }
+                get_child<scene::main::layer::ui_layer>( get_current_scene(), "ui_layer" )->set_score( number_ );
             }
             unsigned int get() const
             {
