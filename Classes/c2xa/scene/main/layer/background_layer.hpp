@@ -47,7 +47,8 @@ namespace c2xa
                         setName( "background_layer" );
 
                         add_sprite_batch( this, "img/main_background.png", "main_background" );
-
+                        
+                        bg1_ = create_sprite_from_batch( this, "main_background" );
                         bg1_ = create_sprite_from_batch( this, "main_background" );
                         bg1_->retain();
                         bg1_->setTag( 1 );
