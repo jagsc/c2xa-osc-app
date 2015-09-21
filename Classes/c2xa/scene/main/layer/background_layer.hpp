@@ -1,6 +1,6 @@
 /************************************************************************************//**
     @file	c2xa/scene/main_scene/layer/background_layer.hpp
-    @author    VTŒŽ(NewNotMoon)
+    @author    ÂVÂTÅ’Å½(NewNotMoon)
     @date      2015/09/19
 ****************************************************************************************/
 #ifndef C2XA_SCENE_MAIN_SCENE_LAYER_BACKGROUND_LAYER_HPP
@@ -54,7 +54,7 @@ namespace c2xa
                         bg1_->setPosition( Point( 0, 0 ) );
                         addChild( bg1_ );
 
-                        bg2_ = create_sprite_from_batch( this, "background_main" );
+                        bg2_ = create_sprite_from_batch( this, "main_background" );
                         bg2_->retain();
                         bg2_->setTag( 2 );
                         bg2_->setAnchorPoint( Vec2::ANCHOR_BOTTOM_LEFT );
