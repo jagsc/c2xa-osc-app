@@ -1,43 +1,42 @@
 /************************************************************************************//**
-    @file    c2xa/object/coin.hpp
+    @file    c2xa/object/super_coin.hpp
     @author  新ゝ月(NewNotMoon)
-    @date    created on 2015/09/20
+    @date    created on 2015/09/22
 ****************************************************************************************/
-#ifndef C2XA_OBJECT_COIN_HPP
-#define C2XA_OBJECT_COIN_HPP
+#ifndef C2XA_OBJECT_SUPER_COIN_HPP
+#define C2XA_OBJECT_SUPER_COIN_HPP
 
 #include <cocos2d.h>
 
 #include <c2xa/c2xa_config.hpp>
+#include <c2xa/collision.hpp>
 #include <c2xa/utility.hpp>
+#include <c2xa/object/coin.hpp>
 
 namespace c2xa
 {
     namespace object
     {
-        class coin_interface
-            : public cocos2d::Node
-        {
-        public:
-            virtual unsigned int get_point() const = 0;
-            virtual collision get_collision() const = 0;
-        };
-
-        class coin
+        class super_coin
             : public coin_interface
         {
         private:
             cocos2d::Sprite* sprite_;
             collision collision_;
-            float fall_speed_ = 1.f;
+            float fall_speed_ = 5.f;
+
+            cocos2d::Vec2 begin_;
+            cocos2d::Vec2 end_;
+            float duration_;
+            float count_ = 0.f;
 
         public:
-            ~coin()
+            ~super_coin()
             {
                 sprite_->release();
             }
 
-            CREATE_FUNC( coin );
+            CREATE_FUNC( super_coin );
             virtual bool init() override
             {
                 using namespace cocos2d;
@@ -61,28 +60,37 @@ namespace c2xa
                 sprite_->retain();
 
                 static std::mt19937 engine_( random_seed );
-                std::uniform_real_distribution<> dist_( 0, app_width );
+                std::uniform_real_distribution<float> dist_( 0, app_width );
+
                 auto x =  dist_( engine_ );
                 sprite_->setPosition( x, app_height );
+                sprite_->setScale( 2.f );
 
                 addChild( sprite_ );
 
                 collision_ = create_collision_circul( sprite_ );
 
+                begin_ = Vec2{ dist_( engine_ ), app_height };
+                end_ = Vec2{ dist_( engine_ ), 0 };
+                duration_ = begin_.getDistance( end_ ) / fall_speed_;
+
                 return true;
             }
             virtual void update( float delta_ ) override
             {
-                auto y_ = sprite_->getPositionY() - ( fall_speed_ * delta_ * 100.f );
-                sprite_->setPositionY( y_ );
-                if( y_ < 0 )
+                count_ += delta_ * 100.f;
+                if( count_ > duration_ )
                 {
                     removeFromParent();
+                }
+                else
+                {
+                    sprite_->setPosition( ( end_ - begin_ ) * count_ / duration_ + begin_ );
                 }
             }
             unsigned int get_point() const override
             {
-                return coin_point;
+                return super_coin_point;
             }
             collision get_collision() const override
             {
@@ -92,4 +100,4 @@ namespace c2xa
     }
 }
 
-#endif//C2XA_OBJECT_COIN_HPP
+#endif//C2XA_OBJECT_SUPER_COIN_HPP

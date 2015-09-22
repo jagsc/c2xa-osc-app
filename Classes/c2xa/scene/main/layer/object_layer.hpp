@@ -12,6 +12,7 @@
 
 #include <c2xa/object/player.hpp>
 #include <c2xa/object/coin.hpp>
+#include <c2xa/object/super_coin.hpp>
 
 namespace c2xa
 {
@@ -60,6 +61,11 @@ namespace c2xa
                         if( dist_( engine_ ) )
                         {
                             get_child( this, "coins" )->addChild( object::coin::create() );
+                        }
+                        std::bernoulli_distribution dist_super_coin_( super_coin_probability );
+                        if( dist_super_coin_( engine_ ) )
+                        {
+                            get_child( this, "coins" )->addChild( object::super_coin::create() );
                         }
                     }
                 };

@@ -98,6 +98,9 @@
     <ClInclude Include="..\Classes\c2xa\collision.hpp">
       <Filter>src\c2xa</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\object\super_coin.hpp">
+      <Filter>src\c2xa\object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">
