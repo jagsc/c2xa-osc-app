@@ -6,6 +6,33 @@
 
 using namespace c2xa;
 
+bool judgement::init()
+{
+    using namespace cocos2d;
+
+    if( !Node::init() )
+    {
+        return false;
+    }
+
+    scheduleUpdate();
+    setName( "judgement" );
+
+    auto keyboard_listener_ = EventListenerKeyboard::create();
+    keyboard_listener_->onKeyPressed = [ & ]( EventKeyboard::KeyCode key_, Event* event_ )
+    {
+        if( key_ == EventKeyboard::KeyCode::KEY_ESCAPE )
+        {
+            game_over_ = true;
+            get_parent<scene::main_scene>( this )->game_over();
+        }
+    };
+    auto dispatcher = Director::getInstance()->getEventDispatcher();
+    dispatcher->addEventListenerWithSceneGraphPriority( keyboard_listener_, this );
+
+    return true;
+}
+
 void judgement::update( float )
 {
     if( game_over_ )
