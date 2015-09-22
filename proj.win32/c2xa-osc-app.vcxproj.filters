@@ -51,6 +51,9 @@
     <ClCompile Include="..\Classes\c2xa\judgement.cpp">
       <Filter>src\c2xa</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\c2xa\object\enemy.cpp">
+      <Filter>src\c2xa\object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -97,6 +100,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\c2xa\collision.hpp">
       <Filter>src\c2xa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\object\enemy.hpp">
+      <Filter>src\c2xa\object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

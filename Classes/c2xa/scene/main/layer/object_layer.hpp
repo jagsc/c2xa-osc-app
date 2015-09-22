@@ -12,6 +12,7 @@
 
 #include <c2xa/object/player.hpp>
 #include <c2xa/object/coin.hpp>
+#include <c2xa/object/enemy.hpp>
 
 namespace c2xa
 {
@@ -50,6 +51,7 @@ namespace c2xa
                         addChild( player_bullets_ );
                         addChild( coins_ );
                         addChild( object::player::create() );
+                        enemies_->addChild( object::enemy::create() );
                         
                         return true;
                     }
