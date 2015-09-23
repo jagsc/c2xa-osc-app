@@ -61,6 +61,10 @@ namespace c2xa
         //    cocos2d::Size winSize = cocos2d::Director::sharedDirector()->getWinSize();
 
         public:
+            ~enemy1()
+            {
+                enemy_sprite_->release();
+            }
             CREATE_FUNC(enemy1);
 
         public:
@@ -73,10 +77,21 @@ namespace c2xa
                 {
                     return false;
                 }
+
+
+                struct once_init
+                {
+                    once_init()
+                    {
+                        add_sprite_batch( get_current_scene(), "img/player_bugdroid.png", "enemy" );
+                    }
+                } static once_;
+
                 scheduleUpdate();
-                setName("enemy");
- 
-                enemy_sprite_ = Sprite::create( "img/player_bugdroid.png" );
+                setName( "enemy1" );
+
+                enemy_sprite_ = create_sprite_from_batch( get_current_scene(), "enemy" );
+                enemy_sprite_->retain();
                 enemy_sprite_->setPosition(position_);
                 enemy_sprite_->setName( "enemy_sprite" );
                 addChild(enemy_sprite_);
@@ -115,6 +130,82 @@ namespace c2xa
                 return collision_;
             }*/
         };
+
+
+        class enemy2 : base_enemy
+        {
+            //    //画面サイズの取得
+            //    cocos2d::Size winSize = cocos2d::Director::sharedDirector()->getWinSize();
+
+        public:
+            ~enemy2()
+            {
+                enemy_sprite_->release();
+            }
+            CREATE_FUNC( enemy2 );
+
+        public:
+            //初期化関数
+            virtual bool init() override
+            {
+                using namespace cocos2d;
+
+                if( !Node::init() )
+                {
+                    return false;
+                }
+                struct once_init
+                {
+                    once_init()
+                    {
+                        add_sprite_batch( get_current_scene(), "img/player_bugdroid.png", "enemy" );
+                    }
+                } static once_;
+
+                scheduleUpdate();
+                setName( "enemy2" );
+
+                enemy_sprite_ = create_sprite_from_batch( get_current_scene(), "enemy" );
+                enemy_sprite_->retain();
+                enemy_sprite_->setPosition( position_ );
+                enemy_sprite_->setName( "enemy_sprite" );
+                addChild( enemy_sprite_ );
+
+                //collision_ = create_collision_circul( enemy_sprite_ );
+
+                x_move_state_ = x_move_state::LEFT;
+                y_move_state_ = y_move_state::DOWN;
+                move_speed_ = 1.f;
+                return true;
+            }
+            //アップデート関数
+            virtual void update( float delta_ ) override
+            {
+                if( position_.y < -50.f )
+                {
+                    delete_enemy_node();
+                }
+                else
+                {
+                    move();
+                    time_ += ( delta_ * 100 );
+                    if( time_ > 100 )
+                    {
+                        fire();
+                        time_ = 0.f;
+                    }
+                }
+            }
+
+            void fire() override;
+            void move() override;
+
+            /*collision get_collision() const override
+            {
+            return collision_;
+            }*/
+        };
+
     }
 }
 
