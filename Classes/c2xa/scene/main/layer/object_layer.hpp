@@ -51,8 +51,9 @@ namespace c2xa
                         addChild( player_bullets_ );
                         addChild( coins_ );
                         addChild( object::player::create() );
-                        enemies_->addChild( object::enemy::create() );
+                        //enemies_->addChild( object::base_enemy::create() );
                         
+
                         return true;
                     }
                     virtual void update( float ) override
