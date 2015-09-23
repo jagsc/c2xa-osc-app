@@ -56,7 +56,7 @@ namespace c2xa
             void delete_enemy_node();
         };
 
-        class enemy1 : base_enemy {
+        class enemy1 : public base_enemy {
         //    //画面サイズの取得
         //    cocos2d::Size winSize = cocos2d::Director::sharedDirector()->getWinSize();
 
@@ -132,7 +132,7 @@ namespace c2xa
         };
 
 
-        class enemy2 : base_enemy
+        class enemy2 : public base_enemy
         {
             //    //画面サイズの取得
             //    cocos2d::Size winSize = cocos2d::Director::sharedDirector()->getWinSize();
