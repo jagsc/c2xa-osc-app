@@ -59,16 +59,6 @@ namespace c2xa
 
                 addChild( judgement::create() );
 
-                auto keyboard_listener_ = EventListenerKeyboard::create();
-                keyboard_listener_->onKeyPressed = [ & ]( EventKeyboard::KeyCode key_, Event* event_ )
-                {
-                    if( key_ == EventKeyboard::KeyCode::KEY_ESCAPE )
-                    {
-                        game_over();
-                    }
-                };
-                auto dispatcher = Director::getInstance()->getEventDispatcher();
-                dispatcher->addEventListenerWithSceneGraphPriority( keyboard_listener_, this );
                 return true;
             }
             virtual void update( float ) override

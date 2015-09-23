@@ -75,24 +75,7 @@ namespace c2xa
 
     public:
         CREATE_FUNC( judgement );
-        virtual bool init() override
-        {
-            using namespace cocos2d;
-
-            if( !Node::init() )
-            {
-                return false;
-            }
-
-            scheduleUpdate();
-            setName( "judgement" );
-
-            //CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect( "sounds/get_coin.mp3" );
-            //CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume( 0.3f );
-            //CocosDenshion::SimpleAudioEngine::getInstance()->playEffect( "sounds/get_coin.mp3" );
-
-            return true;
-        }
+        virtual bool init() override;
         virtual void update( float ) override;
         bool is_game_over() const
         {

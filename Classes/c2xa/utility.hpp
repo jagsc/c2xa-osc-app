@@ -77,7 +77,7 @@ namespace c2xa
     {
 #ifdef COCOS2D_DEBUG
         auto n_ = parent_->getChildByName( id );
-        CCASSERT( n_ != nullptr, "child not found" );
+        CCASSERT( n_ != nullptr, ( "child not found: " + id ).c_str() );
         return static_cast<TYPE*>( n_ );
 #else//COCOS2D_DEBUG
         return static_cast<TYPE*>( parent_->getChildByName( id ) );

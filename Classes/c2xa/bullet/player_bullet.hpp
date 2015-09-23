@@ -65,7 +65,7 @@ namespace c2xa
 
                 if( count_ > duration_ )
                 {
-                    this->removeFromParent();
+                    removeFromParent();
                 }
                 else
                 {
