@@ -1,8 +1,8 @@
-/************************************************************************************//**
+ï»¿/************************************************************************************//**
     @file    c2xa/object/enemies.hpp
     @brief    enemies
 
-    @author    —é–Ø‹v‹M
+    @author    éˆ´æœ¨ä¹…è²´
     @date      2015/09/12
 ****************************************************************************************/
 
@@ -18,7 +18,20 @@ namespace c2xa
 {
     namespace object
     {    
-        class base_enemy : public cocos2d::Node
+        class enemy_interface : public cocos2d::Node
+        {
+        public:
+            //virtual collision get_collision() const = 0;
+        protected:
+            //å¼¾ç™ºå°„
+            virtual void fire() = 0;
+            //ç§»å‹•
+            virtual void move() = 0;
+            //ç ´å£Š
+            void delete_enemy_node();
+        };
+
+        class base_enemy : public enemy_interface
         {
         protected :
             int score;
@@ -29,35 +42,25 @@ namespace c2xa
             //collision collision_;
             float time_ = 0.f;
 
-        public:
-            //virtual collision get_collision() const = 0;
-
         protected:
-            //‰¡•ûŒü‚ÌˆÚ“®•ûŒü
+            //æ¨ªæ–¹å‘ã®ç§»å‹•æ–¹å‘
             enum class x_move_state
             {
                 NONE,
                 LEFT,
                 RIGHT
             } x_move_state_;
-            //c•ûŒü‚ÌˆÚ“®•ûŒü
+            //ç¸¦æ–¹å‘ã®ç§»å‹•æ–¹å‘
             enum class y_move_state
             {
                 NONE,
                 UP,
                 DOWN
             } y_move_state_;
-
-            //’e”­Ë
-            virtual void fire();
-            //ˆÚ“®
-            virtual void move();
-            //”j‰ó
-            void delete_enemy_node();
         };
 
         class enemy1 : public base_enemy {
-        //    //‰æ–ÊƒTƒCƒY‚Ìæ“¾
+        //    //ç”»é¢ã‚µã‚¤ã‚ºã®å–å¾—
         //    cocos2d::Size winSize = cocos2d::Director::sharedDirector()->getWinSize();
 
         public:
@@ -68,7 +71,7 @@ namespace c2xa
             CREATE_FUNC(enemy1);
 
         public:
-            //‰Šú‰»ŠÖ”
+            //åˆæœŸåŒ–é–¢æ•°
             virtual bool init() override
             {
                 using namespace cocos2d;
@@ -89,7 +92,7 @@ namespace c2xa
 
                 scheduleUpdate();
                 setName( "enemy1" );
-
+                position_ ={ app_width / 2,app_height*0.75 };
                 enemy_sprite_ = create_sprite_from_batch( get_current_scene(), "enemy" );
                 enemy_sprite_->retain();
                 enemy_sprite_->setPosition(position_);
@@ -103,7 +106,7 @@ namespace c2xa
                 move_speed_ = 1.f;
                 return true;
             }
-            //ƒAƒbƒvƒf[ƒgŠÖ”
+            //ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆé–¢æ•°
             virtual void update( float delta_ ) override
             {
                 if( position_.y < -50.f )
@@ -134,7 +137,7 @@ namespace c2xa
 
         class enemy2 : public base_enemy
         {
-            //    //‰æ–ÊƒTƒCƒY‚Ìæ“¾
+            //    //ç”»é¢ã‚µã‚¤ã‚ºã®å–å¾—
             //    cocos2d::Size winSize = cocos2d::Director::sharedDirector()->getWinSize();
 
         public:
@@ -145,7 +148,7 @@ namespace c2xa
             CREATE_FUNC( enemy2 );
 
         public:
-            //‰Šú‰»ŠÖ”
+            //åˆæœŸåŒ–é–¢æ•°
             virtual bool init() override
             {
                 using namespace cocos2d;
@@ -164,7 +167,7 @@ namespace c2xa
 
                 scheduleUpdate();
                 setName( "enemy2" );
-
+                position_ ={app_width/2,app_height*0.75};
                 enemy_sprite_ = create_sprite_from_batch( get_current_scene(), "enemy" );
                 enemy_sprite_->retain();
                 enemy_sprite_->setPosition( position_ );
@@ -178,7 +181,7 @@ namespace c2xa
                 move_speed_ = 1.f;
                 return true;
             }
-            //ƒAƒbƒvƒf[ƒgŠÖ”
+            //ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆé–¢æ•°
             virtual void update( float delta_ ) override
             {
                 if( position_.y < -50.f )

@@ -1,10 +1,10 @@
-#include <c2xa/object/enemy.hpp>
+ï»¿#include <c2xa/object/enemy.hpp>
 #include <c2xa/object/player.hpp>
 
 using namespace c2xa::object;
 
 
-void base_enemy::delete_enemy_node()
+void enemy_interface::delete_enemy_node()
 {
     removeFromParent();
 }
@@ -34,11 +34,12 @@ void enemy1::move()
         break;
     }
     position_ = position_ + ( move_direction_ * move_speed_ );
+    enemy_sprite_->setPosition( position_ );
 }
 
 void enemy1::fire()
 {
-    //ƒGƒlƒ~[‚Ì’e‚Ì‹O“¹
+    //ã‚¨ãƒãƒŸãƒ¼ã®å¼¾ã®è»Œé“
 }
 
 void enemy2::move()
@@ -74,6 +75,7 @@ void enemy2::move()
         x_move_state_ = x_move_state::RIGHT;
     }
     position_ = position_ + ( move_direction_ * move_speed_ );
+    enemy_sprite_->setPosition( position_ );
 }
 
 void enemy2::fire()
