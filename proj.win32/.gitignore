@@ -1,3 +1,5 @@
 .vs
 /*.opensdf
 /*.sdf
+bin
+tmp

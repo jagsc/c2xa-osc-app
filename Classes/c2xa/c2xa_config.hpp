@@ -1,4 +1,4 @@
-/************************************************************************************//**
+﻿/************************************************************************************//**
     @file	 c2xa/c2xa_config.hpp
     @author  新ゝ月(NewNotMoon)
     @date    created on 2015/08/30
@@ -10,6 +10,7 @@
 
 namespace c2xa
 {
+    static const char* app_name = u8"ドロイド君の仁義なき戦い";
     static constexpr float app_width  = 540.f;
     static constexpr float app_height = 960.f;
     static cocos2d::Rect const app_rectangle { 0, 0, app_width, app_height };

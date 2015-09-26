@@ -31,9 +31,9 @@ bool app_delegete::applicationDidFinishLaunching() {
     if(!glview) {
         //glview = GLViewImpl::create("My Game");
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-        glview = GLViewImpl::createWithRect( "My Game", c2xa::app_rectangle, 1 );
+        glview = GLViewImpl::createWithRect( c2xa::app_name, c2xa::app_rectangle, 1 );
 #else
-        glview = GLViewImpl::create( "My Game" );
+        glview = GLViewImpl::create( c2xa::app_name );
 #endif
         director->setOpenGLView(glview);
     }
