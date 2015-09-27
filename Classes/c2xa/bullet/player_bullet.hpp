@@ -50,7 +50,7 @@ namespace c2xa
                 scheduleUpdate();
 
                 target_position_ = { player_x_, app_height }; // とりあえず画面外
-                first_position_  = { player_x_, 100 };
+                first_position_  = { player_x_, player_y_position };
 
                 bullet_ = create_sprite_from_batch( get_current_scene(), "player_bomb" );
                 bullet_->retain();

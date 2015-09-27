@@ -98,7 +98,7 @@ namespace c2xa
             {
                 return collision_;
             }
-            void on_collide() override
+            void collide( object_type ) override
             {
                 cocos2d::experimental::AudioProfile p;
                 p.maxInstances = 0; // 0は制限なしっぽい

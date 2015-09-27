@@ -12,6 +12,7 @@
 
 #include <c2xa/to_string_from_score.hpp>
 #include <c2xa/object/player.hpp>
+#include <c2xa/utility.hpp>
 
 namespace c2xa
 {

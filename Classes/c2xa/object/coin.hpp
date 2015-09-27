@@ -90,8 +90,10 @@ namespace c2xa
             {
                 return collision_;
             }
-            void on_collide() override
+            void collide( object_type ) override
             {
+                // コインはそもそも自機としか接触判定しないので分岐なし
+
                 cocos2d::experimental::AudioProfile p;
                 p.maxInstances = 0; // 0は制限なしっぽい
                 p.minDelay = 0; // 不明

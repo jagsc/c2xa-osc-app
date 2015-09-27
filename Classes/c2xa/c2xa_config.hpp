@@ -15,6 +15,7 @@ namespace c2xa
     static constexpr float app_height = 960.f;
     static cocos2d::Rect const app_rectangle { 0, 0, app_width, app_height };
     static cocos2d::Size const app_size      { app_width, app_height };
+    static constexpr float        player_y_position = 200;
     static constexpr unsigned int score_digit = 8;
     static constexpr float        score_font_width       = 25.f;
     static constexpr float        score_font_height      = 40.f;
