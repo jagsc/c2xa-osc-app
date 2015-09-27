@@ -10,7 +10,7 @@
 
 namespace c2xa
 {
-    static const char* app_name = u8"ドロイド君の仁義なき戦い";
+    static const char* app_name = u8"仕様なき戦い プロプライエタリ編";
     static constexpr float app_width  = 540.f;
     static constexpr float app_height = 960.f;
     static cocos2d::Rect const app_rectangle { 0, 0, app_width, app_height };
