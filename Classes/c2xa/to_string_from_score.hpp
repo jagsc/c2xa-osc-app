@@ -7,20 +7,35 @@
 #define C2XA_TO_STRING_FROM_SCORE_HPP
 
 #include <cstdio>
-#include <string>
+#include <array>
 
 #include <c2xa/c2xa_config.hpp>
 
 namespace c2xa
 {
-    static std::string to_string_from_score( unsigned int score_ )
+    /*!
+        符号なし整数を文字の配列に変換します。ただし、変換可能な数値はスコアの最大値以下です。
+    */
+    static std::array< char, score_digit + 1 > to_string_from_score( unsigned int score_ )
     {
-        assert( score_ <= max_score );
-        char buffer_[ score_digit + 1 ];
-        sprintf( buffer_, "%08d", score_ );
+        CCASSERT( score_ <= max_score, "Max score is 8-digit." );
+        std::array<char, score_digit + 1> buffer_;
+        sprintf( buffer_.data(), "%08d", score_ );
         //auto str_ = std::to_string( score_ );
         //str_ = std::string( score_digit - str_.length(), '0' ) + str_;
         return buffer_;
+    }
+    /*!
+        符号なし整数を文字に変換します。ただし、変換可能な数値は一桁の数値のみです。
+    */
+    static char one_digit_to_string( unsigned int i_ )
+    {
+        CCASSERT( i_ <= 9 && i_ >= 0, "Param is need one digit." );
+        char buffer_[ 2 ];
+        sprintf( buffer_, "%1d", i_ );
+        //auto str_ = std::to_string( score_ );
+        //str_ = std::string( score_digit - str_.length(), '0' ) + str_;
+        return buffer_[ 0 ];
     }
 }
 

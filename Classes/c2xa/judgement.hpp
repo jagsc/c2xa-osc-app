@@ -1,5 +1,5 @@
 /************************************************************************************//**
-    @file	 c2xa/judgement.hpp
+    @file    c2xa/judgement.hpp
     @author  新ゝ月(NewNotMoon)
     @date    created on 2015/09/20
 ****************************************************************************************/
@@ -8,6 +8,7 @@
 
 #include <cocos2d.h>
 
+#include <c2xa/scene/main/layer/ui_layer.hpp>
 #include <c2xa/c2xa_config.hpp>
 #include <c2xa/utility.hpp>
 
@@ -73,20 +74,7 @@ namespace c2xa
 
     public:
         CREATE_FUNC( judgement );
-        virtual bool init() override
-        {
-            using namespace cocos2d;
-
-            if( !Node::init() )
-            {
-                return false;
-            }
-
-            scheduleUpdate();
-            setName( "judgement" );
-
-            return true;
-        }
+        virtual bool init() override;
         virtual void update( float ) override;
         bool is_game_over() const
         {

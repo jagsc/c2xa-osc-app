@@ -1,6 +1,6 @@
 /************************************************************************************//**
     @file	c2xa/scene/main_scene/layer/background_layer.hpp
-    @author    VTŒ(NewNotMoon)
+    @author    ÂVÂTÅ’Å½(NewNotMoon)
     @date      2015/09/19
 ****************************************************************************************/
 #ifndef C2XA_SCENE_MAIN_SCENE_LAYER_BACKGROUND_LAYER_HPP
@@ -46,8 +46,8 @@ namespace c2xa
                         scheduleUpdate();
                         setName( "background_layer" );
 
-                        add_sprite_batch( this, "main_background.png", "main_background" );
-
+                        add_sprite_batch( this, "img/main_background.png", "main_background" );
+                        
                         bg1_ = create_sprite_from_batch( this, "main_background" );
                         bg1_->retain();
                         bg1_->setTag( 1 );

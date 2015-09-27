@@ -47,7 +47,7 @@ namespace c2xa
                 auto dispatcher = Director::getInstance()->getEventDispatcher();
                 dispatcher->addEventListenerWithSceneGraphPriority( keyboard_listener_, this );
 
-                auto display_ = Label::createWithTTF( to_string_from_score( score_ ), "fonts/arial.ttf", 48 );
+                auto display_ = Label::createWithTTF( to_string_from_score( score_ ).data(), "fonts/arial.ttf", 48 );
                 display_->setPosition( Point( app_width / 2 , app_height / 2 ) );
                 display_->setAnchorPoint( Vec2::ANCHOR_MIDDLE );
                 addChild( display_ );

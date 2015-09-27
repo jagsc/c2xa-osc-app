@@ -1,14 +1,15 @@
 /************************************************************************************//**
-    @file	c2xa/object/player.hpp
+    @file   c2xa/object/player.hpp
     @brief	player
 
-    @author    新ゝ月(NewNotMoon)
-    @date      2015/08/29
+    @author 新ゝ月(NewNotMoon)
+    @date   2015/08/29
 ****************************************************************************************/
 #ifndef C2XA_OBJECT_PLAYER_HPP
 #define C2XA_OBJECT_PLAYER_HPP
 
 #include <cocos2d.h>
+#include <c2xa/collision.hpp>
 #include <c2xa/utility.hpp>
 
 namespace c2xa
@@ -47,6 +48,8 @@ namespace c2xa
             bool  is_touch_;
             cocos2d::Point touch_position_;
 
+            collision collision_;
+
         public:
             CREATE_FUNC( player );
             
@@ -68,10 +71,12 @@ namespace c2xa
                 setName( "player" );
 
                 position_ = y_position;
-                auto player_sprite_ = Sprite::create( "bugdroid-player.png" );
+                auto player_sprite_ = Sprite::create( "img/player_bugdroid.png" );
                 player_sprite_->setName( "player_sprite" );
                 player_sprite_->setPosition( Vec2( position_, y_position ) );
                 addChild( player_sprite_ );
+
+                collision_ = create_collision_circul( player_sprite_ );
 
                 auto keyboard_listener_ = EventListenerKeyboard::create();
                 auto touch_listener_    = EventListenerTouchOneByOne::create();
@@ -203,9 +208,9 @@ namespace c2xa
                 }
                 player_sprite_->setRotation( ( target_rotation_ + player_sprite_->getRotation() ) / 2.f );
             }
-            cocos2d::Vec2 const& get_position() const
+            collision get_collision() const
             {
-                return get_child( this, "player_sprite" )->getPosition();
+                return collision_;
             }
 
         private:
