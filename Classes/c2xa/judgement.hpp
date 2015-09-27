@@ -7,7 +7,6 @@
 #define C2XA_JUDGEMENT_HPP
 
 #include <cocos2d.h>
-#include <AudioEngine.h>
 
 #include <c2xa/scene/main/layer/ui_layer.hpp>
 #include <c2xa/c2xa_config.hpp>

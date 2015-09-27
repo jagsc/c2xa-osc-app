@@ -45,20 +45,24 @@ void judgement::update( float )
         auto object_layer_ = get_child( root_, "object_layer" );
         auto player_       = get_child<object::player>( object_layer_, "player" );
         auto coins_        = get_child( object_layer_, "coins" )->getChildren();
-        
+        //auto enemies_      = get_child( object_layer_, "enemies" )->getChildren();
+
+        //for( auto i : enemies_ )
+        //{
+        //    auto enemy_ = static_cast<object::enemy_interface*>( i );
+        //    if( player_->get_collision()->judge( enemy_->get_collision().get() ) )
+        //    {
+        //        score_.add( enemy_->get_point() );
+        //        enemy_->on_collide();
+        //    };
+        //}
         for( auto i : coins_ )
         {
             auto coin_ = static_cast<object::coin_interface*>( i );
             if( player_->get_collision()->judge( coin_->get_collision().get() ) )
             {
                 score_.add( coin_->get_point() );
-                cocos2d::experimental::AudioProfile p;
-                p.maxInstances = 0; // 0は制限なしっぽい
-                p.minDelay = 0; // 不明
-                p.name = "get_coin"; // プロファイルに名前をつけられるっぽい？たぶんあとからプロファイルを取得したりする時に使う
-                // play2d( ファイルパス, ループフラグ, 音量, プロファイルへのポインタ(nullptrでデフォルト) )
-                cocos2d::experimental::AudioEngine::play2d( "sounds/get_coin.mp3", false, 0.3f, &p );
-                i->removeFromParent();
+                coin_->on_collide();
             };
         }
 

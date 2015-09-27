@@ -8,8 +8,12 @@
 
 #include <cocos2d.h>
 
+#include <AudioEngine.h>
+
 #include <c2xa/c2xa_config.hpp>
 #include <c2xa/utility.hpp>
+#include <c2xa/object/object.hpp>
+
 
 namespace c2xa
 {
@@ -17,10 +21,8 @@ namespace c2xa
     {
         class coin_interface
             : public cocos2d::Node
+            , public object_interface
         {
-        public:
-            virtual unsigned int get_point() const = 0;
-            virtual collision get_collision() const = 0;
         };
 
         class coin
@@ -87,6 +89,16 @@ namespace c2xa
             collision get_collision() const override
             {
                 return collision_;
+            }
+            void on_collide() override
+            {
+                cocos2d::experimental::AudioProfile p;
+                p.maxInstances = 0; // 0は制限なしっぽい
+                p.minDelay = 0; // 不明
+                p.name = "get_coin"; // プロファイルに名前をつけられるっぽい？たぶんあとからプロファイルを取得したりする時に使う
+                                     // play2d( ファイルパス, ループフラグ, 音量, プロファイルへのポインタ(nullptrでデフォルト) )
+                cocos2d::experimental::AudioEngine::play2d( "sounds/get_coin.mp3", false, 0.3f, &p );
+                removeFromParent();
             }
         };
     }

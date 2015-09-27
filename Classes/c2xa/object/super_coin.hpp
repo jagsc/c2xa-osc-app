@@ -8,6 +8,8 @@
 
 #include <cocos2d.h>
 
+#include <AudioEngine.h>
+
 #include <c2xa/c2xa_config.hpp>
 #include <c2xa/collision.hpp>
 #include <c2xa/utility.hpp>
@@ -95,6 +97,16 @@ namespace c2xa
             collision get_collision() const override
             {
                 return collision_;
+            }
+            void on_collide() override
+            {
+                cocos2d::experimental::AudioProfile p;
+                p.maxInstances = 0; // 0は制限なしっぽい
+                p.minDelay = 0; // 不明
+                p.name = "get_coin"; // プロファイルに名前をつけられるっぽい？たぶんあとからプロファイルを取得したりする時に使う
+                                     // play2d( ファイルパス, ループフラグ, 音量, プロファイルへのポインタ(nullptrでデフォルト) )
+                cocos2d::experimental::AudioEngine::play2d( "sounds/get_coin.mp3", false, 0.3f, &p );
+                removeFromParent();
             }
         };
     }
