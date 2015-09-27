@@ -21,7 +21,7 @@ namespace c2xa
         class enemy_interface : public cocos2d::Node
         {
         public:
-            //virtual collision get_collision() const = 0;
+            virtual collision get_collision() const = 0;
         protected:
             //弾発射
             virtual void fire() = 0;
@@ -33,14 +33,19 @@ namespace c2xa
 
         class base_enemy : public enemy_interface
         {
+        public :
+            collision get_collision() const override
+            {
+                return collision_;
+            }
         protected :
             int score;
             cocos2d::Vec2 position_;
             cocos2d::Vec2 move_direction_;
             float move_speed_;
             cocos2d::Sprite *enemy_sprite_;
-            //collision collision_;
             float time_ = 0.f;
+            collision collision_;
 
         protected:
             //横方向の移動方向
@@ -99,7 +104,7 @@ namespace c2xa
                 enemy_sprite_->setName( "enemy_sprite" );
                 addChild(enemy_sprite_);
 
-                //collision_ = create_collision_circul( enemy_sprite_ );
+                collision_ = create_collision_circul( enemy_sprite_ );
 
                 x_move_state_ = x_move_state::NONE;
                 y_move_state_ = y_move_state::DOWN;
@@ -127,11 +132,6 @@ namespace c2xa
 
             void fire() override;
             void move() override;
-
-            /*collision get_collision() const override
-            {
-                return collision_;
-            }*/
         };
 
 
@@ -174,7 +174,7 @@ namespace c2xa
                 enemy_sprite_->setName( "enemy_sprite" );
                 addChild( enemy_sprite_ );
 
-                //collision_ = create_collision_circul( enemy_sprite_ );
+                collision_ = create_collision_circul( enemy_sprite_ );
 
                 x_move_state_ = x_move_state::LEFT;
                 y_move_state_ = y_move_state::DOWN;
@@ -202,11 +202,6 @@ namespace c2xa
 
             void fire() override;
             void move() override;
-
-            /*collision get_collision() const override
-            {
-            return collision_;
-            }*/
         };
 
     }
