@@ -13,6 +13,9 @@
 
 namespace c2xa
 {
+    /*!
+        符号なし整数を文字の配列に変換します。ただし、変換可能な数値はスコアの最大値以下です。
+    */
     static std::array< char, score_digit + 1 > to_string_from_score( unsigned int score_ )
     {
         CCASSERT( score_ <= max_score, "Max score is 8-digit." );
@@ -22,6 +25,9 @@ namespace c2xa
         //str_ = std::string( score_digit - str_.length(), '0' ) + str_;
         return buffer_;
     }
+    /*!
+        符号なし整数を文字に変換します。ただし、変換可能な数値は一桁の数値のみです。
+    */
     static char one_digit_to_string( unsigned int i_ )
     {
         CCASSERT( i_ <= 9 && i_ >= 0, "Param is need one digit." );
