@@ -18,7 +18,15 @@ namespace c2xa
         class collision
         {
         public:
+            /*!
+                @param[in] s_ 接触判定オブジェクト
+                @return 接触したかを示す真偽値
+            */
             virtual bool judge( collision const* ) const = 0;
+            /*!
+                @param[in] s_ 円形接触判定オブジェクト
+                @return 接触したかを示す真偽値
+            */
             virtual bool dispatch( collision_circul const* ) const = 0;
         };
         class collision_circul
@@ -29,12 +37,19 @@ namespace c2xa
             float square_radius_;
 
         public:
+            /*!
+                @param[in] r_ 円形接触判定の半径
+                @param[in] n_ 円形接触判定の対象オブジェクト
+             */
             collision_circul( float r_, cocos2d::Node* n_ )
                 : node_{ n_ }
                 , square_radius_{ r_ * r_ }
             {
                 node_->retain();
             }
+            /*!
+                @param[in] n_ 円形接触判定の対象オブジェクト
+            */
             collision_circul( cocos2d::Node* n_ )
                 : node_{ n_ }
             {
@@ -47,18 +62,32 @@ namespace c2xa
             {
                 node_->release();
             }
+            /*!
+                @return コンストラクタで渡された対象オブジェクトの座標
+            */
             cocos2d::Vec2 const& get_position() const
             {
                 return node_->getPosition();
             }
+            /*!
+                @return 円形接触判定の半径の二乗
+            */
             float get_square_radius() const
             {
                 return square_radius_;
             }
+            /*!
+                @param[in] s_ 接触判定オブジェクト
+                @return 接触したかを示す真偽値
+            */
             virtual bool judge( collision const* s_ ) const override
             {
                 return s_->dispatch( this );
             }
+            /*!
+                @param[in] s_ 円形接触判定オブジェクト
+                @return 接触したかを示す真偽値
+            */
             virtual bool dispatch( collision_circul const* s_ ) const override
             {
                 auto t_ = node_->getPosition() - s_->get_position();
@@ -69,6 +98,10 @@ namespace c2xa
     }
     using collision = std::shared_ptr<detail::collision>;
 
+    /*!
+        円形接触判定オブジェクトを作成します。直接コンストラクタを呼ばず、この関数で作ってください。
+        この関数の引数は、そのままコンストラクタに渡されます。引数はコンストラクタを参照してください。
+    */
     template< typename... ARGS >
     collision create_collision_circul( ARGS&&... args_ )
     {

@@ -1,7 +1,7 @@
 /************************************************************************************//**
-    @file	c2xa/utility.hpp
-    @author    新ゝ月(NewNotMoon)
-    @date      2015/09/19
+    @file    c2xa/utility.hpp
+    @author  新ゝ月(NewNotMoon)
+    @date    created on 2015/09/19
 ****************************************************************************************/
 #ifndef C2XA_C2XA_UTILITY_HPP
 #define C2XA_C2XA_UTILITY_HPP
@@ -10,6 +10,14 @@
 
 namespace c2xa
 {
+    /*!
+        @fn log
+
+        簡易ログ出力関数です。フォーマット機能はありません。
+        デバッグビルドでは削除されます。
+
+        @param[in] mes_ 表示する文字列
+    */
 #ifdef COCOS2D_DEBUG
     static void log( char const* mes_ )
     {
@@ -20,6 +28,10 @@ namespace c2xa
     {
     }
 #endif//COCOS2D_DEBUG
+    /*!
+        Cocos2d-xのCREATE_FUNCの代わりとなるヘルパ関数です。
+        init関数が複数の引数を保つ場合でも使えます。
+    */
     template< typename TYPE, typename... ARGS >
     inline TYPE* create_template( ARGS&&... a )
     {
@@ -36,10 +48,23 @@ namespace c2xa
             return nullptr;
         }
     };
+    /*!
+        現在のシーンを取得する関数です。
+        @attention シーン遷移中にこの関数が呼ばれると、遷移後のシーンを返します。
+                   必ずしも想定したシーンが返されるとは限りません。なるべく相対的に取得してください。
+
+        @return 現在のシーン
+
+    */
     static cocos2d::Node* get_current_scene()
     {
         return cocos2d::Director::getInstance()->getRunningScene();
     }
+    /*!
+        現在のシーンのルートに、スプライトバッチノードを作り追加します。
+
+        @return スプライトバッチノード
+    */
     static cocos2d::SpriteBatchNode* add_sprite_batch( cocos2d::Node* node_, std::string const& path_, std::string const& id_ )
     {
         auto images_ = node_->getChildByName( "images" );
@@ -64,6 +89,11 @@ namespace c2xa
 #endif//COCOS2D_DEBUG
         return batch_;
     }
+    /*!
+        現在のシーンのルートからバッチノードを探索し、スプライトバッチノードからスプライトを生成します。
+
+        @return スプライト
+    */
     static cocos2d::Sprite* create_sprite_from_batch( cocos2d::Node* node_, std::string const& id_ )
     {
         auto batch_ =
@@ -72,6 +102,10 @@ namespace c2xa
                 ->getChildByName( id_ ) );
         return cocos2d::Sprite::createWithTexture( batch_->getTexture() );
     }
+    /*!
+        引数で渡されたノードの子要素をIDで取得します。また、テンプレート引数を指定した場合、
+        その型にキャストして返します。
+    */
     template< typename TYPE = cocos2d::Node >
     static TYPE* get_child( cocos2d::Node const* parent_, std::string const& id )
     {
@@ -83,6 +117,10 @@ namespace c2xa
         return static_cast<TYPE*>( parent_->getChildByName( id ) );
 #endif//COCOS2D_DEBUG
     }
+    /*!
+        引数で渡されたノードの親要素を取得します。また、テンプレート引数を指定した場合、
+        その型にキャストして返します。
+    */
     template< typename TYPE = cocos2d::Node >
     static TYPE* get_parent( cocos2d::Node* child_ )
     {
