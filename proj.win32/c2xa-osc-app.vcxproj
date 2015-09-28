@@ -172,6 +172,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
       </SubType>
     </ClInclude>
     <ClInclude Include="..\Classes\c2xa\object\enemy.hpp" />
+    <ClInclude Include="..\Classes\c2xa\object\object.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="..\Classes\c2xa\object\player.hpp">
       <SubType>
       </SubType>
