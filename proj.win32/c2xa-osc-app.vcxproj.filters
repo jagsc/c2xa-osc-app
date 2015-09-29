@@ -51,6 +51,12 @@
     <ClCompile Include="..\Classes\c2xa\judgement.cpp">
       <Filter>src\c2xa</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\c2xa\scene\end_scene.cpp">
+      <Filter>src\c2xa\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\c2xa\scene\score_scene.cpp">
+      <Filter>src\c2xa\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -103,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\c2xa\object\object.hpp">
       <Filter>src\c2xa\object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\scene\end_scene.hpp">
+      <Filter>src\c2xa\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
