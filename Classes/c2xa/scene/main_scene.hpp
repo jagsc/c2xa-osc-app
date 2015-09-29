@@ -1,11 +1,7 @@
 /************************************************************************************//**
-    @file	c2xa/scene/main_scene.hpp
-    @brief	main scene
-
-    C2XA OSCアプリのメインシーンです
-
+    @file   c2xa/scene/main_scene.hpp
     @author 新ゝ月かりな
-    @date 2015/08/26
+    @date   created on 2015/08/26
 ****************************************************************************************/
 #ifndef C2XA_SCENE_MAIN_SCENE_HPP
 #define C2XA_SCENE_MAIN_SCENE_HPP
