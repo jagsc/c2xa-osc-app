@@ -1,6 +1,6 @@
 /************************************************************************************//**
     @file   c2xa/scene/score_scene.cpp
-    @author VTŒ‚©‚è‚È
+    @author ï¿½Vï¿½Tï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     @date   created on 2015/09/29
 ****************************************************************************************/
 #include <AudioEngine.h>
@@ -78,7 +78,9 @@ bool score_scene::init( unsigned int s_ )
     addChild( background_, 1 );
                 
 
-    auto count_ = new float{ 0 };
+    auto count_                = std::make_shared<float>( 0 );
+    auto audio_id_drum_        = std::make_shared<int>( 0 );
+    auto audio_id_drum_finish_ = std::make_shared<int>( 0 );
 
     result_font_->runAction(
         Sequence::create(
@@ -91,45 +93,53 @@ bool score_scene::init( unsigned int s_ )
                 score_display_->runAction( EaseSineInOut::create( FadeTo::create( 0.3f, 255 ) ) );
             } ),
             // score roulette 2.5s
-            CallFunc::create( [ this, count_, score_display_ ]
+            CallFunc::create( [ this, count_, score_display_, comment_, audio_id_drum_, audio_id_drum_finish_ ]
             {
-                schedule( [ this, count_, score_display_ ]( float t_ )
+                *audio_id_drum_ = cocos2d::experimental::AudioEngine::play2d( "sounds/drum_roll.mp3", false, 0.1f, nullptr );
+                schedule( [ this, count_, score_display_, comment_, audio_id_drum_, audio_id_drum_finish_ ]( float t_ )
                 {
                     *count_ += t_ * 100.f;
                     set_score( get_score() * *count_ / 150.f );
-                    cocos2d::experimental::AudioProfile p;
-                    p.maxInstances = 0;
-                    p.minDelay = 0;
-                    p.name = "score_roulette";
-                    cocos2d::experimental::AudioEngine::play2d( "sounds/get_coin.mp3", false, 0.1f, &p );
                     if( *count_ >= 150.f )
                     {
                         set_score( get_score() );
-                        delete count_;
                         unschedule( "roulette" );
+                        
+                        cocos2d::experimental::AudioEngine::stop( *audio_id_drum_ );
+                        *audio_id_drum_finish_ = cocos2d::experimental::AudioEngine::play2d( "sounds/drum_roll_finish.mp3", false, 0.1f, nullptr );
+
+                        auto keyboard_listener_ = EventListenerKeyboard::create();
+                        auto touch_listener_    = EventListenerTouchOneByOne::create();
+
+                        auto next_scene_ = [ = ]
+                        {
+                            cocos2d::experimental::AudioEngine::stop( *audio_id_drum_finish_ );
+                            cocos2d::experimental::AudioEngine::stop( *audio_id_drum_ );
+                            Director::getInstance()
+                                ->replaceScene(
+                                    TransitionFade::create(
+                                        1.0f,
+                                        scene::end_scene::create() ) );
+                        };
+
+                        keyboard_listener_->onKeyPressed = [ next_scene_ ]( EventKeyboard::KeyCode key_, Event* event_ )
+                        {
+                            next_scene_();
+                        };
+
+                        touch_listener_->onTouchBegan = [ next_scene_ ]( Touch* t_, Event* )
+                        {
+                            next_scene_();
+                            return true;
+                        };
+
+                        auto dispatcher = Director::getInstance()->getEventDispatcher();
+                        dispatcher->addEventListenerWithSceneGraphPriority( touch_listener_, this );
+                        dispatcher->addEventListenerWithSceneGraphPriority( keyboard_listener_, this );
+
+                        comment_->runAction( EaseSineInOut::create( FadeTo::create( 1.f, 255 ) ) );
                     }
                 }, "roulette" );
-            } ),
-            DelayTime::create( 0.8f ),
-            CallFunc::create( [ comment_ ]
-            {
-                comment_->runAction( EaseSineInOut::create( FadeTo::create( 1.f, 255 ) ) );
-                // ÃŞÃŞ°İ“I‚ÈŒø‰Ê‰¹
-            }),
-            DelayTime::create( 0.3f ),
-            CallFunc::create( [ this ]
-            {
-                auto keyboard_listener_ = EventListenerKeyboard::create();
-                keyboard_listener_->onKeyPressed = []( EventKeyboard::KeyCode key_, Event* event_ )
-                {
-                    Director::getInstance()
-                        ->replaceScene(
-                            TransitionFade::create(
-                                1.0f,
-                                scene::end_scene::create() ) );
-                };
-                auto dispatcher = Director::getInstance()->getEventDispatcher();
-                dispatcher->addEventListenerWithSceneGraphPriority( keyboard_listener_, this );
             } ),
             nullptr ) );
     return true;
