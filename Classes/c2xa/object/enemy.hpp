@@ -10,18 +10,20 @@
 #define C2XA_OBJECT_ENEMY_HPP
 
 #include <cocos2d.h>
+
+
 #include <c2xa/c2xa_config.hpp>
-#include <c2xa/collision.hpp>
+#include <c2xa/object/object.hpp>
 #include <c2xa/utility.hpp>
 
 namespace c2xa
 {
     namespace object
     {    
-        class enemy_interface : public cocos2d::Node
+        class enemy_interface 
+            : public cocos2d::Node
+            , public object_interface
         {
-        public:
-            virtual collision get_collision() const = 0;
         protected:
             //弾発射
             virtual void fire() = 0;
@@ -33,11 +35,11 @@ namespace c2xa
 
         class base_enemy : public enemy_interface
         {
-        public :
+        /*public :
             collision get_collision() const override
             {
                 return collision_;
-            }
+            }*/
         protected :
             int score;
             cocos2d::Vec2 position_;
@@ -73,6 +75,7 @@ namespace c2xa
             {
                 enemy_sprite_->release();
             }
+
             CREATE_FUNC(enemy1);
 
         public:
@@ -130,6 +133,19 @@ namespace c2xa
                 }
             }
 
+            unsigned int get_point() const override
+            {
+                return 1;
+            }
+            collision get_collision() const override
+            {
+                return collision_;
+            }
+            void collide( object_type ) override
+            {
+                delete_enemy_node();
+            }
+
             void fire() override;
             void move() override;
         };
@@ -145,6 +161,7 @@ namespace c2xa
             {
                 enemy_sprite_->release();
             }
+
             CREATE_FUNC( enemy2 );
 
         public:
@@ -198,6 +215,19 @@ namespace c2xa
                         time_ = 0.f;
                     }
                 }
+            }
+
+            unsigned int get_point() const override
+            {
+                return 1;
+            }
+            collision get_collision() const override
+            {
+                return collision_;
+            }
+            void collide( object_type ) override
+            {
+                delete_enemy_node();
             }
 
             void fire() override;
