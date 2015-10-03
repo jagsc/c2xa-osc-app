@@ -149,8 +149,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\c2xa\judgement.cpp" />
     <ClCompile Include="..\Classes\c2xa\object\player.cpp" />
     <ClCompile Include="..\Classes\c2xa\scene\end_scene.cpp" />
+    <ClCompile Include="..\Classes\c2xa\scene\main\layer\object_layer.cpp" />
     <ClCompile Include="..\Classes\c2xa\scene\main_scene.cpp" />
     <ClCompile Include="..\Classes\c2xa\scene\score_scene.cpp" />
+    <ClCompile Include="..\Classes\c2xa\utility.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -225,7 +227,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ResourceCompile Include="game.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Resources\test.lua" />
+    <None Include="..\Resources\scripts\c2xa\action.lua" />
+    <None Include="..\Resources\scripts\c2xa\enemy.lua" />
+    <None Include="..\Resources\scripts\c2xa\generate.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

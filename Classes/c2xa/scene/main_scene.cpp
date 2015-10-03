@@ -13,7 +13,6 @@
 
 #include <c2xa/scene/score_scene.hpp>
 
-#include <scripting/lua-bindings/manual/CCLuaEngine.h>
 
 using namespace cocos2d;
 using namespace c2xa::scene;
@@ -32,18 +31,10 @@ bool main_scene::init()
 
     addChild( judgement::create() );
 
-    auto lua_engine_ = LuaEngine::getInstance();
-    ScriptEngineManager::getInstance()->setScriptEngine( lua_engine_ );
-    lua_engine_->addSearchPath( "scripts" );
-    lua_engine_->executeScriptFile( "scripts/test.lua" );
-
-    lua_State* l = lua_engine_->getLuaStack()->getLuaState();
-    
-    lua_getglobal( l, "helloLua" );
-    tolua_pushusertype( l, this, "cc.Scene" );
-    if( lua_pcall( l, 1, 0, 0 ) ){
-        CCLOG( "error=%s", lua_tostring( l, lua_gettop( l ) ) );
-    }
+    lua::execute_file( "scripts/test.lua" );
+    lua::get_global( "helloLua" );
+    lua::push_usertype( this, "cc.Scene" );
+    lua::call( 1, 0 );
 
     return true;
 }
