@@ -108,25 +108,29 @@ namespace c2xa
                 // 呼び出す関数: move_idの参照先
                 lua_rawgeti( data_->state, LUA_REGISTRYINDEX, data_->move_id );
 
-                // 第一引数: 始点(xとyを持つテーブル)
-                lua_createtable( data_->state, 0, 2 );
-                lua_pushnumber( data_->state, 0 );
-                lua_setfield( data_->state, -2, "x" );
-                lua_pushnumber( data_->state, 0 );
-                lua_setfield( data_->state, -2, "y" );
+                // 引数の仕様が変わりました
 
-                // 第一引数: 終点(xとyを持つテーブル)
-                lua_createtable( data_->state, 0, 2 );
-                lua_pushnumber( data_->state, 560 );
-                lua_setfield( data_->state, -2, "x" );
-                lua_pushnumber( data_->state, 960 );
-                lua_setfield( data_->state, -2, "y" );
+                //// 第一引数: 始点(xとyを持つテーブル)
+                //lua_createtable( data_->state, 0, 2 );
+                //lua_pushnumber( data_->state, 0 );
+                //lua_setfield( data_->state, -2, "x" );
+                //lua_pushnumber( data_->state, 0 );
+                //lua_setfield( data_->state, -2, "y" );
 
-                // 第三引数: 進捗率(0～100までのdouble)
+                //// 第一引数: 終点(xとyを持つテーブル)
+                //lua_createtable( data_->state, 0, 2 );
+                //lua_pushnumber( data_->state, 560 );
+                //lua_setfield( data_->state, -2, "x" );
+                //lua_pushnumber( data_->state, 960 );
+                //lua_setfield( data_->state, -2, "y" );
+
+                //x 第三引数: 進捗率(0～100までのdouble)
+                // 第一引数になりました。
                 lua_pushnumber( data_->state, progress_ );
 
                 // 呼び出し: 戻り値: 座標(xとyを持つテーブル)
-                lua::call( data_->state, 3, 1 );
+                //lua::call( data_->state, 3, 1 );
+                lua::call( data_->state, 1, 1 );
 
                 lua_getfield( data_->state, -1, "x" );
                 CCASSERT( lua_isnumber( data_->state, -1 ), "" );

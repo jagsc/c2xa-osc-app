@@ -1,4 +1,4 @@
-require "c2xa.enemy"
+-- require "c2xa.enemy"
 
 action = action or {}
 
