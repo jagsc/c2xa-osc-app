@@ -31,10 +31,10 @@ bool main_scene::init()
 
     addChild( judgement::create() );
 
-    lua::execute_file( "scripts/test.lua" );
-    lua::get_global( "helloLua" );
-    lua::push_usertype( this, "cc.Scene" );
-    lua::call( 1, 0 );
+    lua::get_engine()->executeScriptFile( "scripts/test.lua" );
+    lua_getglobal( lua::get_state(), "helloLua" );
+    lua::push_usertype( lua::get_state(), this, "cc.Scene" );
+    lua::call( lua::get_state(), 1, 0 );
 
     return true;
 }

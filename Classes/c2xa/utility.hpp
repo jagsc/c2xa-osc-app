@@ -112,13 +112,13 @@ namespace c2xa
 
     namespace lua
     {
+        void initialize_engine( cocos2d::LuaEngine* );
+        void initialize_state( lua_State* );
         cocos2d::LuaEngine* get_engine();
         cocos2d::LuaStack* get_stack();
         lua_State* get_state();
-        void execute_file( char const* path_ );
-        void call( int arg_num_, int return_num_ );
-        void get_global( char const* id_ );
-        void push_usertype( void* value_, char const* id_ );
+        void call( lua_State* state_, int arg_num_, int return_num_ );
+        void push_usertype( lua_State*, void* value_, char const* id_ );
     }
 }
 

@@ -1,6 +1,8 @@
+
 #include <app_delegate.hpp>
 #include <c2xa/scene/main_scene.hpp>
 #include <c2xa/c2xa_config.hpp>
+#include <c2xa/utility.hpp>
 
 using namespace cocos2d;
 
@@ -49,6 +51,9 @@ bool app_delegete::applicationDidFinishLaunching() {
     //director->setContentScaleFactor( 0.5 );
 
     register_all_packages();
+
+    c2xa::lua::initialize_engine( c2xa::lua::get_engine() );
+    c2xa::lua::initialize_state( c2xa::lua::get_state() );
 
     // create a scene. it's an autorelease object
     auto scene = c2xa::scene::main_scene::create();

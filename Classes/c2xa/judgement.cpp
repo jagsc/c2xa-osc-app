@@ -67,16 +67,16 @@ void judgement::update( float )
         //}
 
         // player<->enemy
-        for( auto i : enemies_ )
-        {
-            auto enemy_ = static_cast<object::enemy_interface*>( i );
-            if( player_->get_collision()->judge( enemy_->get_collision().get() ) )
-            {
-                enemy_->collide( object_type::player );
-                player_->collide( object_type::enemy );
-                //TODO: 自機減らす&僅かな判定無効時間
-            }
-        }
+        //for( auto i : enemies_ )
+        //{
+        //    auto enemy_ = static_cast<object::enemy_interface*>( i );
+        //    if( player_->get_collision()->judge( enemy_->get_collision().get() ) )
+        //    {
+        //        enemy_->collide( object_type::player );
+        //        player_->collide( object_type::enemy );
+        //        //TODO: 自機減らす&僅かな判定無効時間
+        //    }
+        //}
 
         // player<->enemy_bullets
         //for( auto i : enemy_bullets_ )

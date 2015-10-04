@@ -39,10 +39,10 @@ bool object_layer::init()
     addChild( coins_ );
     addChild( object::player::create() );
 
-    lua::execute_file( "scripts/c2xa/generate.lua" );
-    lua::get_global( "c2xa_generate" );
-    lua::push_usertype( enemies_, "cc.Node" );
-    lua::call( 1, 0 );
+    lua::get_engine()->executeScriptFile( "scripts/c2xa/generate.lua" );
+    lua_getglobal( lua::get_state(), "c2xa_generate" );
+    lua::push_usertype( lua::get_state(), enemies_, "cc.Node" );
+    lua::call( lua::get_state(), 1, 0 );
 
     return true;
 }
