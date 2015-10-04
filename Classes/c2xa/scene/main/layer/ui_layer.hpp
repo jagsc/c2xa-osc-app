@@ -36,23 +36,24 @@ namespace c2xa
                         }
                         setName( "score_display" );
 
-                        auto sf_ = Sprite::create( "img/score_font.png" );
+                        auto sf_ = Sprite::create( "img/main_scene_score_font.png" );
                         for( int i = 0; i <= 9; ++i )
                         {
                             auto frame_ = SpriteFrame::createWithTexture(
                                 sf_->getTexture(),
-                                Rect{ i * score_font_width, 0, score_font_width, score_font_height } );
+                                Rect{ i * main_scene_score_font_width, 0, main_scene_score_font_width, main_scene_score_font_height } );
                             SpriteFrameCache::getInstance()
                                 ->addSpriteFrame( frame_, std::move( get_cache_frame_name( i ) ) );
                         }
 
+                        // 0で初期化
                         for( int i = 0; i < score_digit; ++i )
                         {
-                            auto sprite_ = Sprite::createWithSpriteFrameName( "score_font_0" );
+                            auto sprite_ = Sprite::createWithSpriteFrameName( get_cache_frame_name( 0 ) );
                             sprite_->setTag( i );
                             sprite_->setPosition( Vec2{
-                                130 + i * ( score_font_width - score_font_margin_left ),
-                                app_height - score_font_margin_top } );
+                                130 + i * ( main_scene_score_font_width - main_scene_score_font_margin_left ),
+                                app_height - main_scene_score_font_margin_top } );
                             sprite_->setAnchorPoint( Vec2::ANCHOR_TOP_LEFT );
                             addChild( sprite_ );
                         }
@@ -96,7 +97,7 @@ namespace c2xa
 
                         setName( "ui_layer" );
 
-                        auto score_sprite_ = Sprite::create( "img/score_background.png" );
+                        auto score_sprite_ = Sprite::create( "img/main_scene_score_background.png" );
                         score_sprite_->setPosition( Vec2( 0, app_height ) );
                         score_sprite_->setAnchorPoint( Vec2::ANCHOR_TOP_LEFT );
 

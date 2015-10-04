@@ -149,7 +149,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\c2xa\judgement.cpp" />
     <ClCompile Include="..\Classes\c2xa\object\enemy.cpp" />
     <ClCompile Include="..\Classes\c2xa\object\player.cpp" />
+    <ClCompile Include="..\Classes\c2xa\scene\end_scene.cpp" />
     <ClCompile Include="..\Classes\c2xa\scene\main_scene.cpp" />
+    <ClCompile Include="..\Classes\c2xa\scene\score_scene.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +183,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
       </SubType>
     </ClInclude>
     <ClInclude Include="..\Classes\c2xa\object\super_coin.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\scene\end_scene.hpp">
       <SubType>
       </SubType>
     </ClInclude>

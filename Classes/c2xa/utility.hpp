@@ -61,48 +61,6 @@ namespace c2xa
         return cocos2d::Director::getInstance()->getRunningScene();
     }
     /*!
-        現在のシーンのルートに、スプライトバッチノードを作り追加します。
-
-        @return スプライトバッチノード
-    */
-    static cocos2d::SpriteBatchNode* add_sprite_batch( cocos2d::Node* node_, std::string const& path_, std::string const& id_ )
-    {
-        auto images_ = node_->getChildByName( "images" );
-        if( images_ == nullptr )
-        {
-            images_ = cocos2d::Node::create();
-            images_->setName( "images" );
-            node_->addChild( images_ );
-        }
-        auto batch_ = static_cast<cocos2d::SpriteBatchNode*>( images_->getChildByName( id_ ) );
-        if( batch_ == nullptr )
-        {
-            batch_ = cocos2d::SpriteBatchNode::create( path_ );
-            batch_->setName( id_ );
-            images_->addChild( batch_, 1 );
-        }
-#ifdef COCOS2D_DEBUG
-        else
-        {
-            log( "conflict sprite batch identity." );
-        }
-#endif//COCOS2D_DEBUG
-        return batch_;
-    }
-    /*!
-        現在のシーンのルートからバッチノードを探索し、スプライトバッチノードからスプライトを生成します。
-
-        @return スプライト
-    */
-    static cocos2d::Sprite* create_sprite_from_batch( cocos2d::Node* node_, std::string const& id_ )
-    {
-        auto batch_ =
-            static_cast<cocos2d::SpriteBatchNode*>( node_
-                ->getChildByName( "images" )
-                ->getChildByName( id_ ) );
-        return cocos2d::Sprite::createWithTexture( batch_->getTexture() );
-    }
-    /*!
         引数で渡されたノードの子要素をIDで取得します。また、テンプレート引数を指定した場合、
         その型にキャストして返します。
     */
@@ -125,6 +83,29 @@ namespace c2xa
     static TYPE* get_parent( cocos2d::Node* child_ )
     {
         return static_cast<TYPE*>( child_->getParent() );
+    }
+    /*!
+        現在のシーンのルートからバッチノードを探索し、スプライトバッチノードからスプライトを生成します。
+
+        @return スプライト
+    */
+    static cocos2d::Sprite* create_sprite_from_batch( cocos2d::Node* node_, std::string const& path_ )
+    {
+        auto images_ = node_->getChildByName( "images" );
+        if( images_ == nullptr )
+        {
+            images_ = cocos2d::Node::create();
+            images_->setName( "images" );
+            node_->addChild( images_ );
+        }
+        auto batch_ = static_cast<cocos2d::SpriteBatchNode*>( images_->getChildByName( path_ ) );
+        if( batch_ == nullptr )
+        {
+            batch_ = cocos2d::SpriteBatchNode::create( path_ );
+            batch_->setName( path_ );
+            images_->addChild( batch_, 1 );
+        }
+        return cocos2d::Sprite::createWithTexture( batch_->getTexture() );
     }
 }
 

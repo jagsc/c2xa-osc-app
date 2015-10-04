@@ -51,8 +51,11 @@
     <ClCompile Include="..\Classes\c2xa\judgement.cpp">
       <Filter>src\c2xa</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\c2xa\object\enemy.cpp">
-      <Filter>src\c2xa\object</Filter>
+    <ClCompile Include="..\Classes\c2xa\scene\end_scene.cpp">
+      <Filter>src\c2xa\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\c2xa\scene\score_scene.cpp">
+      <Filter>src\c2xa\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -101,12 +104,14 @@
     <ClInclude Include="..\Classes\c2xa\collision.hpp">
       <Filter>src\c2xa</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\c2xa\object\enemy.hpp">
     <ClInclude Include="..\Classes\c2xa\object\super_coin.hpp">
       <Filter>src\c2xa\object</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\c2xa\object\object.hpp">
       <Filter>src\c2xa\object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\scene\end_scene.hpp">
+      <Filter>src\c2xa\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

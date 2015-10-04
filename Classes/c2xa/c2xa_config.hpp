@@ -17,10 +17,12 @@ namespace c2xa
     static cocos2d::Size const app_size      { app_width, app_height };
     static constexpr float        player_y_position = 200;
     static constexpr unsigned int score_digit = 8;
-    static constexpr float        score_font_width       = 25.f;
-    static constexpr float        score_font_height      = 40.f;
-    static constexpr float        score_font_margin_top  = 10.f;
-    static constexpr float        score_font_margin_left = 2.f;
+    static constexpr float        main_scene_score_font_width       = 25.f;
+    static constexpr float        main_scene_score_font_height      = 40.f;
+    static constexpr float        main_scene_score_font_margin_top  = 10.f;
+    static constexpr float        main_scene_score_font_margin_left = 2.f;
+    static constexpr float        score_scene_score_font_width       = 40.f;
+    static constexpr float        score_scene_score_font_height      = 62.f;
     static constexpr unsigned int max_score = 99999999;
     static constexpr unsigned int initial_player_remaining = 5;
     static constexpr unsigned int random_seed = 58378276;

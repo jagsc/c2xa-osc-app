@@ -36,13 +36,6 @@ namespace c2xa
             }
             virtual bool init( float player_x_ ) // !!! no-override !!!
             {
-                struct once_init
-                {
-                    once_init()
-                    {
-                        add_sprite_batch( get_current_scene(), "img/player_bomb.png", "player_bomb" );
-                    }
-                } static once_;
                 if( !Node::init() )
                 {
                     return false;
@@ -52,7 +45,7 @@ namespace c2xa
                 target_position_ = { player_x_, app_height }; // とりあえず画面外
                 first_position_  = { player_x_, player_y_position };
 
-                bullet_ = create_sprite_from_batch( get_current_scene(), "player_bomb" );
+                bullet_ = create_sprite_from_batch( get_current_scene(), "img/player_bomb.png" );
                 bullet_->retain();
                 bullet_->setPosition( first_position_ );
                 addChild( bullet_ );

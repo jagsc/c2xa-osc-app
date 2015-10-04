@@ -48,18 +48,9 @@ namespace c2xa
                 {
                     return false;
                 }
-
-                struct once_init
-                {
-                    once_init()
-                    {
-                        add_sprite_batch( get_current_scene(), "CloseNormal.png", "coin" );
-                    }
-                } static once_;
-
                 scheduleUpdate();
 
-                sprite_ = create_sprite_from_batch( get_current_scene(), "coin" );
+                sprite_ = create_sprite_from_batch( get_current_scene(), "CloseNormal.png" );
                 sprite_->retain();
 
                 static std::mt19937 engine_( random_seed );

@@ -2,6 +2,7 @@
 #include <c2xa/judgement.hpp>
 #include <c2xa/scene/main_scene.hpp>
 #include <c2xa/object/player.hpp>
+#include <c2xa/object/coin.hpp>
 #include <c2xa/utility.hpp>
 
 using namespace c2xa;
