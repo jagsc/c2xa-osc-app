@@ -8,19 +8,6 @@
 
 #include <cocos2d.h>
 
-//#include <scripting/lua-bindings/manual/CCLuaEngine.h>
-//auto lua_engine_ = LuaEngine::getInstance();
-//ScriptEngineManager::getInstance()->setScriptEngine( lua_engine_ );
-//lua_engine_->executeScriptFile( "test.lua" );
-
-//lua_State* l = lua_engine_->getLuaStack()->getLuaState();
-//
-//lua_getglobal( l, "helloLua" );
-//tolua_pushusertype( l, this, "cc.Scene" );
-//if( lua_pcall( l, 1, 0, 0 ) )
-//    CCLOG( "error=%s", lua_tostring( l, lua_gettop( l ) ) );
-//}
-
 namespace c2xa
 {
     namespace scene

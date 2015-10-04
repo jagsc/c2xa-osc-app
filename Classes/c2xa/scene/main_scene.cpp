@@ -13,6 +13,7 @@
 
 #include <c2xa/scene/score_scene.hpp>
 
+
 using namespace cocos2d;
 using namespace c2xa::scene;
 
@@ -29,6 +30,11 @@ bool main_scene::init()
     addChild( main::layer::background_layer::create(), 1 );
 
     addChild( judgement::create() );
+
+    lua::execute_file( "scripts/test.lua" );
+    lua::get_global( "helloLua" );
+    lua::push_usertype( this, "cc.Scene" );
+    lua::call( 1, 0 );
 
     return true;
 }

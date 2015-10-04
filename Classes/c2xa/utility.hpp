@@ -8,6 +8,8 @@
 
 #include <cocos2d.h>
 
+#include <scripting/lua-bindings/manual/CCLuaEngine.h>
+
 namespace c2xa
 {
     /*!
@@ -106,6 +108,17 @@ namespace c2xa
             images_->addChild( batch_, 1 );
         }
         return cocos2d::Sprite::createWithTexture( batch_->getTexture() );
+    }
+
+    namespace lua
+    {
+        cocos2d::LuaEngine* get_engine();
+        cocos2d::LuaStack* get_stack();
+        lua_State* get_state();
+        void execute_file( char const* path_ );
+        void call( int arg_num_, int return_num_ );
+        void get_global( char const* id_ );
+        void push_usertype( void* value_, char const* id_ );
     }
 }
 

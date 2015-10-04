@@ -1,6 +1,4 @@
 
-require "cocos/init.lua"
-
 local bullet = class("bullet",function()
     return cc.Node:create()
 end)
