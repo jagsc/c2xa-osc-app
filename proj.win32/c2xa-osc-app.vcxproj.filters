@@ -141,9 +141,6 @@
     <None Include="..\Resources\scripts\c2xa\action.lua">
       <Filter>resource\scripts\c2xa</Filter>
     </None>
-    <None Include="..\Resources\scripts\c2xa\enemy.lua">
-      <Filter>resource\scripts\c2xa</Filter>
-    </None>
     <None Include="..\Resources\scripts\c2xa\generate.lua">
       <Filter>resource\scripts\c2xa</Filter>
     </None>

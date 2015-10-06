@@ -10,13 +10,19 @@
 
 #include <c2xa/c2xa_config.hpp>
 #include <c2xa/utility.hpp>
+#include <c2xa/object/object.hpp>
 
 namespace c2xa
 {
     namespace bullet
     {
-        class player_bullet
+        class bullet_interface
             : public cocos2d::Node
+            , public object_interface
+        {
+        };
+        class player_bullet
+            : public bullet_interface
         {
         private:
             float   duration_ = 320.f; // frame
@@ -24,6 +30,7 @@ namespace c2xa
             cocos2d::Vec2    target_position_;
             cocos2d::Vec2    first_position_;
             cocos2d::Sprite* bullet_;
+            collision        collision_;
 
         public:
             ~player_bullet()
@@ -50,6 +57,8 @@ namespace c2xa
                 bullet_->setPosition( first_position_ );
                 addChild( bullet_ );
 
+                collision_ = create_collision_circul( bullet_ );
+
                 return true;
             }
             virtual void update( float delta_ ) override
@@ -64,6 +73,17 @@ namespace c2xa
                 {
                     bullet_->setPosition( ( target_position_ - first_position_ ) * count_ / duration_ + first_position_ );
                 }
+            }
+            unsigned int get_point() const override
+            {
+                return 0; // 自機弾にポイントはない
+            }
+            collision get_collision() const override
+            {
+                return collision_;
+            }
+            void collide( object_type type_ ) override
+            {
             }
         };
     }

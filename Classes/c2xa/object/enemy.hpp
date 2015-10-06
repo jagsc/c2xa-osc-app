@@ -30,7 +30,7 @@ namespace c2xa
         /// @date created on 2015/10/04
         /// このクラスは基本的にLuaからのみ作成できます
         class enemy
-            : public cocos2d::Node
+            : public enemy_interface
         {
         private:
             struct data
@@ -41,6 +41,7 @@ namespace c2xa
             };
             std::unique_ptr<data> data_;
             double progress_ = 0.;
+            collision collision_;
 
         public:
             /// 引数のLuaステートに関数を登録します
@@ -94,6 +95,8 @@ namespace c2xa
                 sprite_->setName( "sprite" );
                 addChild( sprite_ );
 
+                collision_ = create_collision_circul( sprite_ );
+
                 return true;
             }
             virtual void update( float delta_ ) override
@@ -143,6 +146,31 @@ namespace c2xa
                     static_cast<float>( x ),
                     static_cast<float>( y )
                 } );
+            }
+            unsigned int get_point() const override
+            {
+                return 1000; //TODO: 暫定
+            }
+            collision get_collision() const override
+            {
+                return collision_;
+            }
+            void collide( object_type type_ ) override
+            {
+                // 自機の弾か自機本体
+                // ここもLuaから指定できるようにする？とりあえずまずはC++で実装
+                switch( type_ )
+                {
+                case object_type::player:
+                {
+                    break;
+                }
+                case object_type::player_bullet:
+                {
+                    removeFromParent();
+                    break;
+                }
+                }
             }
         };
 

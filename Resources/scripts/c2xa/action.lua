@@ -9,11 +9,26 @@ function action.create_enemy( setting )
         local enemy
         local default = {
             move = moving.default,
-            time = 4.0
+            time = 4.0,
+            easing = nil -- —Dæ“x’á
         }
         setting = extend_deep( {}, default, setting )
         enemy = c2xa.create_enemy( setting )
-        setting.enemies:addChild( enemy )
+        c2xa.enemies:addChild( enemy )
+    end)
+end
+
+function action.create_bullet( setting )
+    return cc.CallFunc:create(function()
+        local bullet
+        local default = {
+            move = moving.default,
+            time = 4.0,
+            easing = nil -- —Dæ“x’á
+        }
+        setting = extend_deep( {}, default, setting )
+        bullet = c2xa.create_bullet( setting )
+        setting.parent:addChild( bullet )
     end)
 end
 

@@ -1,7 +1,9 @@
 
 #include <c2xa/judgement.hpp>
 #include <c2xa/scene/main_scene.hpp>
+#include <c2xa/bullet/player_bullet.hpp>
 #include <c2xa/object/player.hpp>
+#include <c2xa/object/enemy.hpp>
 #include <c2xa/object/coin.hpp>
 #include <c2xa/utility.hpp>
 
@@ -47,36 +49,36 @@ void judgement::update( float )
         auto player_       = get_child<object::player>( object_layer_, "player" );
         auto coins_        = get_child( object_layer_, "coins" )->getChildren();
         auto enemies_        = get_child( object_layer_, "enemies" )->getChildren();
-        //auto player_bullets_ = get_child( object_layer_, "player_bullets" )->getChildren();
+        auto player_bullets_ = get_child( object_layer_, "player_bullets" )->getChildren();
         //auto enemy_bullets_ = get_child( object_layer_, "enemy_bullets" )->getChildren();
 
         // enemy<->player_bullets
-        //for( auto b : player_bullets_ )
-        //{
-        //    auto player_bullet_ = static_cast<bullet::player_bullet*>( b );
-        //  
-        //    for( auto e : enemies_ )
-        //    {
-        //        auto enemy_ = static_cast<object::enemy_interface*>( e );
-        //        if( enemy_->get_collision()->judge( player_bullets_->get_collision().get() ) )
-        //        {
-        //            enemy_->collide( object_type::player_bullet );
-        //            player_bullets_->collide( object_type::enemy );
-        //        }
-        //    }
-        //}
+        for( auto b : player_bullets_ )
+        {
+            auto player_bullet_ = static_cast<bullet::player_bullet*>( b );
+          
+            for( auto e : enemies_ )
+            {
+                auto enemy_ = static_cast<object::enemy_interface*>( e );
+                if( enemy_->get_collision()->judge( player_bullet_->get_collision().get() ) )
+                {
+                    enemy_->collide( object_type::player_bullet );
+                    player_bullet_->collide( object_type::enemy );
+                }
+            }
+        }
 
         // player<->enemy
-        //for( auto i : enemies_ )
-        //{
-        //    auto enemy_ = static_cast<object::enemy_interface*>( i );
-        //    if( player_->get_collision()->judge( enemy_->get_collision().get() ) )
-        //    {
-        //        enemy_->collide( object_type::player );
-        //        player_->collide( object_type::enemy );
-        //        //TODO: 自機減らす&僅かな判定無効時間
-        //    }
-        //}
+        for( auto i : enemies_ )
+        {
+            auto enemy_ = static_cast<object::enemy_interface*>( i );
+            if( player_->get_collision()->judge( enemy_->get_collision().get() ) )
+            {
+                enemy_->collide( object_type::player );
+                player_->collide( object_type::enemy );
+                //TODO: 自機減らす&僅かな判定無効時間
+            }
+        }
 
         // player<->enemy_bullets
         //for( auto i : enemy_bullets_ )
