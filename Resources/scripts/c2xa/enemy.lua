@@ -1,4 +1,5 @@
 
+--[[
 c2xa = c2xa or {}
 
 c2xa.enemy = class("c2xa.enemy",function()
@@ -24,3 +25,4 @@ function c2xa.enemy:update( delta )
     end
     self.sprite:setPosition( self.move( cc.p( 0, 0 ), cc.p( 560, 960 ), self.progress ) )
 end
+]]

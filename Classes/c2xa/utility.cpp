@@ -1,6 +1,5 @@
 
 #include <c2xa/utility.hpp>
-
 #include <c2xa/object/enemy.hpp>
 
 namespace c2xa

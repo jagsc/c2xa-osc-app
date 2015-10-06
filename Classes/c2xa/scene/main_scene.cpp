@@ -31,11 +31,6 @@ bool main_scene::init()
 
     addChild( judgement::create() );
 
-    lua::get_engine()->executeScriptFile( "scripts/test.lua" );
-    lua_getglobal( lua::get_state(), "helloLua" );
-    lua::push_usertype( lua::get_state(), this, "cc.Scene" );
-    lua::call( lua::get_state(), 1, 0 );
-
     return true;
 }
 void main_scene::game_over()

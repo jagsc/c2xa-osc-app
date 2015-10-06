@@ -37,7 +37,7 @@ namespace c2xa
             {
                 lua_State* state;
                 int move_id;
-                int scheduler_id;
+                double time = 0;
             };
             std::unique_ptr<data> data_;
             double progress_ = 0.;
@@ -63,13 +63,16 @@ namespace c2xa
 
                 data_->state = state_;
 
-                lua_getfield( state_, -1, "scheduler_id" );
-                CCASSERT( lua_isnumber( state_, -1 ), "" );
-                data_->scheduler_id = lua_tointeger( state_, -1 );
+                //lua_getfield( state_, -1, "scheduler_id" );
+                //CCASSERT( lua_isnumber( state_, -1 ), "" );
+                //data_->scheduler_id = lua_tointeger( state_, -1 );
 
-                lua_getfield( state_, -2, "move" );
-                CCASSERT( lua_type( state_, -1 ) == LUA_TFUNCTION, "" );
-                data_->move_id = luaL_ref( state_, LUA_REGISTRYINDEX );
+                //lua_getfield( state_, -1, "move" );
+                //CCASSERT( lua_type( state_, -1 ) == LUA_TFUNCTION, "" );
+                //data_->move_id = luaL_ref( state_, LUA_REGISTRYINDEX );
+
+                data_->move_id = lua::to< lua::type::function >::from_table( state_, "move" );
+                data_->time = lua::to< lua::type::number >::from_table( state_, "time" );
 
                 auto enemy_ = create_template<enemy>( std::move( data_ ) );
 
@@ -87,7 +90,7 @@ namespace c2xa
                 scheduleUpdate();
 
                 auto sprite_ = create_sprite_from_batch( get_current_scene(), "img/player_bugdroid.png" );
-                sprite_->setPosition( cocos2d::Point::ZERO );
+                sprite_->setPosition( get_position() );
                 sprite_->setName( "sprite" );
                 addChild( sprite_ );
 
@@ -98,38 +101,39 @@ namespace c2xa
                 progress_ += delta_ * 100.f; //TODO: delta_ * 100 の部分は暫定
                 // Luaの内部表現はdoubleなのでdoubleに合わせます
 
-                if( progress_ > 100.f )
+                if( progress_ * 100 / ( data_->time * 60 ) > 100.f )
                 {
                     cleanup();
                     removeFromParent();
                     return;
                 }
 
+                get_child<cocos2d::Sprite>( this, "sprite" )->setPosition( get_position() );
+            }
+            ~enemy()
+            {
+                cleanup();
+            }
+
+        private:
+            void cleanup()
+            {
+                unscheduleUpdate();
+                if( data_ != nullptr )
+                {
+                    luaL_unref( data_->state, LUA_REGISTRYINDEX, data_->move_id );
+                    data_.reset( nullptr );
+                }
+            }
+            cocos2d::Vec2&& get_position() const
+            {
                 // 呼び出す関数: move_idの参照先
                 lua_rawgeti( data_->state, LUA_REGISTRYINDEX, data_->move_id );
 
-                // 引数の仕様が変わりました
+                // 第一引数: 進捗率(0～100までのdouble)
+                lua_pushnumber( data_->state, progress_ * 100 / ( data_->time * 60 ) );
 
-                //// 第一引数: 始点(xとyを持つテーブル)
-                //lua_createtable( data_->state, 0, 2 );
-                //lua_pushnumber( data_->state, 0 );
-                //lua_setfield( data_->state, -2, "x" );
-                //lua_pushnumber( data_->state, 0 );
-                //lua_setfield( data_->state, -2, "y" );
-
-                //// 第一引数: 終点(xとyを持つテーブル)
-                //lua_createtable( data_->state, 0, 2 );
-                //lua_pushnumber( data_->state, 560 );
-                //lua_setfield( data_->state, -2, "x" );
-                //lua_pushnumber( data_->state, 960 );
-                //lua_setfield( data_->state, -2, "y" );
-
-                //x 第三引数: 進捗率(0～100までのdouble)
-                // 第一引数になりました。
-                lua_pushnumber( data_->state, progress_ );
-
-                // 呼び出し: 戻り値: 座標(xとyを持つテーブル)
-                //lua::call( data_->state, 3, 1 );
+                // 呼び出し: 引数1: 戻り値1: 座標(xとyを持つテーブル)
                 lua::call( data_->state, 1, 1 );
 
                 lua_getfield( data_->state, -1, "x" );
@@ -140,26 +144,10 @@ namespace c2xa
                 CCASSERT( lua_isnumber( data_->state, -1 ), "" );
                 double y = lua_tonumber( data_->state, -1 );
 
-                get_child<cocos2d::Sprite>( this, "sprite" )->setPosition(
-                    cocos2d::Vec2{
-                        static_cast<float>( x ),
-                        static_cast<float>( y )
-                    } );
-            }
-            ~enemy()
-            {
-                cleanup();
-            }
-
-        private:
-            void cleanup()
-            {
-                if( data_ != nullptr )
-                {
-                    luaL_unref( data_->state, LUA_REGISTRYINDEX, data_->move_id );
-                    cocos2d::Director::getInstance()->getScheduler()->unscheduleScriptEntry( data_->scheduler_id );
-                    data_.reset( nullptr );
-                }
+                return std::move( cocos2d::Vec2 {
+                    static_cast<float>( x ),
+                    static_cast<float>( y )
+                } );
             }
         };
 
