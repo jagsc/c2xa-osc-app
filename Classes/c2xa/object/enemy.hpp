@@ -136,14 +136,9 @@ namespace c2xa
                 // 呼び出し: 引数1: 戻り値1: 座標(xとyを持つテーブル)
                 lua::call( data_->state, 1, 1 );
 
-                lua_getfield( data_->state, -1, "x" );
-                CCASSERT( lua_isnumber( data_->state, -1 ), "" );
-                double x = lua_tonumber( data_->state, -1 );
-
-                lua_getfield( data_->state, -2, "y" );
-                CCASSERT( lua_isnumber( data_->state, -1 ), "" );
-                double y = lua_tonumber( data_->state, -1 );
-
+                double x = lua::to< lua::type::number >::from_table( data_->state, "x" );
+                double y = lua::to< lua::type::number >::from_table( data_->state, "y" );
+                
                 return std::move( cocos2d::Vec2 {
                     static_cast<float>( x ),
                     static_cast<float>( y )

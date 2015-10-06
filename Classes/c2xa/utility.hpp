@@ -112,6 +112,53 @@ namespace c2xa
 
     namespace lua
     {
+        static void print_stack( lua_State *L )
+        {
+            // スタック数を取得
+            const int num = lua_gettop( L );
+            if( num == 0 )
+            {
+                cocos2d::log( "No stack." );
+                return;
+            }
+            for( int i = num; i >= 1; i-- )
+            {
+                cocos2d::log( "%03d(%04d): ", i, -num + i - 1 );
+                int type = lua_type( L, i );
+                switch( type )
+                {
+                case LUA_TNIL:
+                    cocos2d::log( "NIL" );
+                    break;
+                case LUA_TBOOLEAN:
+                    cocos2d::log( "BOOLEAN %s", lua_toboolean( L, i ) ? "true" : "false" );
+                    break;
+                case LUA_TLIGHTUSERDATA:
+                    cocos2d::log( "LIGHTUSERDATA" );
+                    break;
+                case LUA_TNUMBER:
+                    cocos2d::log( "NUMBER %f", lua_tonumber( L, i ) );
+                    break;
+                case LUA_TSTRING:
+                    cocos2d::log( "STRING %s", lua_tostring( L, i ) );
+                    break;
+                case LUA_TTABLE:
+                    cocos2d::log( "TABLE" );
+                    break;
+                case LUA_TFUNCTION:
+                    cocos2d::log( "FUNCTION" );
+                    break;
+                case LUA_TUSERDATA:
+                    cocos2d::log( "USERDATA" );
+                    break;
+                case LUA_TTHREAD:
+                    cocos2d::log( "THREAD" );
+                    break;
+                }
+            }
+            cocos2d::log( "-----------------------------" );
+        };
+
         void initialize_engine( cocos2d::LuaEngine* );
         void initialize_state( lua_State* );
         cocos2d::LuaEngine* get_engine();
@@ -135,7 +182,7 @@ namespace c2xa
             number          = LUA_TNUMBER,
             integer         = number << 3,
         };
-
+        
         namespace detail
         {
             template< type type_ >
@@ -190,7 +237,9 @@ namespace c2xa
             {
                 CCASSERT( lua_type( state_, stack_index_ ) == static_cast<int>( type::boolean ),
                     ( std::string{ "index is not boolean : " } +lua_typename( state_, stack_index_ ) ).c_str() );
-                return lua_toboolean( state_, stack_index_ ) != 0;
+                auto value_ = lua_toboolean( state_, stack_index_ ) != 0;
+                lua_settop( state_, -2 );
+                return value_;
             }
         };
 
@@ -202,7 +251,9 @@ namespace c2xa
             {
                 CCASSERT( lua_type( state_, stack_index_ ) == static_cast<int>( type::number ),
                     ( std::string{ "index is not number : " } +lua_typename( state_, stack_index_ ) ).c_str() );
-                return lua_tonumber( state_, stack_index_ );
+                auto value_ = lua_tonumber( state_, stack_index_ );
+                lua_settop( state_, -2 );
+                return value_;
             }
         };
 
@@ -214,7 +265,9 @@ namespace c2xa
             {
                 CCASSERT( lua_type( state_, stack_index_ ) == static_cast<int>( type::number ),
                     ( std::string{ "index is not integer : " } +lua_typename( state_, stack_index_ ) ).c_str() );
-                return lua_tointeger( state_, stack_index_ );
+                auto value_ = lua_tointeger( state_, stack_index_ );
+                lua_settop( state_, -2 );
+                return value_;
             }
         };
 
@@ -226,7 +279,9 @@ namespace c2xa
             {
                 CCASSERT( lua_type( state_, stack_index_ ) == static_cast<int>( type::string ),
                     ( std::string{ "index is not string : " } + lua_typename( state_, stack_index_ ) ).c_str() );
-                return lua_tolstring( state_, stack_index_, 0 );
+                auto value_ = lua_tolstring( state_, stack_index_, 0 );
+                lua_settop( state_, -2 );
+                return value_;
             }
         };
 
@@ -238,7 +293,9 @@ namespace c2xa
             {
                 CCASSERT( lua_type( state_, stack_index_ ) == static_cast<int>( type::function ),
                     ( std::string{ "index is not function : " } + lua_typename( state_, stack_index_ ) ).c_str() );
-                return luaL_ref( state_, LUA_REGISTRYINDEX );
+                auto value_ = luaL_ref( state_, LUA_REGISTRYINDEX );
+                // luaL_refはスタッククリーン不要な模様
+                return value_;
             }
         };
 
@@ -251,10 +308,10 @@ namespace c2xa
                     ( std::string{ "index is not table : " } +lua_typename( state_, stack_index_ ) ).c_str() );
                 lua_getfield( state_, stack_index_, field_name_ );
                 auto value_ = to< type_ >::from( state_, -1 );
-                lua_settop( state_, -1 );
                 return value_;
             }
         }
+
     }
 }
 
