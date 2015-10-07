@@ -41,7 +41,7 @@ bool object_layer::init()
 
     lua::get_engine()->executeScriptFile( "scripts/c2xa/generate.lua" );
     lua_getglobal( lua::get_state(), "c2xa_generate" );
-    lua::push_usertype( lua::get_state(), enemies_, "cc.Node" );
+    lua::push_usertype( lua::get_state(), this, "cc.Layer" );
     lua::call( lua::get_state(), 1, 0 );
 
     return true;

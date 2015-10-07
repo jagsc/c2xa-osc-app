@@ -18,8 +18,12 @@ namespace c2xa
     */
     static std::array< char, score_digit + 1 > to_string_from_score( unsigned int score_ )
     {
-        CCASSERT( score_ <= max_score, "Max score is 8-digit." );
         std::array<char, score_digit + 1> buffer_;
+        CCASSERT( score_ <= max_score, "Max score is 8-digit." );
+        if( !( score_ <= max_score ) )
+        {
+            return {};
+        }
         sprintf( buffer_.data(), "%08d", score_ );
         //auto str_ = std::to_string( score_ );
         //str_ = std::string( score_digit - str_.length(), '0' ) + str_;
@@ -30,8 +34,12 @@ namespace c2xa
     */
     static char one_digit_to_string( unsigned int i_ )
     {
-        CCASSERT( i_ <= 9 && i_ >= 0, "Param is need one digit." );
         char buffer_[ 2 ];
+        CCASSERT( i_ <= 9 && i_ >= 0, "Param is need one digit." );
+        if( !( i_ <= 9 && i_ >= 0 ) )
+        {
+            return -1;
+        }
         sprintf( buffer_, "%1d", i_ );
         //auto str_ = std::to_string( score_ );
         //str_ = std::string( score_digit - str_.length(), '0' ) + str_;

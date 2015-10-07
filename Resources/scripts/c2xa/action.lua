@@ -1,16 +1,34 @@
--- require "c2xa.enemy"
+
+require "c2xa.extend"
+require "c2xa.moving"
 
 action = action or {}
 
 function action.create_enemy( setting )
     return cc.CallFunc:create(function()
         local enemy
-        setting.scheduler_id = cc.Director:getInstance():getScheduler():scheduleScriptFunc( function( delta )
-            enemy:update( delta )
-        end, 0, false )
-        -- enemy = c2xa.enemy.new( setting )
+        local default = {
+            move = moving.default,
+            time = 4.0,
+            easing = nil -- óDêÊìxí·
+        }
+        setting = extend_deep( {}, default, setting )
         enemy = c2xa.create_enemy( setting )
-        setting.enemies:addChild( enemy )
+        c2xa.enemies:addChild( enemy )
+    end)
+end
+
+function action.create_bullet( setting )
+    return cc.CallFunc:create(function()
+        local bullet
+        local default = {
+            move = moving.default,
+            time = 4.0,
+            easing = nil -- óDêÊìxí·
+        }
+        setting = extend_deep( {}, default, setting )
+        bullet = c2xa.create_bullet( setting )
+        setting.parent:addChild( bullet )
     end)
 end
 
