@@ -42,6 +42,7 @@ namespace c2xa
             std::unique_ptr<data> data_;
             double progress_ = 0.;
 
+
         public:
             /// 引数のLuaステートに関数を登録します
             static void registrory_glue( lua_State* state_ )
