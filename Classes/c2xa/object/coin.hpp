@@ -66,7 +66,7 @@ namespace c2xa
             }
             virtual void update( float delta_ ) override
             {
-                auto y_ = sprite_->getPositionY() - ( fall_speed_ * delta_ * 100.f );
+                auto y_ = sprite_->getPositionY() - ( fall_speed_ * get_delta() );
                 sprite_->setPositionY( y_ );
                 if( y_ < 0 )
                 {

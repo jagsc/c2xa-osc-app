@@ -9,7 +9,7 @@
 
 using namespace c2xa;
 
-bool judgement::init()
+bool judgement::init( cocos2d::Node* parent_ )
 {
     using namespace cocos2d;
 
@@ -20,6 +20,19 @@ bool judgement::init()
 
     scheduleUpdate();
     setName( "judgement" );
+
+    auto ui_layer_ = get_child( parent_, "ui_layer" );
+    auto remaining_node_ = Node::create();
+    remaining_node_->setName( "remaining" );
+    for( int i = remaining_.get(); 0 < i; --i )
+    {
+        auto sprite_ = create_sprite_from_batch( remaining_node_, "img/main_scene_remaining.png" );
+        sprite_->setTag( i );
+        sprite_->setAnchorPoint( Vec2::ANCHOR_TOP_LEFT );
+        sprite_->setPosition( Vec2{ 365.f + ( i - 1 ) * 35.f, app_height - 20.f } );
+        remaining_node_->addChild( sprite_ );
+    }
+    ui_layer_->addChild( remaining_node_ );
 
     auto keyboard_listener_ = EventListenerKeyboard::create();
     keyboard_listener_->onKeyPressed = [ & ]( EventKeyboard::KeyCode key_, Event* event_ )
@@ -36,7 +49,7 @@ bool judgement::init()
     return true;
 }
 
-void judgement::update( float )
+void judgement::update( float delta_ )
 {
     if( game_over_ )
     {
@@ -62,6 +75,7 @@ void judgement::update( float )
                 auto enemy_ = static_cast<object::enemy_interface*>( e );
                 if( enemy_->get_collision()->judge( player_bullet_->get_collision().get() ) )
                 {
+                    score_.add( enemy_->get_point() );
                     enemy_->collide( object_type::player_bullet );
                     player_bullet_->collide( object_type::enemy );
                 }
@@ -69,28 +83,40 @@ void judgement::update( float )
         }
 
         // player<->enemy
-        for( auto i : enemies_ )
+        if( no_judge_player > 0 ) // 無敵時間
         {
-            auto enemy_ = static_cast<object::enemy_interface*>( i );
-            if( player_->get_collision()->judge( enemy_->get_collision().get() ) )
+            no_judge_player -= delta_ * 100.; // 無敵時間はゲーム速度関係なし固定で引数使います
+            if( no_judge_player < 0 )
             {
-                enemy_->collide( object_type::player );
-                player_->collide( object_type::enemy );
-                //TODO: 自機減らす&僅かな判定無効時間
+                no_judge_player = 0;
             }
         }
+        else
+        {
+            for( auto i : enemies_ )
+            {
+                auto enemy_ = static_cast<object::enemy_interface*>( i );
+                if( player_->get_collision()->judge( enemy_->get_collision().get() ) )
+                {
+                    enemy_->collide( object_type::player );
+                    player_->collide( object_type::enemy );
+                    //TODO: 自機減らす&僅かな判定無効時間
+                    damage_player();
+                }
+            }
 
-        // player<->enemy_bullets
-        //for( auto i : enemy_bullets_ )
-        //{
-        //    auto enemy_bullet_ = static_cast<bullet::enemy_bullet_interface*>( i );
-        //    if( player_->get_collision()->judge( enemy_bullet_->get_collision().get() ) )
-        //    {
-        //        enemy_bullet_->collide( object_type::player );
-        //        player_->collide( object_type::enemy_bullet );
-        //        //TODO: 自機減らす&僅かな判定無効時間
-        //    }
-        //}
+            // player<->enemy_bullets
+            //for( auto i : enemy_bullets_ )
+            //{
+            //    auto enemy_bullet_ = static_cast<bullet::enemy_bullet_interface*>( i );
+            //    if( player_->get_collision()->judge( enemy_bullet_->get_collision().get() ) )
+            //    {
+            //        enemy_bullet_->collide( object_type::player );
+            //        player_->collide( object_type::enemy_bullet );
+            //        //TODO: 自機減らす&僅かな判定無効時間
+            //    }
+            //}
+        }
 
         // player<->coin
         for( auto i : coins_ )
@@ -115,4 +141,11 @@ void judgement::update( float )
             get_parent<scene::main_scene>( this )->game_over();
         }
     }
+}
+
+void judgement::damage_player()
+{
+    get_child( get_child( get_parent( this ), "ui_layer" ), "remaining" ) ->getChildByTag( remaining_.get() )->removeFromParent();
+    remaining_.decrease();
+    no_judge_player = no_judge_player_time;
 }

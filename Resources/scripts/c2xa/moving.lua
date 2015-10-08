@@ -9,16 +9,34 @@ end
 -- 直進
 function moving.straight( start, goal )
     return function( progress )
-        return cc.p(
-            ( goal.x - start.x ) * progress / 100,
-            ( goal.y - start.y ) * progress / 100 )
+        if( goal.x > start.x ) then
+            if( goal.y > start.y ) then
+                return cc.p(
+                    math.abs( goal.x - start.x ) * progress / 100,
+                    math.abs( goal.y - start.y ) * progress / 100 )
+            else
+                return cc.p(
+                    math.abs( goal.x - start.x ) * progress / 100,
+                    math.abs( goal.y - start.y ) * ( 100 - progress ) / 100 )
+            end
+        else
+            if( goal.y > start.y ) then
+                return cc.p(
+                    math.abs( goal.x - start.x ) * ( 100 - progress ) / 100,
+                    math.abs( goal.y - start.y ) * progress / 100 )
+            else
+                return cc.p(
+                    math.abs( goal.x - start.x ) * ( 100 - progress ) / 100,
+                    math.abs( goal.y - start.y ) * ( 100 - progress ) / 100 )
+            end
+        end
     end
 end
 
 function moving.curve(start, line1, line2)
     return function(progress)
        return cc.p((math.cos(progress)) * progress / 100,(math.sin(progress)) * progress / 100)
-       return cc.p((start.x * start.x) / (line1*line1))
+       --return cc.p((start.x * start.x) / (line1*line1))
     end
 end
 

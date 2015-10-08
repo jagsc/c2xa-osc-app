@@ -8,6 +8,7 @@
 
 #include <cocos2d.h>
 
+#include <c2xa/counter.hpp>
 #include <scripting/lua-bindings/manual/CCLuaEngine.h>
 
 namespace c2xa
@@ -108,6 +109,15 @@ namespace c2xa
             images_->addChild( batch_, 1 );
         }
         return cocos2d::Sprite::createWithTexture( batch_->getTexture() );
+    }
+    static counter* get_counter()
+    {
+        static counter c;
+        return &c;
+    }
+    static double get_delta()
+    {
+        return get_counter()->get();
     }
 
     namespace lua
