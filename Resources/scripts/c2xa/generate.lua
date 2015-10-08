@@ -2,8 +2,6 @@
 require "c2xa.action"
 require "c2xa.moving"
 
-
-
 -- 1クール
 function c2xa_generate( object_layer )
     c2xa.enemies = object_layer:getChildByName( "enemies" )
@@ -21,11 +19,9 @@ function c2xa_generate( object_layer )
             action.wait( 2 ),
             action.create_enemy( sample_enemy2 ),
             action.wait( 2 ),
-
             action.create_enemy( sample_enemy1 ),
             action.wait( 2 ),
             action.create_enemy( sample_enemy2 ),
-
             action.wait( 2 ),
             action.create_enemy( sample_enemy1 )
         })
