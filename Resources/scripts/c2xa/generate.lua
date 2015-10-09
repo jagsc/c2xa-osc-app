@@ -6,7 +6,7 @@ require "c2xa.moving"
 function c2xa_generate( object_layer )
     c2xa.enemies = object_layer:getChildByName( "enemies" )
     local sample_enemy1 = {
-        move   = moving.straight( cc.p( 560, 960 ), cc.p( 0, 0 ) ),
+        move   = moving.straight( cc.p( 560, 960 ), cc.p( -100, 0 ) ),
         time   = 8
     }
     local sample_enemy2 = {
