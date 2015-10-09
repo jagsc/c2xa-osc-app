@@ -9,7 +9,7 @@ function action.create_enemy( setting )
         local enemy
         local default = {
             move = moving.default,
-            time = 4.0,
+            time = 10.0,
             point = 1000
         }
         setting = extend_deep( {}, default, setting )
@@ -23,7 +23,7 @@ function action.create_bullet( setting )
         local bullet
         local default = {
             move = moving.default,
-            time = 4.0,
+            time = 10.0,
             point = 300
         }
         setting = extend_deep( {}, default, setting )
