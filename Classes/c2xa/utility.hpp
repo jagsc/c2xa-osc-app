@@ -110,15 +110,11 @@ namespace c2xa
         }
         return cocos2d::Sprite::createWithTexture( batch_->getTexture() );
     }
-    static counter* get_counter()
-    {
-        static counter c;
-        return &c;
-    }
-    static double get_delta()
-    {
-        return get_counter()->get();
-    }
+    counter* get_counter();
+    double get_count();
+    int get_magnification_glue( lua_State* state_ );
+    void set_magnification( double mag_ );
+    int set_magnification_glue( lua_State* state_ );
 
     namespace lua
     {

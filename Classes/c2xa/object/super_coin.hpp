@@ -72,7 +72,7 @@ namespace c2xa
             }
             virtual void update( float delta_ ) override
             {
-                count_ += get_delta();
+                count_ += get_count();
                 if( count_ > duration_ )
                 {
                     removeFromParent();

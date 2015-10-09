@@ -11,6 +11,8 @@
 
 #include <cocos2d.h>
 
+#include <AudioEngine.h>
+
 #include <stdlib.h>
 #include <c2xa/c2xa_config.hpp>
 #include <c2xa/object/object.hpp>
@@ -38,12 +40,13 @@ namespace c2xa
             {
                 lua_State* state;
                 int move_id;
-                double time = 0;
+                double time = 0; // 初期化必須
+                unsigned int point;
             };
             std::unique_ptr<data> data_;
             double progress_ = 0.;
             collision collision_;
-
+            bool death_ = false;
 
         public:
             /// 引数のLuaステートに関数を登録します
@@ -51,6 +54,8 @@ namespace c2xa
             {
                 static const struct luaL_Reg functions_[] ={
                     { "create_enemy", create_glue },
+                    { "set_magnification", set_magnification_glue },
+                    { "get_magnification", get_magnification_glue },
                     { nullptr, nullptr }
                 };
                 luaL_register( state_, "c2xa", functions_ );
@@ -76,6 +81,7 @@ namespace c2xa
 
                 data_->move_id = lua::to< lua::type::function >::from_table( state_, "move" );
                 data_->time = lua::to< lua::type::number >::from_table( state_, "time" );
+                data_->point = lua::to< lua::type::number >::from_table( state_, "point" );
 
                 auto enemy_ = create_template<enemy>( std::move( data_ ) );
 
@@ -103,31 +109,23 @@ namespace c2xa
             }
             virtual void update( float delta_ ) override
             {
-                progress_ += get_delta();
+                progress_ += get_count();
 
-                if( progress_ * 100 / ( data_->time * 60 ) > 110.f ) // 10%余裕を持たせてから削除
+                if( progress_ > data_->time * 60 )
                 {
-                    cleanup();
-                    removeFromParent();
+                    clean();
                     return;
                 }
 
                 get_child<cocos2d::Sprite>( this, "sprite" )->setPosition( get_position() );
             }
-            ~enemy()
-            {
-                cleanup();
-            }
 
         private:
-            void cleanup()
+            void clean()
             {
                 unscheduleUpdate();
-                if( data_ != nullptr )
-                {
-                    luaL_unref( data_->state, LUA_REGISTRYINDEX, data_->move_id );
-                    data_.reset( nullptr );
-                }
+                luaL_unref( data_->state, LUA_REGISTRYINDEX, data_->move_id );
+                removeFromParent();
             }
             cocos2d::Vec2&& get_position() const
             {
@@ -150,7 +148,7 @@ namespace c2xa
             }
             unsigned int get_point() const override
             {
-                return 1000; //TODO: 暫定
+                return data_->point;
             }
             collision get_collision() const override
             {
@@ -168,8 +166,44 @@ namespace c2xa
                 }
                 case object_type::player_bullet:
                 {
-                    removeFromParent();
-                    break;
+                    if( !death_ )
+                    {
+                        death_ = true;
+                        auto sprite_1_ = create_sprite_from_batch( getParent()->getParent(), "img/main_scene_death_1.png" );
+                        sprite_1_->setPosition( get_position() );
+                        getParent()->getParent()->addChild( sprite_1_ );
+                        sprite_1_->runAction(
+                            cocos2d::Sequence::create(
+                                cocos2d::CallFunc::create( [ sprite_1_ ]
+                        {
+                            cocos2d::experimental::AudioEngine::play2d( "sounds/death.mp3", false, 0.3f, nullptr );
+                        } ),
+                                cocos2d::DelayTime::create( 0.3f ),
+                            cocos2d::FadeOut::create( 0.7f ),
+                            cocos2d::CallFunc::create( [ sprite_1_ ]
+                        {
+                            sprite_1_->removeFromParent();
+                        } ),
+                            nullptr
+                            ) );
+                        auto sprite_2_ = create_sprite_from_batch( getParent()->getParent(), "img/main_scene_death_2.png" );
+                        sprite_2_->setPosition( get_position() );
+                        getParent()->getParent()->addChild( sprite_2_ );
+                        sprite_2_->runAction(
+                            cocos2d::Sequence::create(
+                                cocos2d::Spawn::createWithTwoActions(
+                                    cocos2d::RotateBy::create( 1.f, 2500.f ),
+                                    cocos2d::Sequence::create( cocos2d::DelayTime::create( 0.3f ), cocos2d::FadeOut::create( 0.5f ), nullptr )
+                                    ),
+                                cocos2d::CallFunc::create( [ sprite_2_ ]
+                        {
+                            sprite_2_->removeFromParent();
+                        } ),
+                                nullptr
+                            ) );
+                        clean();
+                        break;
+                    }
                 }
                 }
             }

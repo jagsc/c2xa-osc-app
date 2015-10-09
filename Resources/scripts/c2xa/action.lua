@@ -10,7 +10,7 @@ function action.create_enemy( setting )
         local default = {
             move = moving.default,
             time = 4.0,
-            easing = nil -- 優先度低
+            point = 1000
         }
         setting = extend_deep( {}, default, setting )
         enemy = c2xa.create_enemy( setting )
@@ -24,7 +24,7 @@ function action.create_bullet( setting )
         local default = {
             move = moving.default,
             time = 4.0,
-            easing = nil -- 優先度低
+            point = 300
         }
         setting = extend_deep( {}, default, setting )
         bullet = c2xa.create_bullet( setting )

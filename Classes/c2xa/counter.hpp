@@ -20,6 +20,10 @@ namespace c2xa
         {
             magnification_ = mag_;
         }
+        double get_magnification()
+        {
+            return magnification_;
+        }
         double get()
         {
             return static_cast<double>( cocos2d::Director::getInstance()->getDeltaTime() ) * 100. * magnification_;

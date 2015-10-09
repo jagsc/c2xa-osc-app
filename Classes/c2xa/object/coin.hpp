@@ -50,7 +50,7 @@ namespace c2xa
                 }
                 scheduleUpdate();
 
-                sprite_ = create_sprite_from_batch( get_current_scene(), "CloseNormal.png" );
+                sprite_ = create_sprite_from_batch( get_current_scene(), "img/main_scene_coin.png" );
                 sprite_->retain();
 
                 static std::mt19937 engine_( random_seed );
@@ -66,7 +66,7 @@ namespace c2xa
             }
             virtual void update( float delta_ ) override
             {
-                auto y_ = sprite_->getPositionY() - ( fall_speed_ * get_delta() );
+                auto y_ = sprite_->getPositionY() - ( fall_speed_ * get_count() );
                 sprite_->setPositionY( y_ );
                 if( y_ < 0 )
                 {
