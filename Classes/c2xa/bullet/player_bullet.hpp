@@ -25,7 +25,7 @@ namespace c2xa
             : public bullet_interface
         {
         private:
-            float   duration_ = 320.f; // frame
+            float   duration_ = 240.f; // frame
             float   count_    = 0.f;
             cocos2d::Vec2    target_position_;
             cocos2d::Vec2    first_position_;
@@ -63,7 +63,7 @@ namespace c2xa
             }
             virtual void update( float delta_ ) override
             {
-                count_ += 1.f * ( delta_ * 100 );
+                count_ += get_count();
 
                 if( count_ > duration_ )
                 {
@@ -84,6 +84,7 @@ namespace c2xa
             }
             void collide( object_type type_ ) override
             {
+                removeFromParent();
             }
         };
     }
