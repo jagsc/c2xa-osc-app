@@ -14,7 +14,7 @@ function c2xa_generate( object_layer )
         time   = 4
     }
     local sample_enemy3 = {
-        move   = moving.teleportation( cc.p( 0, 0 ), cc.p( 560, 960 ), cc.p( 300, 300 ) ),
+        move   = moving.curve( cc.p( 0, 0 ), cc.p( 300, 500 ), cc.p( 300, 300 ) ),
         time   = 4
     }
     local sample_enemy4 = {
