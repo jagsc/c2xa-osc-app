@@ -55,9 +55,9 @@ void object_layer::update( float )
     {
         get_child( this, "coins" )->addChild( object::coin::create() );
     }
-    std::bernoulli_distribution dist_super_coin_( super_coin_probability );
-    if( dist_super_coin_( engine_ ) )
-    {
-        get_child( this, "coins" )->addChild( object::super_coin::create() );
-    }
+    //std::bernoulli_distribution dist_super_coin_( super_coin_probability );
+    //if( dist_super_coin_( engine_ ) )
+    //{
+    //    get_child( this, "coins" )->addChild( object::super_coin::create() );
+    //}
 }

@@ -36,7 +36,11 @@ function c2xa_generate( object_layer )
             action.wait( 2 ),
             action.create_enemy( sample_enemy2 ),
             action.wait( 2 ),
-            action.create_enemy( sample_enemy2 )
+            action.create_enemy( sample_enemy2 ),
+            cc.CallFunc:create(function()
+                c2xa.set_magnification( c2xa.get_magnification() + 0.1 )
+                c2xa_generate( object_layer )
+            end)
         })
     )
 end

@@ -26,9 +26,9 @@ namespace c2xa
     static constexpr unsigned int max_score = 99999999;
     static constexpr unsigned int initial_player_remaining = 5;
     static constexpr unsigned int random_seed = 58378276;
-    static constexpr float        coin_probability = 0.005f;
-    static constexpr float        super_coin_probability = 0.005f;
-    static constexpr unsigned int coin_point       = 100;
+    static constexpr float        coin_probability = 0.0005f;
+    static constexpr float        super_coin_probability = 0.00005f;
+    static constexpr unsigned int coin_point       = 300;
     static constexpr unsigned int super_coin_point = 1000;
     static constexpr float        no_judge_player_time = 180.f;
 }

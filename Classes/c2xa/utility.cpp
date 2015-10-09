@@ -4,6 +4,30 @@
 
 namespace c2xa
 {
+    counter* get_counter()
+    {
+        static counter c;
+        return &c;
+    }
+    double get_count()
+    {
+        return get_counter()->get();
+    }
+    int get_magnification_glue( lua_State* state_ )
+    {
+        lua_pushnumber( state_, get_counter()->get_magnification() );
+        return 1;
+    }
+    void set_magnification( double mag_ )
+    {
+        return get_counter()->set_magnification( mag_ );
+    }
+    int set_magnification_glue( lua_State* state_ )
+    {
+        get_counter()->set_magnification( lua::to< lua::type::number >::from( state_ ) );
+        return 0;
+    }
+
     namespace lua
     {
         void initialize_engine( cocos2d::LuaEngine* engine_ )
