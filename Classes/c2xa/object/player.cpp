@@ -4,6 +4,8 @@
     @date   2015/08/29
 ****************************************************************************************/
 
+#include <AudioEngine.h>
+
 #include <c2xa/object/player.hpp>
 #include <c2xa/bullet/player_bullet.hpp>
 #include <c2xa/c2xa_config.hpp>
@@ -31,7 +33,7 @@ bool player::init()
 
     position_ = player_y_position;
     auto player_sprite_ = Sprite::create( "img/player_bugdroid.png" );
-    player_sprite_->setName( "player_sprite" );
+    player_sprite_->setName( "sprite" );
     player_sprite_->setPosition( Vec2( position_, player_y_position ) );
     addChild( player_sprite_ );
 
@@ -107,7 +109,7 @@ bool player::init()
 
 void player::update( float delta_ )
 {
-    auto player_sprite_ = getChildByName( "player_sprite" );
+    auto player_sprite_ = getChildByName( "sprite" );
     float target_rotation_ = 0.f;
     if( move_state_ != move_state::NONE )
     {
@@ -181,4 +183,30 @@ void player::update( float delta_ )
 void player::fire()
 {
     getParent()->getChildByName("player_bullets")->addChild( bullet::player_bullet::create( position_ ) );
+}
+
+void player::collide( c2xa::object_type type_ )
+{
+    // 何かと接触しましたよー！！！？？？
+    // 接触したのが敵なら自機のダメージエフェクトとか
+    // 不要なら空
+    switch( type_ )
+    {
+    case object_type::coin: break;
+    case object_type::enemy:
+    case object_type::enemy_bullet:
+    {
+        // ダメージ
+        get_child( this, "sprite" )->runAction(
+            cocos2d::Sequence::create(
+                cocos2d::Blink::create( 3.f, 20 ),
+                cocos2d::CallFunc::create( [ this ]
+                {
+                    get_child( this, "sprite" )->setVisible( true );
+                }), nullptr ) );
+        cocos2d::experimental::AudioEngine::play2d( "sounds/damage.mp3", false, 0.3f, nullptr );
+        break;
+    }
+    default: break;
+    }
 }

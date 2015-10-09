@@ -54,12 +54,7 @@ namespace c2xa
                 // 自機にポイントはない
                 return 0;
             }
-            void collide( object_type ) override
-            {
-                // 何かと接触しましたよー！！！？？？
-                // 接触したのが敵なら自機のダメージエフェクトとか
-                // 不要なら空
-            }
+            void collide( object_type ) override;
 
         private:
             void reset()

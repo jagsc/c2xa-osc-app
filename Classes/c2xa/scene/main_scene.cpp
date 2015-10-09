@@ -29,7 +29,7 @@ bool main_scene::init()
     addChild( main::layer::object_layer::create(), 2 );
     addChild( main::layer::background_layer::create(), 1 );
 
-    addChild( judgement::create() );
+    addChild( judgement::create( this ) );
 
     return true;
 }

@@ -131,6 +131,9 @@
     <ClInclude Include="..\Classes\c2xa\object\enemy.hpp">
       <Filter>src\c2xa\object</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\counter.hpp">
+      <Filter>src\c2xa</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

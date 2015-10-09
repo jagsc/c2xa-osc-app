@@ -1,4 +1,4 @@
-
+ï»¿
 require "c2xa.extend"
 require "c2xa.moving"
 
@@ -10,7 +10,7 @@ function action.create_enemy( setting )
         local default = {
             move = moving.default,
             time = 4.0,
-            easing = nil -- —Dæ“x’á
+            easing = nil -- å„ªå…ˆåº¦ä½
         }
         setting = extend_deep( {}, default, setting )
         enemy = c2xa.create_enemy( setting )
@@ -24,7 +24,7 @@ function action.create_bullet( setting )
         local default = {
             move = moving.default,
             time = 4.0,
-            easing = nil -- —Dæ“x’á
+            easing = nil -- å„ªå…ˆåº¦ä½
         }
         setting = extend_deep( {}, default, setting )
         bullet = c2xa.create_bullet( setting )

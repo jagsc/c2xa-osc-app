@@ -71,10 +71,14 @@ namespace c2xa
 
     private:
         bool game_over_ = false;
+        float no_judge_player = 0; // ダメージ後の無敵時間カウント
 
     public:
-        CREATE_FUNC( judgement );
-        virtual bool init() override;
+        static judgement* create( cocos2d::Node* parent_ )
+        {
+            return create_template<judgement>( parent_ );
+        }
+        virtual bool init( cocos2d::Node* parent_ ); //no-override;
         virtual void update( float ) override;
         bool is_game_over() const
         {
@@ -84,6 +88,9 @@ namespace c2xa
         {
             return score_.get();
         }
+
+    private:
+        void damage_player();
     };
 }
 

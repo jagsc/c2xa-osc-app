@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <c2xa/c2xa_config.hpp>
 #include <c2xa/object/object.hpp>
+#include <c2xa/counter.hpp>
 #include <c2xa/utility.hpp>
 
 namespace c2xa
@@ -102,10 +103,9 @@ namespace c2xa
             }
             virtual void update( float delta_ ) override
             {
-                progress_ += delta_ * 100.f; //TODO: delta_ * 100 の部分は暫定
-                // Luaの内部表現はdoubleなのでdoubleに合わせます
+                progress_ += get_delta();
 
-                if( progress_ * 100 / ( data_->time * 60 ) > 100.f )
+                if( progress_ * 100 / ( data_->time * 60 ) > 110.f ) // 10%余裕を持たせてから削除
                 {
                     cleanup();
                     removeFromParent();

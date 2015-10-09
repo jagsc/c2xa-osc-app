@@ -30,6 +30,7 @@ namespace c2xa
     static constexpr float        super_coin_probability = 0.005f;
     static constexpr unsigned int coin_point       = 100;
     static constexpr unsigned int super_coin_point = 1000;
+    static constexpr float        no_judge_player_time = 180.f;
 }
 
 #endif//C2XA_C2XA_CONFIG_HPP
