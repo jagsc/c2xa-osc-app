@@ -1,6 +1,7 @@
 
 #include <c2xa/utility.hpp>
 #include <c2xa/object/enemy.hpp>
+#include <c2xa/bullet/enemy_bullet.hpp>
 
 namespace c2xa
 {

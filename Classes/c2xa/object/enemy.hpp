@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <c2xa/c2xa_config.hpp>
 #include <c2xa/object/object.hpp>
+#include <c2xa/bullet/enemy_bullet.hpp>
 #include <c2xa/counter.hpp>
 #include <c2xa/utility.hpp>
 
@@ -40,13 +41,47 @@ namespace c2xa
             {
                 lua_State* state;
                 int move_id;
-                double time = 0; // 初期化必須
+                double duration = 0; // 初期化必須
                 unsigned int point;
+
+                struct fire
+                {
+                    enum class type
+                    {
+                        bullet,
+                        time
+                    } type_;
+                    union info
+                    {
+                        struct bullet
+                        {
+                            int move_id;
+                            double duration;
+                        } bullet_;
+                        double time_;
+                        info( bullet b_ )
+                        {
+                            bullet_ = b_;
+                        }
+                        info( double t_ )
+                        {
+                            time_ = t_;
+                        }
+                    } info_;
+                    fire( type type_, info info_ )
+                        : type_{ type_ }
+                        , info_{ info_ }
+                    {
+                    }
+                };
+                std::list<fire> fire_info_;
             };
             std::unique_ptr<data> data_;
             double progress_ = 0.;
             collision collision_;
             bool death_ = false;
+            double previous_fire_time_ = 0;
+            int previous_fire_number_ = 0;
 
         public:
             /// 引数のLuaステートに関数を登録します
@@ -80,8 +115,36 @@ namespace c2xa
                 //data_->move_id = luaL_ref( state_, LUA_REGISTRYINDEX );
 
                 data_->move_id = lua::to< lua::type::function >::from_table( state_, "move" );
-                data_->time = lua::to< lua::type::number >::from_table( state_, "time" );
+                data_->duration = lua::to< lua::type::number >::from_table( state_, "duration" );
                 data_->point = lua::to< lua::type::number >::from_table( state_, "point" );
+
+                lua_getfield( state_, -1, "fire" );
+                if( lua_type( state_, -1 ) == LUA_TTABLE )
+                {
+                    lua_pushnil( state_ ); //たぶんNilだと最初からって意味
+                    while( lua_next( state_, -2 ) != 0 )
+                    {
+                        if( lua_type( state_, -1 ) == LUA_TTABLE )
+                        {
+                            // テーブルの場合は、弾だと判断します
+                            auto move_id_ = lua::to< lua::type::function >::from_table( state_, "move" );
+                            auto duration_ = lua::to< lua::type::number >::from_table( state_, "duration" );
+                            data_->fire_info_.push_back( { data::fire::type::bullet, data::fire::info::bullet{ move_id_, duration_ } } );
+                        }
+                        else if( lua_type( state_, -1 ) == LUA_TNUMBER )
+                        {
+                            // 数値の場合は、待機時間だと判断します
+                            auto time_ = lua_tonumber( state_, -1 );
+                            data_->fire_info_.push_back( { data::fire::type::time, data::fire::info{ time_ } } );
+                        }
+                        else
+                        {
+                            CCASSERT( false, "値でもテーブルでもねえぞｵｲ！" );
+                        }
+                        lua_settop( state_, -2 );
+                    }
+                }
+                lua_settop( state_, 0 );
 
                 auto enemy_ = create_template<enemy>( std::move( data_ ) );
 
@@ -98,12 +161,14 @@ namespace c2xa
                 data_ = std::move( d_ );
                 scheduleUpdate();
 
-                auto sprite_ = create_sprite_from_batch( get_current_scene(), "img/player_bugdroid.png" );
+                auto sprite_ = create_sprite_from_batch( get_current_scene(), "img/enemy_bugdroid.png" );
                 sprite_->setPosition( get_position() );
                 sprite_->setName( "sprite" );
                 addChild( sprite_ );
 
                 collision_ = create_collision_circul( sprite_ );
+
+                fire();
 
                 return true;
             }
@@ -111,13 +176,14 @@ namespace c2xa
             {
                 progress_ += get_count();
 
-                if( progress_ > data_->time * 60 )
+                if( progress_ > data_->duration * 60 )
                 {
                     clean();
                     return;
                 }
 
                 get_child<cocos2d::Sprite>( this, "sprite" )->setPosition( get_position() );
+                fire();
             }
 
         private:
@@ -125,7 +191,53 @@ namespace c2xa
             {
                 unscheduleUpdate();
                 luaL_unref( data_->state, LUA_REGISTRYINDEX, data_->move_id );
+                for( auto i : data_->fire_info_ )
+                {
+                    if( i.type_ == data::fire::type::bullet )
+                    {
+                        luaL_unref( data_->state, LUA_REGISTRYINDEX, i.info_.bullet_.move_id );
+                    }
+                }
                 removeFromParent();
+            }
+            void fire()
+            {
+                if( !data_->fire_info_.empty() )
+                {
+                    auto info_ = data_->fire_info_.front();
+                    while( info_.type_ != data::fire::type::bullet )
+                    {
+                        data_->fire_info_.pop_front();
+                        previous_fire_time_ += info_.info_.time_ * 60;
+                        if( data_->fire_info_.empty() )
+                        {
+                            break;
+                        }
+                        info_ = data_->fire_info_.front();
+                    }
+                    if( progress_ > previous_fire_time_ )
+                    {
+                        while( info_.type_ != data::fire::type::time )
+                        {
+                            std::unique_ptr<bullet::data> d_{ new bullet::data };
+                            d_->state = data_->state;
+                            d_->move_id = info_.info_.bullet_.move_id;
+                            d_->duration = info_.info_.bullet_.duration;
+                            auto pos_ = get_child<cocos2d::Sprite>( this, "sprite" )->getPosition();
+                            d_->first_x = pos_.x;
+                            d_->first_y = pos_.y;
+                            auto bullet_ = bullet::enemy_bullet::create( std::move( d_ ) );
+                            get_child( getParent()->getParent(), "enemy_bullets" )->addChild( bullet_ );
+                            data_->fire_info_.pop_front();
+                            if( data_->fire_info_.empty() )
+                            {
+                                break;
+                            }
+                            info_ = data_->fire_info_.front();
+                        }
+                        previous_fire_time_ = progress_;
+                    }
+                }
             }
             cocos2d::Vec2&& get_position() const
             {
@@ -133,14 +245,16 @@ namespace c2xa
                 lua_rawgeti( data_->state, LUA_REGISTRYINDEX, data_->move_id );
 
                 // 第一引数: 進捗率(0～100までのdouble)
-                lua_pushnumber( data_->state, progress_ * 100 / ( data_->time * 60 ) );
+                lua_pushnumber( data_->state, progress_ * 100 / ( data_->duration * 60 ) );
 
                 // 呼び出し: 引数1: 戻り値1: 座標(xとyを持つテーブル)
                 lua::call( data_->state, 1, 1 );
 
                 double x = lua::to< lua::type::number >::from_table( data_->state, "x" );
                 double y = lua::to< lua::type::number >::from_table( data_->state, "y" );
-                
+
+                lua_settop( data_->state, -2 );
+
                 return std::move( cocos2d::Vec2 {
                     static_cast<float>( x ),
                     static_cast<float>( y )

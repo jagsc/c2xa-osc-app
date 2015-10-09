@@ -57,13 +57,13 @@ void judgement::update( float delta_ )
     else
     {
         // 接触判定
-        auto root_         = get_parent( this );
-        auto object_layer_ = get_child( root_, "object_layer" );
-        auto player_       = get_child<object::player>( object_layer_, "player" );
-        auto coins_        = get_child( object_layer_, "coins" )->getChildren();
+        auto root_           = get_parent( this );
+        auto object_layer_   = get_child( root_, "object_layer" );
+        auto player_         = get_child<object::player>( object_layer_, "player" );
+        auto coins_          = get_child( object_layer_, "coins" )->getChildren();
         auto enemies_        = get_child( object_layer_, "enemies" )->getChildren();
         auto player_bullets_ = get_child( object_layer_, "player_bullets" )->getChildren();
-        //auto enemy_bullets_ = get_child( object_layer_, "enemy_bullets" )->getChildren();
+        auto enemy_bullets_  = get_child( object_layer_, "enemy_bullets" )->getChildren();
 
         // enemy<->player_bullets
         for( auto b : player_bullets_ )
@@ -106,16 +106,17 @@ void judgement::update( float delta_ )
             }
 
             // player<->enemy_bullets
-            //for( auto i : enemy_bullets_ )
-            //{
-            //    auto enemy_bullet_ = static_cast<bullet::enemy_bullet_interface*>( i );
-            //    if( player_->get_collision()->judge( enemy_bullet_->get_collision().get() ) )
-            //    {
-            //        enemy_bullet_->collide( object_type::player );
-            //        player_->collide( object_type::enemy_bullet );
-            //        //TODO: 自機減らす&僅かな判定無効時間
-            //    }
-            //}
+            for( auto i : enemy_bullets_ )
+            {
+                auto enemy_bullet_ = static_cast<bullet::bullet_interface*>( i );
+                if( player_->get_collision()->judge( enemy_bullet_->get_collision().get() ) )
+                {
+                    enemy_bullet_->collide( object_type::player );
+                    player_->collide( object_type::enemy_bullet );
+                    //TODO: 自機減らす&僅かな判定無効時間
+                    damage_player();
+                }
+            }
         }
 
         // player<->coin
@@ -145,7 +146,10 @@ void judgement::update( float delta_ )
 
 void judgement::damage_player()
 {
-    get_child( get_child( get_parent( this ), "ui_layer" ), "remaining" ) ->getChildByTag( remaining_.get() )->removeFromParent();
-    remaining_.decrease();
-    no_judge_player = no_judge_player_time;
+    if( !remaining_.is_dead() )
+    {
+        get_child( get_child( get_parent( this ), "ui_layer" ), "remaining" )->getChildByTag( remaining_.get() )->removeFromParent();
+        remaining_.decrease();
+        no_judge_player = no_judge_player_time;
+    }
 }

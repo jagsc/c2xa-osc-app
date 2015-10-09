@@ -158,6 +158,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\app_delegate.hpp" />
+    <ClInclude Include="..\Classes\c2xa\bullet\enemy_bullet.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="..\Classes\c2xa\bullet\player_bullet.hpp">
       <SubType>
       </SubType>

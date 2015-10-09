@@ -134,6 +134,9 @@
     <ClInclude Include="..\Classes\c2xa\counter.hpp">
       <Filter>src\c2xa</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\bullet\enemy_bullet.hpp">
+      <Filter>src\c2xa\bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">
