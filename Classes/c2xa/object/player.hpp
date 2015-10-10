@@ -62,12 +62,7 @@ namespace c2xa
             }
 
         private:
-            void reset()
-            {
-                is_touch_ = false;
-                input_count_ = 0.f;
-                move_state_ = move_state::NONE;
-            };
+            void reset();
             void fire();
         };
     }

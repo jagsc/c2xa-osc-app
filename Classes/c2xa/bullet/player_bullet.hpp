@@ -19,7 +19,7 @@ namespace c2xa
             : public cocos2d::Node
         {
         private:
-            float   duration_ = 320.f; // frame
+            float   duration_ = 120.f; // frame
             float   count_    = 0.f;
             cocos2d::Vec2    target_position_;
             cocos2d::Vec2    first_position_;
