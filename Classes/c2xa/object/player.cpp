@@ -16,7 +16,7 @@ using namespace cocos2d;
 
 namespace
 {
-    static constexpr float move_speed = 3.f;
+    static constexpr float move_speed = 6.f;
     static constexpr float move_count = 10.f;
     static constexpr float fire_count = 15.f;
     static constexpr float max_rotation_degree = 45.f;
@@ -51,8 +51,9 @@ bool player::init()
         case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
             move_state_ = move_state::RIGHT; break;
         }
-        if( key_ == EventKeyboard::KeyCode::KEY_UP_ARROW && input_count_ < 5.f )
+        if( key_ == EventKeyboard::KeyCode::KEY_UP_ARROW )
         {
+            reset();
             fire();
         }
     };
@@ -60,7 +61,7 @@ bool player::init()
     keyboard_listener_->onKeyReleased = [ & ]( EventKeyboard::KeyCode key_, Event* event_ )
     {
         if( ( key_ == EventKeyboard::KeyCode::KEY_LEFT_ARROW && move_state_ == move_state::LEFT )
-            || ( key_ == EventKeyboard::KeyCode::KEY_RIGHT_ARROW && move_state_ == move_state::RIGHT ) )
+         || ( key_ == EventKeyboard::KeyCode::KEY_RIGHT_ARROW && move_state_ == move_state::RIGHT ) )
         {
             reset();
         }
@@ -141,36 +142,38 @@ void player::update( float delta_ )
             }
         }
         input_count_ += delta_ * 100;
-        switch( move_state_ )
+        if( input_count_ > move_count )
         {
-        case move_state::LEFT:
-        {
-            if( input_count_ > move_count )
+            switch( move_state_ )
+            {
+            case move_state::LEFT:
             {
                 position_ -= move_speed * delta_ * 100;
-                player_sprite_->setPositionX( position_ );
+                if( is_touch_ && touch_position_.x >= position_ )
+                {
+                    position_ = touch_position_.x;
+                }
+                if( position_ <= 0.f )
+                {
+                    position_ = 0.f;
+                }
             }
-            if( is_touch_ && touch_position_.x >= position_ )
-            {
-                player_sprite_->setPositionX( touch_position_.x );
-                reset();
-            }
-        }
-        break;
-        case move_state::RIGHT:
-        {
-            if( input_count_ > move_count )
+            break;
+            case move_state::RIGHT:
             {
                 position_ += move_speed * delta_ * 100;
-                player_sprite_->setPositionX( position_ );
+                if( is_touch_ && touch_position_.x <= position_ )
+                {
+                    position_ = touch_position_.x;
+                }
+                if( position_ >= app_width )
+                {
+                    position_ = app_width;
+                }
             }
-            if( is_touch_ && touch_position_.x <= position_ )
-            {
-                player_sprite_->setPositionX( touch_position_.x );
-                reset();
+            break;
             }
-        }
-        break;
+            player_sprite_->setPositionX( position_ );
         }
     }
     else
@@ -178,6 +181,13 @@ void player::update( float delta_ )
         target_rotation_ = player_sprite_->getRotation() * ( 1.f + std::abs( player_sprite_->getRotation() ) ) / 47.f;
     }
     player_sprite_->setRotation( ( target_rotation_ + player_sprite_->getRotation() ) / 2.f );
+}
+
+void player::reset()
+{
+    is_touch_ = false;
+    input_count_ = 0.f;
+    move_state_ = move_state::NONE;
 }
 
 void player::fire()
