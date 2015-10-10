@@ -84,7 +84,7 @@ namespace c2xa
                 luaL_unref( data_->state, LUA_REGISTRYINDEX, data_->move_id );
                 removeFromParent();
             }
-            cocos2d::Vec2&& get_position() const
+            cocos2d::Vec2 get_position() const
             {
                 // 呼び出す関数: move_idの参照先
                 lua_rawgeti( data_->state, LUA_REGISTRYINDEX, data_->move_id );

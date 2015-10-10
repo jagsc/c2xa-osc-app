@@ -308,7 +308,7 @@ namespace c2xa
         namespace detail
         {
             template< type type_ >
-            return_type< type_ > extend_from_table< type_ >::from_table( lua_State* state_, char const* field_name_, int stack_index_ = -1 )
+            return_type< type_ > extend_from_table< type_ >::from_table( lua_State* state_, char const* field_name_, int stack_index_ )
             {
                 CCASSERT( lua_type( state_, stack_index_ ) == static_cast<int>( type::table ),
                     ( std::string{ "index is not table : " } +lua_typename( state_, stack_index_ ) ).c_str() );
