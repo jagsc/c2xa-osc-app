@@ -19,7 +19,7 @@ function action.create_enemy( setting )
 end
 
 function action.wait( time )
-    return cc.DelayTime:create( time )
+    return cc.DelayTime:create( time * c2xa.get_magnification() )
 end
 
 function action.call( func )
