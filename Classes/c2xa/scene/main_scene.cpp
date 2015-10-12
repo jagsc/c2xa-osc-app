@@ -3,6 +3,8 @@
     @author êVÅTåéÇ©ÇËÇ»
     @date   created on 2015/09/29
 ****************************************************************************************/
+#include <AudioEngine.h>
+
 #include <c2xa/judgement.hpp>
 
 #include <c2xa/scene/main_scene.hpp>
@@ -31,6 +33,8 @@ bool main_scene::init()
 
     addChild( judgement::create( this ) );
 
+    bgm_id = cocos2d::experimental::AudioEngine::play2d( "sounds/main_bgm.mp3", true, 0.3f, nullptr );
+
     return true;
 }
 void main_scene::game_over()
@@ -50,5 +54,6 @@ void main_scene::game_over()
                     scene::score_scene::create(
                         get_child<judgement>( this, "judgement" )->get_score() ) ) );
         is_transitioning_ = true;
+        cocos2d::experimental::AudioEngine::stop( bgm_id );
     }
 }

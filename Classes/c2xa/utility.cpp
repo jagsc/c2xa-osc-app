@@ -1,5 +1,6 @@
 
 #include <c2xa/utility.hpp>
+#include <c2xa/object/player.hpp>
 #include <c2xa/object/enemy.hpp>
 #include <c2xa/bullet/enemy_bullet.hpp>
 
@@ -52,6 +53,7 @@ namespace c2xa
         void initialize_state( lua_State* state_ )
         {
             object::enemy::registrory_glue( state_ );
+            object::player::registrory_glue( state_ );
         }
         lua_State* get_state()
         {

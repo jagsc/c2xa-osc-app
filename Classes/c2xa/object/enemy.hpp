@@ -40,9 +40,13 @@ namespace c2xa
             struct data
             {
                 lua_State* state;
-                int move_id;
+                int update_function;
                 double duration = 0; // 初期化必須
                 unsigned int point;
+                double start_x;
+                double start_y;
+                double goal_x;
+                double goal_y;
 
                 struct fire
                 {
@@ -55,8 +59,10 @@ namespace c2xa
                     {
                         struct bullet
                         {
-                            int move_id;
+                            int update_function;
                             double duration;
+                            double goal_x;
+                            double goal_y;
                         } bullet_;
                         double time_;
                         info( bullet b_ )

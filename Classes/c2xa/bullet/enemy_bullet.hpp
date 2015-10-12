@@ -24,10 +24,12 @@ namespace c2xa
         struct data
         {
             lua_State* state;
-            int move_id;
+            int update_function;
             double duration = 0; // 初期化必須
-            float first_x;
-            float first_y;
+            double start_x;
+            double start_y;
+            double goal_x;
+            double goal_y;
             unsigned int point;
         };
         /// @author 新ゝ月かりな
@@ -56,7 +58,7 @@ namespace c2xa
                 scheduleUpdate();
 
                 auto sprite_ = create_sprite_from_batch( get_current_scene(), "img/enemy_bullet.png" );
-                sprite_->setPosition( get_position() );
+                sprite_->setPosition( data_->start_x, data_->start_y );
                 sprite_->setName( "sprite" );
                 addChild( sprite_ );
 
@@ -73,44 +75,55 @@ namespace c2xa
                     clean();
                     return;
                 }
+                // 呼び出す関数: move_idの参照先
+                lua_rawgeti( data_->state, LUA_REGISTRYINDEX, data_->update_function );
 
-                get_child<cocos2d::Sprite>( this, "sprite" )->setPosition( get_position() );
+                // 第一引数: 始点(xとyを持つテーブル)
+                lua_createtable( data_->state, 0, 2 );
+                lua_pushnumber( data_->state, data_->start_x );
+                lua_setfield( data_->state, -2, "x" );
+                lua_pushnumber( data_->state, data_->start_y );
+                lua_setfield( data_->state, -2, "y" );
+
+                // 第一引数: 終点(xとyを持つテーブル)
+                lua_createtable( data_->state, 0, 2 );
+                lua_pushnumber( data_->state, data_->goal_x );
+                lua_setfield( data_->state, -2, "x" );
+                lua_pushnumber( data_->state, data_->goal_y );
+                lua_setfield( data_->state, -2, "y" );
+
+                // 第三引数: 進捗率(0～100までのdouble)
+                lua_pushnumber( data_->state, progress_ * 100 / ( data_->duration * 60 ) );
+
+                // 呼び出し: 引数3: 戻り値1: テーブル
+                lua::call( data_->state, 3, 1 );
+
+                lua_getfield( data_->state, -1, "position" );
+                double x = lua::to< lua::type::number >::from_table( data_->state, "x" );
+                double y = lua::to< lua::type::number >::from_table( data_->state, "y" );
+                lua_settop( data_->state, -2 );
+
+                // 座標更新
+                get_child<cocos2d::Sprite>( this, "sprite" )->setPosition( cocos2d::Vec2{
+                    static_cast<float>( x ),
+                    static_cast<float>( y )
+                } );
+
+                lua_getfield( data_->state, -1, "goal" );
+                if( lua_type( data_->state, -1 ) == LUA_TTABLE )
+                {
+                    data_->goal_x = lua::to< lua::type::number >::from_table( data_->state, "x" );
+                    data_->goal_y = lua::to< lua::type::number >::from_table( data_->state, "y" );
+                }
+                lua_settop( data_->state, -2 );
             }
 
         private:
             void clean()
             {
                 unscheduleUpdate();
-                luaL_unref( data_->state, LUA_REGISTRYINDEX, data_->move_id );
+                luaL_unref( data_->state, LUA_REGISTRYINDEX, data_->update_function );
                 removeFromParent();
-            }
-            cocos2d::Vec2 get_position() const
-            {
-                // 呼び出す関数: move_idの参照先
-                lua_rawgeti( data_->state, LUA_REGISTRYINDEX, data_->move_id );
-
-                // 第一引数: 初期位置(xとyのテーブル)
-                lua_createtable( data_->state, 0, 2 );
-                lua_pushnumber( data_->state, data_->first_x );
-                lua_setfield( data_->state, -2, "x" );
-                lua_pushnumber( data_->state, data_->first_y );
-                lua_setfield( data_->state, -2, "y" );
-
-                // 第二引数: 進捗率(0～100までのdouble)
-                lua_pushnumber( data_->state, progress_ * 100 / ( data_->duration * 60 ) );
-
-                // 呼び出し: 引数2: 戻り値1: 座標(xとyを持つテーブル)
-                lua::call( data_->state, 2, 1 );
-
-                double x = lua::to< lua::type::number >::from_table( data_->state, "x" );
-                double y = lua::to< lua::type::number >::from_table( data_->state, "y" );
-
-                lua_settop( data_->state, -2 );
-
-                return std::move( cocos2d::Vec2 {
-                    static_cast<float>( x ),
-                    static_cast<float>( y )
-                } );
             }
             unsigned int get_point() const override
             {

@@ -8,9 +8,9 @@ function action.create_enemy( setting )
     return cc.CallFunc:create(function()
         local enemy
         local default = {
-            move = moving.default,
             duration = 10.0,
-            point = 1000
+            point = 1000,
+            fire = nil,
         }
         setting = extend_deep( {}, default, setting )
         enemy = c2xa.create_enemy( setting )

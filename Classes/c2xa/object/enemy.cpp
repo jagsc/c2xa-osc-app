@@ -33,9 +33,19 @@ int enemy::create_glue( lua_State* state_ )
     //CCASSERT( lua_type( state_, -1 ) == LUA_TFUNCTION, "" );
     //data_->move_id = luaL_ref( state_, LUA_REGISTRYINDEX );
 
-    data_->move_id = lua::to< lua::type::function >::from_table( state_, "move" );
+    data_->update_function = lua::to< lua::type::function >::from_table( state_, "update" );
     data_->duration = lua::to< lua::type::number >::from_table( state_, "duration" );
     data_->point = lua::to< lua::type::number >::from_table( state_, "point" );
+
+    lua_getfield( state_, -1, "start" );
+    data_->start_x = lua::to< lua::type::number >::from_table( state_, "x" );
+    data_->start_y = lua::to< lua::type::number >::from_table( state_, "y" );
+    lua_settop( data_->state, -2 );
+
+    lua_getfield( state_, -1, "goal" );
+    data_->goal_x = lua::to< lua::type::number >::from_table( state_, "x" );
+    data_->goal_y = lua::to< lua::type::number >::from_table( state_, "y" );
+    lua_settop( data_->state, -2 );
 
     lua_getfield( state_, -1, "fire" );
     if( lua_type( state_, -1 ) == LUA_TTABLE )
@@ -46,9 +56,14 @@ int enemy::create_glue( lua_State* state_ )
             if( lua_type( state_, -1 ) == LUA_TTABLE )
             {
                 // テーブルの場合は、弾だと判断します
-                auto move_id_ = lua::to< lua::type::function >::from_table( state_, "move" );
-                auto duration_ = lua::to< lua::type::number >::from_table( state_, "duration" );
-                data_->fire_info_.push_back( { data::fire::type::bullet, data::fire::info::bullet{ move_id_, duration_ } } );
+                data::fire::info::bullet b_;
+                b_.update_function = lua::to< lua::type::function >::from_table( state_, "update" );
+                b_.duration = lua::to< lua::type::number >::from_table( state_, "duration" );
+                lua_getfield( state_, -1, "goal" );
+                b_.goal_x = lua::to< lua::type::number >::from_table( state_, "x" );
+                b_.goal_y = lua::to< lua::type::number >::from_table( state_, "y" );
+                lua_settop( data_->state, -2 );
+                data_->fire_info_.push_back( { data::fire::type::bullet, b_ } );
             }
             else if( lua_type( state_, -1 ) == LUA_TNUMBER )
             {
@@ -107,12 +122,12 @@ void enemy::update( float delta_ )
 void enemy::clean()
 {
     unscheduleUpdate();
-    luaL_unref( data_->state, LUA_REGISTRYINDEX, data_->move_id );
+    luaL_unref( data_->state, LUA_REGISTRYINDEX, data_->update_function );
     for( auto i : data_->fire_info_ )
     {
         if( i.type_ == data::fire::type::bullet )
         {
-            luaL_unref( data_->state, LUA_REGISTRYINDEX, i.info_.bullet_.move_id );
+            luaL_unref( data_->state, LUA_REGISTRYINDEX, i.info_.bullet_.update_function );
         }
     }
     removeFromParent();
@@ -138,11 +153,13 @@ void enemy::fire()
             {
                 std::unique_ptr<bullet::data> d_{ new bullet::data };
                 d_->state = data_->state;
-                d_->move_id = info_.info_.bullet_.move_id;
+                d_->update_function = info_.info_.bullet_.update_function;
                 d_->duration = info_.info_.bullet_.duration;
                 auto pos_ = get_child<cocos2d::Sprite>( this, "sprite" )->getPosition();
-                d_->first_x = pos_.x;
-                d_->first_y = pos_.y;
+                d_->start_x = pos_.x;
+                d_->start_y = pos_.y;
+                d_->goal_x = info_.info_.bullet_.goal_x;
+                d_->goal_y = info_.info_.bullet_.goal_y;
                 auto bullet_ = bullet::enemy_bullet::create( std::move( d_ ) );
                 get_child( getParent()->getParent(), "enemy_bullets" )->addChild( bullet_ );
                 data_->fire_info_.pop_front();
@@ -159,17 +176,31 @@ void enemy::fire()
 cocos2d::Vec2 enemy::get_position() const
 {
     // 呼び出す関数: move_idの参照先
-    lua_rawgeti( data_->state, LUA_REGISTRYINDEX, data_->move_id );
+    lua_rawgeti( data_->state, LUA_REGISTRYINDEX, data_->update_function );
 
-    // 第一引数: 進捗率(0～100までのdouble)
+    // 第一引数: 始点(xとyを持つテーブル)
+    lua_createtable( data_->state, 0, 2 );
+    lua_pushnumber( data_->state, data_->start_x );
+    lua_setfield( data_->state, -2, "x" );
+    lua_pushnumber( data_->state, data_->start_y );
+    lua_setfield( data_->state, -2, "y" );
+
+    // 第一引数: 終点(xとyを持つテーブル)
+    lua_createtable( data_->state, 0, 2 );
+    lua_pushnumber( data_->state, data_->goal_x );
+    lua_setfield( data_->state, -2, "x" );
+    lua_pushnumber( data_->state, data_->goal_y );
+    lua_setfield( data_->state, -2, "y" );
+
+    // 第三引数: 進捗率(0～100までのdouble)
     lua_pushnumber( data_->state, progress_ * 100 / ( data_->duration * 60 ) );
 
-    // 呼び出し: 引数1: 戻り値1: 座標(xとyを持つテーブル)
-    lua::call( data_->state, 1, 1 );
+    // 呼び出し: 引数3: 戻り値1: テーブル
+    lua::call( data_->state, 3, 1 );
 
+    lua_getfield( data_->state, -1, "position" );
     double x = lua::to< lua::type::number >::from_table( data_->state, "x" );
     double y = lua::to< lua::type::number >::from_table( data_->state, "y" );
-
     lua_settop( data_->state, -2 );
 
     return std::move( cocos2d::Vec2{

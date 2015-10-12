@@ -7,12 +7,30 @@ function moving.default( progress )
 end
 
 -- 直進
-function moving.straight( start, goal )
-    return function( progress )
-        return cc.p(
+function moving.straight( start, goal, progress )
+    return {
+        position = cc.p(
             start.x + ( goal.x - start.x ) * progress / 100,
-            start.y + ( goal.y - start.y ) * progress / 100 )
+            start.y + ( goal.y - start.y ) * progress / 100
+        )
+    }
+end
+
+-- 追尾(軌道修正)
+function moving.homing( start, goal, progress )
+    local tmp_position = cc.p( start.x + ( goal.x - start.x ) * progress / 100, start.y + ( goal.y - start.y ) * progress / 100 )
+    if( progress <= 5 ) then
+        goal.x = start.x
     end
+    if( c2xa.get_player_position() - tmp_position.x > 0 ) then
+        goal.x = goal.x + 5 * ( progress * progress ) / 10000
+    else
+        goal.x = goal.x - 5 * ( progress * progress ) / 10000
+    end
+    return {
+        position = tmp_position,
+        goal = goal
+    }
 end
 
 function moving.curve(start, goal, tyuuten)

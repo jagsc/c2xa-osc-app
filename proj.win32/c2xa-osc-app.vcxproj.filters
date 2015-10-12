@@ -156,5 +156,8 @@
     <None Include="..\Resources\scripts\c2xa\extend.lua">
       <Filter>resource\scripts\c2xa</Filter>
     </None>
+    <None Include="..\Resources\scripts\c2xa\bullet.lua">
+      <Filter>resource\scripts\c2xa</Filter>
+    </None>
   </ItemGroup>
 </Project>

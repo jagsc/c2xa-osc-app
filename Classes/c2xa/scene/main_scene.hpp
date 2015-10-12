@@ -17,6 +17,7 @@ namespace c2xa
         {
         private:
             bool is_transitioning_ = false;
+            int bgm_id;
 
         public:
             CREATE_FUNC( main_scene );
