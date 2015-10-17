@@ -1,6 +1,7 @@
 
 #include <app_delegate.hpp>
 #include <c2xa/scene/main_scene.hpp>
+#include <c2xa/scene/title_scene.hpp>
 #include <c2xa/c2xa_config.hpp>
 #include <c2xa/utility.hpp>
 
@@ -20,7 +21,7 @@ void app_delegete::initGLContextAttrs()
     GLView::setGLContextAttrs(glContextAttrs);
 }
 
-// If you want to use packages manager to install more packages, 
+// If you want to use packages manager to install more packages,
 // don't modify or remove this function
 static int register_all_packages()
 {
@@ -56,7 +57,7 @@ bool app_delegete::applicationDidFinishLaunching() {
     c2xa::lua::initialize_state( c2xa::lua::get_state() );
 
     // create a scene. it's an autorelease object
-    auto scene = c2xa::scene::main_scene::create();
+    auto scene = c2xa::scene::title_scene::create();
 
     // run
     director->runWithScene(scene);
