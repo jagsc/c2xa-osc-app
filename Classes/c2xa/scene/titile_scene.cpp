@@ -38,7 +38,8 @@ bool title_btn::init()
         "img/btn_1.png",
         "img/btn_1_o.png",
         [this](Ref *pSender){
-        Director::getInstance()->replaceScene(TransitionFade::create(1.0f,scene::main_scene::create() ) );
+//        Director::getInstance()->replaceScene(TransitionFade::create(1.0f,scene::main_scene::create() ) );
+        Director::getInstance()->replaceScene(scene::main_scene::create());
         }
     );
     auto btn_2 = MenuItemImage::create(
@@ -64,15 +65,25 @@ bool title_background::init()
     }
 
     Size pos_s = Director::getInstance()->getVisibleSize();
-    auto sprite = Sprite::create("img/image_start_1.png");
-    sprite->setPosition(Vec2(pos_s.width*.5,pos_s.height*.5));
+    auto sprite_1 = Sprite::create("img/image_start_1.png");
+    auto sprite_2 = Sprite::create("img/image_start_2.png");
+//    auto sprite_3 = Sprite::create("img/image_start_b.png");
+    sprite_1->setPosition(Vec2(pos_s.width*.5,pos_s.height*.5));
+    sprite_2->setPosition(Vec2(pos_s.width*.5,pos_s.height*.5));
+//    sprite_3->setPosition(Vec2(pos_s.width*.5,pos_s.height*.5));
 
-    sprite->setOpacity( 0 );
-//    this->addChild(sprite);
-//    auto action0 = FadeIn::create(1);
-//    auto action1 = FadeOut::create(1);
-//    sprite->runAction(action0);
-//    sprite->runAction(action1);
-    //auto action = Sequence::create(FadeIn::create(0.2f),DelayTime::create( 3.f ),FadeOut::create( 0.2f ));
+    sprite_1->setOpacity( 0 );
+    sprite_2->setOpacity( 0 );
+    this->addChild(sprite_1,0);
+    this->addChild(sprite_2,1);
+//    this->addChild(sprite_3,2);
+
+    auto action = Sequence::create(FadeIn::create(0.2f),DelayTime::create( 3.f ),FadeOut::create( 0.2f ),nullptr);
+    auto action2 = DelayTime::create( 3.4f );
+    auto action3 = Sequence::create(action2,action,nullptr);
+//    auto action4 = Sequence::create(FadeIn::create(0.2f),DelayTime::create( 3.f ),FadeOut::create( 0.2f ),nullptr);
+
+    sprite_1->runAction(action);
+    sprite_2->runAction(action3);
     return true;
 }
