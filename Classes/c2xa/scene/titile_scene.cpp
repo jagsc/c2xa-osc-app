@@ -11,13 +11,10 @@ bool title_scene::init()
     {
         return false;
     }
-//    Size pos_s = Director::getInstance()->getVisibleSize();
-//    auto sprite_1 = Sprite::create("img/image_start_3.png");
+
     auto layar_1 = title_background::create();
     auto layar_2 = title_btn::create();
-//    sprite_1->setPosition(Vec2(pos_s.width*.5,pos_s.height*.5));
 
-//    this->addChild(sprite_1,0);
     this->addChild(layar_1,1);
     this->addChild(layar_2,0);
     return true;
@@ -42,16 +39,9 @@ bool title_btn::init()
         Director::getInstance()->replaceScene(scene::main_scene::create());
         }
     );
-    auto btn_2 = MenuItemImage::create(
-        "img/btn_2.png",
-        "img/btn_2_0.png",
-        [this](Ref *pSender){
 
-        }
-    );
-    Menu* pMenu = Menu::create(btn_1,btn_2, NULL);
-    pMenu->setPosition(Vec2(s.width*.5, s.height*.3));
-    pMenu->alignItemsVerticallyWithPadding(30);
+    Menu* pMenu = Menu::create(btn_1, NULL);
+    pMenu->setPosition(Vec2(s.width*.5, s.height*.325));
     this->addChild(sprite,0);
     this->addChild(pMenu,1);
     return true;
@@ -67,23 +57,24 @@ bool title_background::init()
     Size pos_s = Director::getInstance()->getVisibleSize();
     auto sprite_1 = Sprite::create("img/image_start_1.png");
     auto sprite_2 = Sprite::create("img/image_start_2.png");
-//    auto sprite_3 = Sprite::create("img/image_start_b.png");
+    auto sprite_3 = Sprite::create("img/image_start_b.png");
     sprite_1->setPosition(Vec2(pos_s.width*.5,pos_s.height*.5));
     sprite_2->setPosition(Vec2(pos_s.width*.5,pos_s.height*.5));
-//    sprite_3->setPosition(Vec2(pos_s.width*.5,pos_s.height*.5));
+    sprite_3->setPosition(Vec2(pos_s.width*.5,pos_s.height*.5));
 
     sprite_1->setOpacity( 0 );
     sprite_2->setOpacity( 0 );
-    this->addChild(sprite_1,0);
-    this->addChild(sprite_2,1);
-//    this->addChild(sprite_3,2);
+    this->addChild(sprite_1,1);
+    this->addChild(sprite_2,2);
+    this->addChild(sprite_3,0);
 
-    auto action = Sequence::create(FadeIn::create(0.2f),DelayTime::create( 3.f ),FadeOut::create( 0.2f ),nullptr);
-    auto action2 = DelayTime::create( 3.4f );
-    auto action3 = Sequence::create(action2,action,nullptr);
-//    auto action4 = Sequence::create(FadeIn::create(0.2f),DelayTime::create( 3.f ),FadeOut::create( 0.2f ),nullptr);
+    auto action_1 = Sequence::create(FadeIn::create(1.f),DelayTime::create( 2.5f ),FadeOut::create( 1.f ),nullptr);
+    auto action_2 = DelayTime::create( 4.5f );
+    auto action_3 = Sequence::create(action_2,action_1,nullptr);
+    auto action_4 = Sequence::create(DelayTime::create( 7.4f ),FadeOut::create( 1.0f ),nullptr);
 
-    sprite_1->runAction(action);
-    sprite_2->runAction(action3);
+    sprite_1->runAction(action_1);
+    sprite_2->runAction(action_3);
+    sprite_3->runAction(action_4);
     return true;
 }
