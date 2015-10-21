@@ -1,6 +1,7 @@
 
 #include <app_delegate.hpp>
 #include <c2xa/scene/main_scene.hpp>
+#include <c2xa/scene/manual_scene.hpp>
 #include <c2xa/c2xa_config.hpp>
 #include <c2xa/utility.hpp>
 
@@ -40,8 +41,10 @@ bool app_delegete::applicationDidFinishLaunching() {
         director->setOpenGLView(glview);
     }
 
+#ifdef COCOS2D_DEBUG
     // 当面はFPS表示します
     director->setDisplayStats(true);
+#endif
 
     // 60FPSでまずは進めます
     director->setAnimationInterval(1.0 / 60);
@@ -56,7 +59,7 @@ bool app_delegete::applicationDidFinishLaunching() {
     c2xa::lua::initialize_state( c2xa::lua::get_state() );
 
     // create a scene. it's an autorelease object
-    auto scene = c2xa::scene::main_scene::create();
+    auto scene = c2xa::scene::manual_scene::create();
 
     // run
     director->runWithScene(scene);
