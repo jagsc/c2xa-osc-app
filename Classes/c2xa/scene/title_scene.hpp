@@ -24,7 +24,7 @@ namespace c2xa
             CREATE_FUNC(title_btn);
             virtual bool init() override;
 //                void mycallback(Ref* pSender);
-
+            bool _flag = true;
             };
         class title_background
             : public cocos2d::Layer

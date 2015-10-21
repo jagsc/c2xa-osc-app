@@ -5,6 +5,8 @@ using namespace cocos2d;
 using namespace c2xa::scene;
 using namespace c2xa::layer;
 
+
+
 bool title_scene::init()
 {
     if ( !Scene::init() )
@@ -28,8 +30,9 @@ bool title_btn::init()
     }
     Size s = Director::getInstance()->getVisibleSize();
     auto sprite = Sprite::create("img/image_start_3.png");
-    sprite->setPosition(Vec2(s.width*.5,s.height*.5));
 
+
+    sprite->setPosition(Vec2(s.width*.5,s.height*.5));
 //    auto btn1 = MenuItemImage::create("img/button1.png", "img/button2.png", CC_CALLBACK_1(title_layer::myCallback, this));
     auto btn_1 = MenuItemImage::create(
         "img/btn_1.png",
@@ -40,10 +43,19 @@ bool title_btn::init()
         }
     );
 
+    auto action1 = Sequence::create(DelayTime::create(3),CallFunc::create([=]{
+        _flag = true;
+    }), nullptr);
+
     Menu* pMenu = Menu::create(btn_1, NULL);
     pMenu->setPosition(Vec2(s.width*.5, s.height*.325));
+    pMenu->setEnabled(_flag);
+
     this->addChild(sprite,0);
     this->addChild(pMenu,1);
+
+//    this->scheduleOnce(schedule_selector(title_btn::message()), 3);
+
     return true;
 }
 
