@@ -75,6 +75,9 @@
     <ClCompile Include="..\Classes\c2xa\scene\manual_scene.cpp">
       <Filter>src\c2xa\scene</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\c2xa\scene\titile_scene.cpp">
+      <Filter>src\c2xa\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -141,6 +144,9 @@
       <Filter>src\c2xa\bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\c2xa\scene\manual_scene.hpp">
+      <Filter>src\c2xa\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\scene\title_scene.hpp">
       <Filter>src\c2xa\scene</Filter>
     </ClInclude>
   </ItemGroup>
