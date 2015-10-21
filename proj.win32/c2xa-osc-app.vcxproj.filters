@@ -72,6 +72,9 @@
     <ClCompile Include="..\Classes\c2xa\object\enemy.cpp">
       <Filter>src\c2xa\object</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\c2xa\scene\titile_scene.cpp">
+      <Filter>src\c2xa\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -136,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\c2xa\bullet\enemy_bullet.hpp">
       <Filter>src\c2xa\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\c2xa\scene\title_scene.hpp">
+      <Filter>src\c2xa\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
