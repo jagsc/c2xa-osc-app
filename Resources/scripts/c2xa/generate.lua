@@ -1,7 +1,6 @@
 
 require "c2xa.action"
 require "c2xa.moving"
-require "c2xa.bullet"
 
 -- 1クール
 function c2xa_generate( object_layer )
@@ -104,6 +103,7 @@ function c2xa_generate( object_layer )
 
     object_layer:runAction(
         action.sequence({
+            action.wait( 3 ),
             action.create_enemy( enemy_pattern000 ),
             action.wait( 4 ),
             action.create_enemy( enemy_pattern100 ),

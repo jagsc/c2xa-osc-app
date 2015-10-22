@@ -31,7 +31,7 @@ bool player::init()
     scheduleUpdate();
     setName( "player" );
 
-    position_ = player_y_position;
+    position_ = app_width*.5;
     auto player_sprite_ = Sprite::create( "img/player_bugdroid.png" );
     player_sprite_->setName( "sprite" );
     player_sprite_->setPosition( Vec2( position_, player_y_position ) );
