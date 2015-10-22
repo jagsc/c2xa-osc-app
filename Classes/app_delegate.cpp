@@ -21,7 +21,7 @@ void app_delegete::initGLContextAttrs()
     GLView::setGLContextAttrs(glContextAttrs);
 }
 
-// If you want to use packages manager to install more packages,
+// If you want to use packages manager to install more packages, 
 // don't modify or remove this function
 static int register_all_packages()
 {
@@ -41,8 +41,10 @@ bool app_delegete::applicationDidFinishLaunching() {
         director->setOpenGLView(glview);
     }
 
+#ifdef COCOS2D_DEBUG
     // 当面はFPS表示します
     director->setDisplayStats(true);
+#endif
 
     // 60FPSでまずは進めます
     director->setAnimationInterval(1.0 / 60);

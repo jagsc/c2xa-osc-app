@@ -4,6 +4,7 @@
     @date   created on 2015/09/29
 ****************************************************************************************/
 #include <c2xa/scene/end_scene.hpp>
+#include <c2xa/scene/title_scene.hpp>
 
 using namespace cocos2d;
 using namespace c2xa::scene;
@@ -64,12 +65,19 @@ bool end_scene::init()
                                                 DelayTime::create( 1.f ),
                                                 CallFunc::create( [ = ]
                                                 {
-                                                    auto keyboard_listener_ = EventListenerKeyboard::create();
-                                                    keyboard_listener_->onKeyPressed = []( EventKeyboard::KeyCode key_, Event* event_ )
-                                                    {
-                                                        Director::getInstance()->end();
-                                                    };
                                                     auto dispatcher = Director::getInstance()->getEventDispatcher();
+                                                    auto keyboard_listener_ = EventListenerKeyboard::create();
+                                                    auto touch_listener_    = EventListenerTouchOneByOne::create();
+                                                    keyboard_listener_->onKeyPressed = [ = ]( EventKeyboard::KeyCode key_, Event* event_ )
+                                                    {
+                                                        Director::getInstance()->replaceScene( TransitionFade::create( 2.0f, scene::title_scene::create() ) );
+                                                    };
+                                                    touch_listener_->onTouchBegan = [ = ]( Touch* t_, Event* )
+                                                    {
+                                                        Director::getInstance()->replaceScene( TransitionFade::create( 2.0f, scene::title_scene::create() ) );
+                                                        return true;
+                                                    };
+                                                    dispatcher->addEventListenerWithSceneGraphPriority( touch_listener_, this );
                                                     dispatcher->addEventListenerWithSceneGraphPriority( keyboard_listener_, this );
                                                 } ),
                                                 nullptr ) );

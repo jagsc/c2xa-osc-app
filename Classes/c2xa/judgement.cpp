@@ -133,13 +133,17 @@ void judgement::update( float delta_ )
 
         // スコアカウント
         // コリジョンより後ろ
-        get_child<scene::main::layer::ui_layer>( get_current_scene(), "ui_layer" )->set_score( score_.get() );
-        // 自機数カウント
-        // ゲーム終了判断
-        if( remaining_.is_dead() )
+        auto p = get_current_scene()->getChildByName( "ui_layer" );
+        if( p != nullptr )
         {
-            game_over_ = true;
-            get_parent<scene::main_scene>( this )->game_over();
+            static_cast<scene::main::layer::ui_layer*>( p )->set_score( score_.get() );
+            // 自機数カウント
+            // ゲーム終了判断
+            if( remaining_.is_dead() )
+            {
+                game_over_ = true;
+                get_parent<scene::main_scene>( this )->game_over();
+            }
         }
     }
 }
