@@ -1,2 +1,0 @@
-set solib-search-path ./obj/local/armeabi-v7a
-source C:/android-ndk-r10e/prebuilt/common/gdb/common.setup

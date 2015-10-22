@@ -1,2 +1,0 @@
-set solib-search-path ./obj/local/x86
-source C:/android-ndk-r10e/prebuilt/common/gdb/common.setup
