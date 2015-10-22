@@ -99,6 +99,13 @@ function c2xa_generate( object_layer )
         duration = 10,
         fire = { 3, bullet_homing, 3, bullet_homing },
     }
+    local enemy_pattern600 = {
+        update = moving.homing,
+        start  = cc.p( -50, 600 ),
+        goal   = cc.p( 610, 500 ),
+        duration = 8,
+        fire = { 2, bullet_player, 1, bullet_player, 1, bullet_player, 1, bullet_player, 1, bullet_player },
+    }
     -------------- 
 
     object_layer:runAction(
@@ -134,6 +141,16 @@ function c2xa_generate( object_layer )
             action.create_enemy( enemy_pattern510 ),
             action.wait( 0.5 ),
             action.create_enemy( enemy_pattern510 ),
+            action.wait( 4 ),
+            action.create_enemy( enemy_pattern600 ),
+            action.wait( 0.5 ),
+            action.create_enemy( enemy_pattern600 ),
+            action.wait( 0.5 ),
+            action.create_enemy( enemy_pattern600 ),
+            action.wait( 0.5 ),
+            action.create_enemy( enemy_pattern600 ),
+            action.wait( 0.5 ),
+            action.create_enemy( enemy_pattern600 ),
             action.wait( 4 ),
             cc.CallFunc:create(function()
                 c2xa.set_magnification( c2xa.get_magnification() + 0.1 )

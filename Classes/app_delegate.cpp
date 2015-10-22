@@ -35,6 +35,8 @@ bool app_delegete::applicationDidFinishLaunching() {
         //glview = GLViewImpl::create("My Game");
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
         glview = GLViewImpl::createWithRect( c2xa::app_name, c2xa::app_rectangle, 1 );
+        auto h = GetSystemMetrics( SM_CYFULLSCREEN ) - 50;
+        glview->setFrameSize( c2xa::app_width * h / c2xa::app_rectangle.size.height, h );
 #else
         glview = GLViewImpl::create( c2xa::app_name );
 #endif
